@@ -5,7 +5,7 @@
 <br/>
 <br/>
 
-## Dome-fiddling library.
+## DOM-fiddling library.
 
 <br/>
 <br/>
