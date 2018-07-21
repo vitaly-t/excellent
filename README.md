@@ -15,11 +15,10 @@
 ## The most selfish implementation.
 
 <br/>
-<br/>
-
+<i>
 A good developer is like a good artist, needs only the basic tools and inspiration to create,
 while fools pile on dogmatic overblown frameworks that always promise long-term value, but
 never deliver, as they are washed away by time, leaving incomprehensible mess behind as their
 true legacy.
-
+</i>
 
