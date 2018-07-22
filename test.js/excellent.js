@@ -1,1 +1,0 @@
-!function(e){"use strict";var t={};"object"==typeof module&&module&&"object"==typeof module.exports?module.exports=t:e.excellent=t,t.find=function(e){document.querySelectorAll("*").forEach(function(e){for(var t=[],o=0;o<e.attributes.length;o++){var u=e.attributes[o];t.push({name:u.name,value:u.value})}console.log(e.tagName,t)})}}(this);

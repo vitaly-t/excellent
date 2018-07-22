@@ -2,11 +2,9 @@
   "name": "excellent",
   "version": "0.0.1",
   "scripts": {
-    "gulp": "./node_modules/.bin/gulp"
+    "build": "./node_modules/.bin/uglifyjs ./src/index.js -o ./excellent.min.js"
   },
   "devDependencies": {
-    "gulp": "4.0.0",
-    "gulp-concat": "2.6.1",
-    "gulp-uglify": "3.0.0"
+    "uglify-js": "3.4.5"
   }
 }
