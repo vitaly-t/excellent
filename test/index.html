@@ -22,7 +22,7 @@
         // ctrl = controller context object,
         // same as returned by `find(search)`.
 
-        console.log('Inside first controller');
+        console.log('Inside first controller. Node:', ctrl.node);
     });
 
     app.addController('second', function (ctrl) {
@@ -31,6 +31,15 @@
 
         // ctrl = controller context object,
         // same as returned by `find(search)`.
+
+        ctrl.onReceive = function (data, sender) {
+            console.log('received:', data);
+            return 'Ok :)';
+        };
+
+        ctrl.post('Hello!', function (data) {
+            console.log('Got back:', data);
+        });
 
         console.log('Inside second controller');
     });
