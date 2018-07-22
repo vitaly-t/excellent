@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" e-root="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../src"></script>
+</head>
+<body>
+
+<div e-controller="first"></div>
+<div e-controller="second"></div>
+<div e-controller="third"></div>
+
+</body>
+</html>
+
+<script type="application/javascript">
+    var ctrl = app.controllers;
+
+    ctrl.first = function () {
+        console.log('Inside first controller');
+    };
+
+    ctrl.second = function () {
+        console.log('Inside second controller');
+    };
+</script>
