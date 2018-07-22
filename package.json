@@ -1,5 +1,5 @@
 {
-  "name": "excellent",
+  "name": "Excellent.js",
   "version": "0.0.1",
   "scripts": {
     "build": "./node_modules/.bin/uglifyjs ./src/index.js -o ./excellent.min.js"
