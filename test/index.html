@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="../src"></script>
+    <script src="../src/module_sample.js"></script>
+    <script src="../src/service_sample.js"></script>
 </head>
 <body>
 
@@ -15,13 +17,22 @@
 </html>
 
 <script type="application/javascript">
-    var ctrl = app.controllers;
 
-    ctrl.first = function () {
+    app.addController('first', function (ctrl) {
+        // ctrl = controller context object,
+        // same as returned by `find(search)`.
+
         console.log('Inside first controller');
-    };
+    });
 
-    ctrl.second = function () {
+    app.addController('second', function (ctrl) {
+
+        console.log(app.services.myServiceName.message());
+
+        // ctrl = controller context object,
+        // same as returned by `find(search)`.
+
         console.log('Inside second controller');
-    };
+    });
+
 </script>

@@ -1,17 +1,87 @@
 (function (window) {
     'use strict';
 
-    var root = {
-            controllers: {}
-        },
-        ctrl = [],
-        find = document.querySelectorAll.bind(document);
+    var controllers = {}, modules = {}, services = {};
 
-    initRoot();
+    /**
+     * Library's root object.
+     */
+    var root = {
+        /**
+         * Library name.
+         */
+        name: 'Excellent.js',
+
+        /**
+         * Library version
+         */
+        version: '0.0.1',
+
+        /**
+         * Registered services namespace
+         */
+        services: {},
+
+        /**
+         * Creates and registers a new controller.
+         */
+        addController: function (name, cb) {
+            if (typeof name === 'function') {
+                cb = name;
+                name = cb.name;
+            }
+            controllers[name] = cb;
+        },
+
+        /**
+         * Creates and registers a new service.
+         */
+        addService: function (name, cb) {
+            if (typeof name === 'function') {
+                cb = name;
+                name = cb.name;
+            }
+            services[name] = cb;
+        },
+
+        /**
+         * Creates and registers a new module.
+         */
+        addModule: function (name, cb) {
+            if (typeof name === 'function') {
+                cb = name;
+                name = cb.name;
+            }
+            modules[name] = cb;
+        }
+    };
+
+    function EController() {
+        /* for later, to be used only when finding one  */
+    }
+
+    window.excellent = root;
 
     document.addEventListener('DOMContentLoaded', function () {
+        initServices();
+        initModules();
         initControllers();
     });
+
+    // Abbreviated functions;
+    var find = document.querySelectorAll.bind(document);
+
+    function initServices() {
+        for (var a in services) {
+            root.services[a] = services[a]();
+        }
+    }
+
+    function initModules() {
+        for (var a in modules) {
+            modules[a] = modules[a](); // overriding, for now
+        }
+    }
 
     function initRoot() {
         var e = find('[e-root]');
@@ -32,8 +102,8 @@
             if (!name) {
                 throw new Error('Controller name is missing.');
             }
-            if (name in root.controllers) {
-                var cb = root.controllers[name];
+            if (name in controllers) {
+                var cb = controllers[name];
                 if (typeof cb !== 'function') {
                     throw new Error('Invalid controller ' + JSON.stringify(name) + ' type. Must be a function.');
                 }
@@ -49,6 +119,16 @@
         // where to search for controllers by default?
 
         // TODO: Need a concept of modules + `as alias` for modules and controllers.
+
+        // A module is like a library, so its controllers are like directives/components
+        // The problem is, components need to be parameterizable, which the container could,
+        // in the background.
+        // So, a controller must be able to parametrize its child controllers.
+
+        // Eureka! Simple Send/onReceive protocol, plus an easy `find(search)` method for each controller,
+        // where `search` would be the standard DOMSearch filter.
     }
+
+    initRoot();
 
 })(this);
