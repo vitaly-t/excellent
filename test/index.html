@@ -9,10 +9,9 @@
 </head>
 <body>
 
-<div e-controller="first"></div>
-<div e-controller="second"></div>
-<div e-controller="myModuleName.controller1"></div>
-<div e-controller="myModuleName.special.deepCtrl"></div>
+<div e-bind="first"></div>
+<div e-bind="second"></div>
+<div e-bind="myModuleName.controller1, myModuleName.special.deepCtrl"></div>
 <!--
 <div e-controller="third"></div>
 -->
@@ -25,6 +24,10 @@
     app.addController('first', function (/* self */) {
         // self = this = controller context object,
         // same as returned by `find(search)`.
+
+        this.onInit = function () {
+            console.log('first.onInit');
+        };
 
         console.log('Inside first controller. Node:', this.node);
     });

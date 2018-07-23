@@ -1,3 +1,44 @@
+/*
+* So, searching for controllers with selectors becomes more complicated.
+*
+* What will ctrl.find(selectors) do?
+*
+* We can only search for elements now, we cannot search for controllers,
+* unless we require that controller name is specified also:
+* find(selectors, ctrl)
+*
+* And for each element we can assign `e.controllers`, as a hidden property.
+*
+* NOTE: https://stackoverflow.com/questions/31773599/can-i-use-an-attribute-selector-for-contains-in-queryselector
+* So we can search for an attribute that contains a sub-string.
+*
+* Controller might include property `siblings` = array if strings - other controllers/names
+* on the same element? NO, we would already have `.e.controllers` with that, so I just
+* need to put the controller name into the controller, like `name`.
+*
+* NOTE: I badly want an alternative name to e-controllers, that's too f. long :)
+* Possibles: e-bind, e-link, e-control, e-attach, e-mutate, e-directive, e-apply,
+* e-embed, e-ctrl, e-connect,
+*
+* Favourites: e-bind
+*
+* It is the best, to have only: e-root, e-bind
+*
+* Alternatively, I can rename Controllers into Components, and use e-attach instead, to attach components,
+* or maybe e-apply? Actually, e-bind for components works well also.
+*
+* WAIT! Since each controller is a function, best is to keep controllers.
+*
+* ------------
+*
+* Need to add onInit, onDestroy events to controllers.
+*
+* Controllers called initially, at which point they cannot communicate with other controllers.
+* It is only after the fool initialization loop has finished, a second loop is to be run,
+* to send onInit into each controller, to let it know that all controllers are ready to communicate.
+*
+* */
+
 (function (window) {
     'use strict';
 
@@ -16,14 +57,19 @@
     var modules;
 
     /**
-     * Inner name-to-function cache.
+     * Controller name-to-function cache/map.
      */
-    var controllers = {};
+    var ctrlCache = {};
 
     /**
-     * All elements with controllers.
+     * Complete list of controllers.
      */
-    // var elements = [];
+    var controllers = [];
+
+    /**
+     * All valid elements with controllers.
+     */
+    var elements = [];
 
     /**
      * Library's root object.
@@ -104,6 +150,10 @@
         return res;
     }
 
+    function trim(txt) {
+        return txt.replace(/^[\s]*|[\s]*$/g, '');
+    }
+
     function initRoot() {
         var e = find('[e-root]');
         if (e.length) {
@@ -136,15 +186,44 @@
     }
 
     function initControllers() {
-        find('[e-controller]').forEach(function (e) {
-            var name = e.getAttribute('e-controller');
-            var m = name.match(/([a-z$_][a-z$_0-9]*.?)*[^.]/i);
-            if (!m || m[0] !== name) {
-                throw new Error('Invalid controller name ' + jStr(name));
+        controllers.length = 0;
+        elements.length = 0;
+        find('[e-bind]')
+            .forEach(function (e) {
+                var added;
+                e.getAttribute('e-bind')
+                    .split(',')
+                    .forEach(function (name) {
+                        name = trim(name);
+                        if (name) {
+                            var m = name.match(/([a-z$_][a-z$_0-9]*\.?)*[^.]/i);
+                            if (!m || m[0] !== name) {
+                                throw new Error('Invalid controller name ' + jStr(name));
+                            }
+                            var c = new EController(e);
+                            getCtrlFunc(name).call(c, c);
+                            controllers.push(c);
+                            added = true;
+                        }
+                    });
+                if (added) {
+                    // TODO: Need to add controllers here to the element
+                    elements.push(e);
+                }
+            });
+        controllers.forEach(function (c) {
+            if (typeof c.onInit === 'function') {
+                c.onInit();
             }
-            var c = new EController(e);
-            getCtrlFunc(name).call(c, c);
         });
+        /*
+        This seems obsolete, check MutationObserver instead
+
+        elements.forEach(function (e) {
+            e.on('DOMNodeRemoved', function () {
+                // go through all attached controllers, and call onDestroy
+            });
+        });*/
     }
 
     /**
@@ -158,8 +237,8 @@
      *
      */
     function getCtrlFunc(name) {
-        if (name in controllers) {
-            return controllers[name]; // use the cache
+        if (name in ctrlCache) {
+            return ctrlCache[name]; // use the cache
         }
         if (name.indexOf('.') === -1) {
             // it is a simple controller name;
@@ -167,7 +246,7 @@
             if (!f) {
                 throw new Error('Controller ' + jStr(name) + ' not found.');
             }
-            controllers[name] = f; // updating cache
+            ctrlCache[name] = f; // updating cache
             return f;
         }
         // the controller is from a module
@@ -185,7 +264,7 @@
                 }
             }
             if (typeof obj === 'function') {
-                controllers[name] = obj;
+                ctrlCache[name] = obj;
                 return obj;
             }
             throw new Error('Controller ' + jStr(name) + ' not found.'); // TODO: Refactor so thrown in one place only
@@ -201,6 +280,14 @@
         }
     */
 
+    /**
+     * @class EController
+     * @description
+     * Virtual controller class.
+     *
+     * @param node
+     * @constructor
+     */
     function EController(node) {
 
         /**
@@ -217,6 +304,10 @@
             }
         };
     }
+
+    /**
+     * @method EController#onInit
+     */
 
     /**
      * Searches for all matching elements that have controllers,
