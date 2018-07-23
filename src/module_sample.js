@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 * The app that includes this module will be able to use:
 * e-controller="myModuleName.controller1"

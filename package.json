@@ -2,9 +2,11 @@
   "name": "Excellent.js",
   "version": "0.0.1",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint ./src",
     "build": "./node_modules/.bin/uglifyjs ./src/index.js -o ./excellent.min.js"
   },
   "devDependencies": {
+    "eslint": "5.2.0",
     "uglify-js": "3.4.5"
   }
 }

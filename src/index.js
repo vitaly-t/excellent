@@ -23,7 +23,7 @@
     /**
      * All elements with controllers.
      */
-    var elements = [];
+    // var elements = [];
 
     /**
      * Library's root object.
@@ -160,29 +160,28 @@
             }
             controllers[name] = f; // updating cache
             return f;
-        } else {
-            // the controller is from a module
-            var names = name.split('.');
-            var moduleName = names[0];
-            if (moduleName in modules) {
-                var obj = modules[moduleName];
-                for (var i = 1; i < names.length; i++) {
-                    var n = names[i];
-                    if (n in obj) {
-                        obj = obj[n];
-                    } else {
-                        obj = null;
-                        break;
-                    }
-                }
-                if (typeof obj === 'function') {
-                    controllers[name] = obj;
-                    return obj;
-                }
-                throw new Error('Controller ' + JSON.stringify(name) + ' not found.');
-            }
-            throw new Error('Module ' + JSON.stringify(moduleName) + ' not found.');
         }
+        // the controller is from a module
+        var names = name.split('.');
+        var moduleName = names[0];
+        if (moduleName in modules) {
+            var obj = modules[moduleName];
+            for (var i = 1; i < names.length; i++) {
+                var n = names[i];
+                if (n in obj) {
+                    obj = obj[n];
+                } else {
+                    obj = null;
+                    break;
+                }
+            }
+            if (typeof obj === 'function') {
+                controllers[name] = obj;
+                return obj;
+            }
+            throw new Error('Controller ' + JSON.stringify(name) + ' not found.');
+        }
+        throw new Error('Module ' + JSON.stringify(moduleName) + ' not found.');
     }
 
     function trim(txt) {
@@ -194,13 +193,15 @@
         return m && m[0] === name;
     }
 
-    function findAllController(selectors) {
+    /*
+        function findAllController(selectors) {
 
-    }
+        }
 
-    function findOneController(selectors) {
+        function findOneController(selectors) {
 
-    }
+        }
+    */
 
     function EController(node) {
 
@@ -210,10 +211,10 @@
         this.node = node;
 
         this.children = {
-            find: function (criteria) {
+            find: function (/*selectors*/) {
 
             },
-            findOne: function (criteria) {
+            findOne: function (/*selectors*/) {
 
             }
         };
@@ -223,11 +224,11 @@
      * Searches for all matching elements that have controllers,
      * and returns the list of controllers.
      *
-     * @param {String} criteria
+     * @param {String} selectors
      *
      * @returns {Array<EController>}
      */
-    EController.prototype.find = function (criteria) {
+    EController.prototype.find = function (/*selectors*/) {
 
     };
 
@@ -237,11 +238,11 @@
      *
      * If no matching element found, or more than one found, it throws an error.
      *
-     * @param {String} criteria
+     * @param {String} selectors
      *
      * @returns {EController}
      */
-    EController.prototype.findOne = function (criteria) {
+    EController.prototype.findOne = function (/*selectors*/) {
 
     };
 
@@ -279,7 +280,7 @@
                     cb(response);
                 }
             }
-        });
+        }, 0);
     };
 
     initRoot();

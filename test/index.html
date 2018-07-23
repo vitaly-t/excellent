@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../src"></script>
+    <script src="../src/set-immediate.js"></script>
+    <script src="../src/index.js"></script>
     <script src="../src/module_sample.js"></script>
     <script src="../src/service_sample.js"></script>
 </head>
@@ -26,26 +27,27 @@
         // ctrl = controller context object,
         // same as returned by `find(search)`.
 
-        console.log('Inside first controller. Node:', ctrl.node);
+        console.log('Inside first controller. Node:', ctrl.node, new Date());
     });
 
     app.addController('second', function (ctrl) {
 
-        console.log(app.services.myServiceName.message());
+        console.log(app.services.myServiceName.message(), new Date());
 
         // ctrl = controller context object,
         // same as returned by `find(search)`.
 
         ctrl.onReceive = function (data, sender) {
-            console.log('received:', data);
+            console.log('received:', data, new Date());
             return 'Ok :)';
         };
 
         ctrl.post('Hello!', function (data) {
-            console.log('Got back:', data);
+            console.log('Got back:', data, new Date());
         });
 
-        console.log('Inside second controller');
+        console.log('Inside second controller', new Date());
     });
+
 
 </script>

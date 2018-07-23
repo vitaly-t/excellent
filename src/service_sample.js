@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
     A service is a static protocol.
 
