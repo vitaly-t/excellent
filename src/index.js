@@ -73,11 +73,7 @@
     };
 
     function addEntity(name, cb, entity, obj) {
-        if (typeof name === 'function') {
-            cb = name;
-            name = cb.name;
-        }
-        name = typeof name === 'string' && trim(name);
+        name = typeof name === 'string' && trim(name); // TODO: Should parse it, not trim
         if (!name) {
             throw new TypeError('Invalid ' + entity + ' name specified. A non-empty string is required.');
         }
@@ -95,8 +91,14 @@
         initControllers();
     });
 
-    // Abbreviated functions;
-    var find = document.querySelectorAll.bind(document);
+    function find(selectors) {
+        var f = document.querySelectorAll(selectors);
+        var res = [];
+        for (var i = 0; i < f.length; i++) {
+            res.push(f[i]);
+        }
+        return res;
+    }
 
     function initServices() {
         root.services = {};

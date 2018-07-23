@@ -48,6 +48,6 @@
         };
     }
 
-    e.addModule(myModuleName);
+    e.addModule('myModuleName', myModuleName);
 
 })(excellent);

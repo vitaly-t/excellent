@@ -30,6 +30,6 @@
 
     }
 
-    e.addService(myServiceName);
+    e.addService('myServiceName', myServiceName);
 
 })(excellent);
