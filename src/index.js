@@ -72,17 +72,8 @@
         }
     };
 
-    function addEntity(name, cb, entity, obj) {
-        name = typeof name === 'string' ? name : '';
-        var m = name.match(/[a-z$_][a-z$_0-9]*/i);
-        if (!m || m[0] !== name) {
-            throw new TypeError('Invalid ' + entity + ' name ' + JSON.stringify(name) + ' specified.');
-        }
-        if (typeof cb !== 'function') {
-            throw new TypeError('Missing function for controller ' + name + '.');
-        }
-        obj[name] = cb;
-    }
+    // Abbreviations:
+    var jStr = JSON.stringify.bind(JSON);
 
     window.excellent = root;
 
@@ -92,6 +83,18 @@
         initControllers();
     });
 
+    function addEntity(name, cb, entity, obj) {
+        name = typeof name === 'string' ? name : '';
+        var m = name.match(/[a-z$_][a-z$_0-9]*/i);
+        if (!m || m[0] !== name) {
+            throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
+        }
+        if (typeof cb !== 'function') {
+            throw new TypeError('Missing function for ' + entity + ' ' + jStr(name) + '.');
+        }
+        obj[name] = cb;
+    }
+
     function find(selectors) {
         var f = document.querySelectorAll(selectors);
         var res = [];
@@ -99,6 +102,19 @@
             res.push(f[i]);
         }
         return res;
+    }
+
+    function initRoot() {
+        var e = find('[e-root]');
+        if (e.length) {
+            if (e.length > 1) {
+                throw new Error('Multiple e-root elements are not allowed.');
+            }
+            var name = e[0].getAttribute('e-root');
+            if (name) {
+                window[name] = root; // expose the root
+            }
+        }
     }
 
     function initServices() {
@@ -116,25 +132,12 @@
         }
     }
 
-    function initRoot() {
-        var e = find('[e-root]');
-        if (e.length) {
-            if (e.length > 1) {
-                throw new Error('Multiple e-root elements are not allowed.');
-            }
-            var name = e[0].getAttribute('e-root');
-            if (name) {
-                window[name] = root; // expose the root
-            }
-        }
-    }
-
     function initControllers() {
         find('[e-controller]').forEach(function (e) {
             var name = e.getAttribute('e-controller');
             var m = name.match(/([a-z$_][a-z$_0-9]*.?)*[^.]/i);
             if (!m || m[0] !== name) {
-                throw new Error('Invalid controller name ' + JSON.stringify(name));
+                throw new Error('Invalid controller name ' + jStr(name));
             }
             getCtrlFunc(name)(new EController(e));
         });
@@ -158,7 +161,7 @@
             // it is a simple controller name;
             var f = reg.controllers[name]; // the function
             if (!f) {
-                throw new Error('Controller ' + JSON.stringify(name) + ' not found.');
+                throw new Error('Controller ' + jStr(name) + ' not found.');
             }
             controllers[name] = f; // updating cache
             return f;
@@ -181,17 +184,15 @@
                 controllers[name] = obj;
                 return obj;
             }
-            throw new Error('Controller ' + JSON.stringify(name) + ' not found.');
+            throw new Error('Controller ' + jStr(name) + ' not found.'); // TODO: Refactor so thrown in one place only
         }
-        throw new Error('Module ' + JSON.stringify(moduleName) + ' not found.');
+        throw new Error('Module ' + jStr(moduleName) + ' not found.');
     }
 
     /*
-        function findAllController(selectors) {
+        to be used on the root level
 
-        }
-
-        function findOneController(selectors) {
+        function findControllers(selectors) {
 
         }
     */
@@ -273,7 +274,7 @@
                     cb(response);
                 }
             }
-        }, 0);
+        });
     };
 
     initRoot();
