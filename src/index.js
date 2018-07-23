@@ -11,9 +11,19 @@
     };
 
     /**
-     * Inner modules cache.
+     * Initialized modules.
      */
     var modules;
+
+    /**
+     * Inner name-to-function cache.
+     */
+    var controllers = {};
+
+    /**
+     * All elements with controllers.
+     */
+    var elements = [];
 
     /**
      * Library's root object.
@@ -67,7 +77,8 @@
             cb = name;
             name = cb.name;
         }
-        if (!name || typeof name !== 'string') {
+        name = typeof name === 'string' && trim(name);
+        if (!name) {
             throw new TypeError('Invalid ' + entity + ' name specified. A non-empty string is required.');
         }
         if (typeof cb !== 'function') {
@@ -97,7 +108,8 @@
     function initModules() {
         modules = {};
         for (var a in reg.modules) {
-            modules[a] = reg.modules[a]();
+            var m = reg.modules[a]();
+            modules[a] = (m && typeof m === 'object') ? m : {};
         }
     }
 
@@ -117,31 +129,75 @@
     function initControllers() {
         find('[e-controller]').forEach(function (e) {
             var name = e.getAttribute('e-controller');
-            if (!name) {
-                throw new Error('Controller name is missing.');
+            if (!validCtrlName(name)) {
+                throw new Error('Invalid controller name ' + JSON.stringify(name));
             }
-            if (name in reg.controllers) {
-                var cb = reg.controllers[name];
-                cb(new EController(e));
-            } else {
-                throw new Error('Controller ' + JSON.stringify(name) + ' not found');
-            }
+            getCtrlFunc(name)(new EController(e));
         });
+    }
 
-        // first, we get all controllers, then for each controller
-        // we get all children, and check the hierarchy of controllers;
+    /**
+     * Searches for controller function, based on the controller's full name.
+     * For that it uses cache of names, plus modules.
+     *
+     * @param name
+     *
+     * @returns {function}
+     * Either controller function or throws.
+     *
+     */
+    function getCtrlFunc(name) {
+        if (name in controllers) {
+            return controllers[name]; // use the cache
+        }
+        if (name.indexOf('.') === -1) {
+            // it is a simple controller name;
+            var f = reg.controllers[name]; // the function
+            if (!f) {
+                throw new Error('Controller ' + JSON.stringify(name) + ' not found.');
+            }
+            controllers[name] = f; // updating cache
+            return f;
+        } else {
+            // the controller is from a module
+            var names = name.split('.');
+            var moduleName = names[0];
+            if (moduleName in modules) {
+                var obj = modules[moduleName];
+                for (var i = 1; i < names.length; i++) {
+                    var n = names[i];
+                    if (n in obj) {
+                        obj = obj[n];
+                    } else {
+                        obj = null;
+                        break;
+                    }
+                }
+                if (typeof obj === 'function') {
+                    controllers[name] = obj;
+                    return obj;
+                }
+                throw new Error('Controller ' + JSON.stringify(name) + ' not found.');
+            }
+            throw new Error('Module ' + JSON.stringify(moduleName) + ' not found.');
+        }
+    }
 
-        // where to search for controllers by default?
+    function trim(txt) {
+        return txt.replace(/^[\s]*|[\s]*$/g, '');
+    }
 
-        // TODO: Need a concept of modules + `as alias` for modules and controllers.
+    function validCtrlName(name) {
+        var m = name.match(/([a-z$_][a-z$_0-9]*.?)*[^.]/i);
+        return m && m[0] === name;
+    }
 
-        // A module is like a library, so its controllers are like directives/components
-        // The problem is, components need to be parameterizable, which the container could,
-        // in the background.
-        // So, a controller must be able to parametrize its child controllers.
+    function findAllController(selectors) {
 
-        // Eureka! Simple Send/onReceive protocol, plus an easy `find(search)` method for each controller,
-        // where `search` would be the standard DOMSearch filter.
+    }
+
+    function findOneController(selectors) {
+
     }
 
     function EController(node) {

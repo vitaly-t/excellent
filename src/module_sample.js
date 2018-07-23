@@ -21,6 +21,7 @@
 
         return {
             controller1: function (ctrl) {
+                console.log('Inside controller myModuleName.controller1');
                 ctrl.onReceive = function (data, sender) {
                     /* we got data */
 
@@ -36,6 +37,7 @@
             },
             special: {
                 deepCtrl: function (ctrl) {
+                    console.log('Inside controller myModuleName.special.deepCtrl');
                     ctrl.onReceive = function (data, sender) {
                         /* we got data */
 
