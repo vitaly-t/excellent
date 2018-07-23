@@ -14,7 +14,8 @@
 (function (e) {
     'use strict';
 
-    function myServiceName() {
+    function myServiceName(/* self */) {
+
         /*
         * DOM has loaded, but no controller executed yet
         * */
@@ -24,10 +25,8 @@
         * But it normally returns an object-namespace of the available functions.
         * */
 
-        return {
-            message: function () {
-                return 'Hello World!';
-            }
+        this.message = function () {
+            return 'Hello World!';
         };
 
     }

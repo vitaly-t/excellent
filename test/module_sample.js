@@ -16,36 +16,36 @@
 (function (e) {
     'use strict';
 
-    function myModuleName() {
+    function myModuleName(/* self */) {
         /*
         * Can do stuff here, may also use service here
         * */
 
-        return {
-            controller1: function (ctrl) {
-                console.log('Inside controller myModuleName.controller1');
-                ctrl.onReceive = function (data, sender) {
+        this.controller1 = function () {
+            console.log('Inside controller myModuleName.controller1');
+            this.onReceive = function (data, sender) {
+                /* we got data */
+
+                /* and we can return data to the sender, if we want */
+            };
+        };
+
+        this.controller2 = function () {
+            this.onReceive = function (data, sender) {
+                /* we got data */
+
+                /* and we can return data to the sender, if we want */
+            };
+        };
+
+        this.special = {
+            deepCtrl: function () {
+                console.log('Inside controller myModuleName.special.deepCtrl');
+                this.onReceive = function (data, sender) {
                     /* we got data */
 
                     /* and we can return data to the sender, if we want */
                 };
-            },
-            controller2: function (ctrl) {
-                ctrl.onReceive = function (data, sender) {
-                    /* we got data */
-
-                    /* and we can return data to the sender, if we want */
-                };
-            },
-            special: {
-                deepCtrl: function (ctrl) {
-                    console.log('Inside controller myModuleName.special.deepCtrl');
-                    ctrl.onReceive = function (data, sender) {
-                        /* we got data */
-
-                        /* and we can return data to the sender, if we want */
-                    };
-                }
             }
         };
     }

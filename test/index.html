@@ -22,26 +22,23 @@
 
 <script type="application/javascript">
 
-    app.addController('first', function (ctrl) {
-        // ctrl = controller context object,
+    app.addController('first', function (/* self */) {
+        // self = this = controller context object,
         // same as returned by `find(search)`.
 
-        console.log('Inside first controller. Node:', ctrl.node, new Date());
+        console.log('Inside first controller. Node:', this.node);
     });
 
-    app.addController('second', function (ctrl) {
+    app.addController('second', function (/* self */) {
 
         console.log(app.services.myServiceName.message(), new Date());
 
-        // ctrl = controller context object,
-        // same as returned by `find(search)`.
-
-        ctrl.onReceive = function (data, sender) {
+        this.onReceive = function (data, sender) {
             console.log('received:', data, new Date());
             return 'Ok :)';
         };
 
-        ctrl.post('Hello!', function (data) {
+        this.post('Hello!', function (data) {
             console.log('Got back:', data, new Date());
         });
 

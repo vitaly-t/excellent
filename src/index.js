@@ -120,15 +120,18 @@
     function initServices() {
         root.services = {};
         for (var a in reg.services) {
-            root.services[a] = reg.services[a]();
+            var s = {};
+            root.services[a] = s;
+            reg.services[a].call(s, s);
         }
     }
 
     function initModules() {
         modules = {};
         for (var a in reg.modules) {
-            var m = reg.modules[a]();
-            modules[a] = (m && typeof m === 'object') ? m : {};
+            var s = {}; // scope
+            modules[a] = s;
+            reg.modules[a].call(s, s);
         }
     }
 
@@ -139,7 +142,8 @@
             if (!m || m[0] !== name) {
                 throw new Error('Invalid controller name ' + jStr(name));
             }
-            getCtrlFunc(name)(new EController(e));
+            var c = new EController(e);
+            getCtrlFunc(name).call(c, c);
         });
     }
 
