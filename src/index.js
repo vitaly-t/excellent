@@ -73,9 +73,10 @@
     };
 
     function addEntity(name, cb, entity, obj) {
-        name = typeof name === 'string' && trim(name); // TODO: Should parse it, not trim
-        if (!name) {
-            throw new TypeError('Invalid ' + entity + ' name specified. A non-empty string is required.');
+        name = typeof name === 'string' ? name : '';
+        var m = name.match(/[a-z$_][a-z$_0-9]*/i);
+        if (!m || m[0] !== name) {
+            throw new TypeError('Invalid ' + entity + ' name ' + JSON.stringify(name) + ' specified.');
         }
         if (typeof cb !== 'function') {
             throw new TypeError('Missing function for controller ' + name + '.');
@@ -131,7 +132,8 @@
     function initControllers() {
         find('[e-controller]').forEach(function (e) {
             var name = e.getAttribute('e-controller');
-            if (!validCtrlName(name)) {
+            var m = name.match(/([a-z$_][a-z$_0-9]*.?)*[^.]/i);
+            if (!m || m[0] !== name) {
                 throw new Error('Invalid controller name ' + JSON.stringify(name));
             }
             getCtrlFunc(name)(new EController(e));
@@ -182,15 +184,6 @@
             throw new Error('Controller ' + JSON.stringify(name) + ' not found.');
         }
         throw new Error('Module ' + JSON.stringify(moduleName) + ' not found.');
-    }
-
-    function trim(txt) {
-        return txt.replace(/^[\s]*|[\s]*$/g, '');
-    }
-
-    function validCtrlName(name) {
-        var m = name.match(/([a-z$_][a-z$_0-9]*.?)*[^.]/i);
-        return m && m[0] === name;
     }
 
     /*
