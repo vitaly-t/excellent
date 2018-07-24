@@ -23,7 +23,7 @@ into a fart in the wind, leaving incomprehensible mess as their legacy.
 
 ---
 
-This project is in its very early stage of development. If you wish to participate, I am working on
-some [Wiki documentation], to show the direction in which this project is heading.
+This project is in its very early stage of development. If you wish to participate, I will be working on
+some [Wiki Documentation], to show the direction in which this project is heading.
 
 [Wiki documentation]:https://github.com/vitaly-t/excellent/wiki
