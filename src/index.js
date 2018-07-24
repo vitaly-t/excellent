@@ -31,12 +31,17 @@
 *
 * ------------
 *
-* Need to add onInit, onDestroy events to controllers.
+* TODO: Start splitting the library into multiple pieces, or it will soon become unmanageable
 *
-* Controllers called initially, at which point they cannot communicate with other controllers.
-* It is only after the fool initialization loop has finished, a second loop is to be run,
-* to send onInit into each controller, to let it know that all controllers are ready to communicate.
+* TODO: Add support for controller derivation/extension. A controller may either
+* create another controller, on do it indirectly, like: `controllers.add(name)`
 *
+* TODO: Perhaps add manual controller creation globally, just in case?
+* NO: Life cycle will be in conflict with controllers, and may raise more duplicate issues
+*
+* TODO: Should check that controller names are not repeated
+*
+* TODO: Need to figure out how to make onDestroy work.
 * */
 
 (function (window) {
@@ -194,6 +199,7 @@
                 e.getAttribute('e-bind')
                     .split(',')
                     .forEach(function (name) {
+                        // TODO: Add throw if duplicate controllers
                         name = trim(name);
                         if (name) {
                             var m = name.match(/([a-z$_][a-z$_0-9]*\.?)*[^.]/i);
@@ -289,25 +295,34 @@
      * @constructor
      */
     function EController(node) {
-
         /**
          * Source DOM element that uses this controller.
          */
         this.node = node;
 
-        this.children = {
-            find: function (/*selectors*/) {
-
-            },
-            findOne: function (/*selectors*/) {
-
-            }
+        this.extend = function (/*ctrlName*/) {
+            /*
+            * Checks for the controller already being on the element,
+            * and if so - return in. Otherwise, it will create a new
+            * controller and add it to the element.
+            *
+            * This will allow for both single and multiple inheritances.
+            *
+            * */
         };
-    }
 
-    /**
-     * @method EController#onInit
-     */
+        /**
+         *
+         * @type {function}
+         */
+        this.onInit = null;
+
+        /**
+         *
+         * @type {function}
+         */
+        this.onDestroy = null;
+    }
 
     /**
      * Searches for all matching elements that have controllers,
