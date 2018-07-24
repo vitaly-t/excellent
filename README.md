@@ -21,3 +21,9 @@ while fools pile on dogmatic overblown frameworks that promise long-term value, 
 into a fart in the wind, leaving incomprehensible mess as their legacy.
 </i>
 
+---
+
+This project is in its very early stage of development. If you wish to participate, I am working on
+some [Wiki documentation], to show the direction in which this project is heading.
+
+[Wiki documentation]:https://github.com/vitaly-t/excellent/wiki

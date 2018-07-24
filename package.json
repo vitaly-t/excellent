@@ -1,9 +1,32 @@
 {
-  "name": "Excellent.js",
+  "name": "ejs",
   "version": "0.0.1",
+  "description": "DOM-Manipulation Framework",
+  "main": "src/index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src",
     "build": "./node_modules/.bin/uglifyjs ./src/index.js -o ./excellent.min.js"
+  },
+  "files": [
+    "src"
+  ],
+  "homepage": "https://github.com/vitaly-t/excellent",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vitaly-t/excellent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vitaly-t/excellent/issues",
+    "email": "vitaly.tomilov@gmail.com"
+  },
+  "keywords": [
+    "DOM",
+    "manipulation",
+    "framework"
+  ],
+  "author": {
+    "name": "Vitaly Tomilov",
+    "email": "vitaly.tomilov@gmail.com"
   },
   "devDependencies": {
     "eslint": "5.2.0",
