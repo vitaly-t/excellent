@@ -9,55 +9,26 @@
 </head>
 <body>
 
-<h1 e-bind="first" class="top">
+<h1 e-bind="WhiteColor, BlueBackground">
     First Element
 </h1>
-<h1 e-bind="second">
-    Second Element
-</h1>
-<h1 e-bind="myModuleName.controller1, myModuleName.special.deepCtrl">
-    Last Element
-</h1>
-<!--
-<div e-controller="third"></div>
--->
 
 </body>
 </html>
 
 <script type="application/javascript">
 
-    app.addController('first', function (/* self */) {
-        // self = this = controller context object,
-        // same as returned by `find(search)`.
-
+    app.addController('WhiteColor', function (/* self */) {
         this.onInit = function () {
-            this.node.innerHTML = 'Changed';
-
-            console.log('Find Elements:', this.findOne('h1.top'));
+            this.node.style.color = 'white';
         };
-
-        console.log('Inside first controller. Node:', this.node);
     });
 
-    app.addController('second', function (/* self */) {
-
-        console.log(app.services.myServiceName.message(), new Date());
+    app.addController('BlueBackground', function (/* self */) {
 
         this.onInit = function () {
-            this.node.style.backgroundColor = 'green';
+            this.node.style.backgroundColor = 'SteelBlue';
         };
-
-        this.onReceive = function (data, sender) {
-            console.log('received:', data, new Date());
-            return 'Ok :)';
-        };
-        /*
-                this.post('Hello!', function (data) {
-                    console.log('Got back:', data, new Date());
-                });*/
-
-        console.log('Inside second controller', new Date());
     });
 
 </script>

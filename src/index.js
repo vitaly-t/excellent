@@ -180,6 +180,30 @@
         });
     }
 
+    // from: https://stackoverflow.com/questions/30578673/is-it-possible-to-make-queryselectorall-live-like-getelementsbytagname
+    /*
+    function querySelectorAllLive(element, selector) {
+
+        // Initialize results with current nodes.
+        var result = Array.prototype.slice.call(element.querySelectorAll(selector));
+
+        // Create observer instance.
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                [].forEach.call(mutation.addedNodes, function(node) {
+                    if (node.nodeType === Node.ELEMENT_NODE && node.matches(selector)) {
+                        result.push(node);
+                    }
+                });
+            });
+        });
+
+        // Set up observer.
+        observer.observe(element, { childList: true, subtree: true });
+
+        return result;
+    }*/
+
     /**
      * Searches for controller function, based on the controller's full name.
      * For that it uses cache of names, plus modules.
