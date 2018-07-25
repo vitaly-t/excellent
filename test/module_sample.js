@@ -20,7 +20,7 @@
     // a controller from another module, how will this work?
     // A: The root needs to provide a method/way to check if that module is available.
 
-    function myModuleName(/* self */) {
+    function myModule(/* self */) {
         /*
         * Can do stuff here, may also use service here
         *
@@ -39,6 +39,7 @@
         * */
 
         this.controller1 = function () {
+            console.log('fullname:', this.name);
             console.log('Inside controller myModuleName.controller1');
             this.onReceive = function (data, sender) {
                 /* we got data */
@@ -67,6 +68,6 @@
         };
     }
 
-    e.addModule('myModuleName', myModuleName);
+    e.addModule('myModule', myModule);
 
 })(excellent);

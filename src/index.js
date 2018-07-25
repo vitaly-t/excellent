@@ -158,7 +158,7 @@
                                 throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed.');
                             }
                             namesMap[name] = true;
-                            var c = new EController(e);
+                            var c = new EController(name, e);
                             getCtrlFunc(name).call(c, c);
                             eCtrl.push(c);
                             allCtrl.push(c);
@@ -258,14 +258,19 @@
      * @param node
      * @constructor
      */
-    function EController(node) {
+    function EController(name, node) {
+
+        /**
+         * Full controller name.
+         */
+        Object.defineProperty(this, 'name', {value: name});
 
         /**
          * Source DOM element that uses this controller.
          *
          * NOTE: In the current implementation the element is static (not live).
          */
-        this.node = node;
+        Object.defineProperty(this, 'node', {value: node});
 
         this.extend = function (/*ctrlName*/) {
             /*
@@ -297,28 +302,31 @@
 
         };
 
-        /**
-         * Verifies that each controller exists within the app,
-         * or else throws an error, if one doesn't.
-         *
-         * This is an optional level of verification, to make it explicit,
-         * and thus more robust.
-         *
-         * For example, it is possible that certain controllers are injected
-         * by your controller only sometimes, and you want to make sure
-         * they are always available.
-         *
-         */
-        this.depends = function (ctrlNames) {
-
-            // TODO: Need better error reporting here, like one saying:
-            // Controller "bla1" requires dependent controller "bla2", which doesn't exist.
-
-            ctrlNames.forEach(function (name) {
-                getCtrlFunc(name);
-            });
-        };
     }
+
+    /**
+     * Verifies that each controller exists within the app,
+     * or else throws an error, if one doesn't.
+     *
+     * This is an optional level of verification, to make it explicit,
+     * and thus more robust.
+     *
+     * For example, it is possible that certain controllers are injected
+     * by your controller only sometimes, and you want to make sure
+     * they are always available.
+     *
+     */
+    EController.prototype.depends = function (ctrlNames) {
+
+        // TODO: Need better error reporting here, like one saying:
+        // Controller "bla1" requires dependent controller "bla2", which doesn't exist.
+
+        // That's why each controller needs to know its full name!!!
+
+        ctrlNames.forEach(function (name) {
+            getCtrlFunc(name);
+        });
+    };
 
     /**
      * Searches for all matching elements that have controllers.
