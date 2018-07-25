@@ -149,17 +149,20 @@
         elements.length = 0;
         find('[e-bind]')
             .forEach(function (e) {
-                var added;
+                var added, namesMap = {};
                 e.getAttribute('e-bind')
                     .split(',')
                     .forEach(function (name) {
-                        // TODO: Add throw if duplicate controllers
                         name = trim(name);
                         if (name) {
                             var m = name.match(/([a-z$_][a-z$_0-9]*\.?)*[^.]/i);
                             if (!m || m[0] !== name) {
                                 throw new Error('Invalid controller name ' + jStr(name));
                             }
+                            if (name in namesMap) {
+                                throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed.');
+                            }
+                            namesMap[name] = true;
                             var c = new EController(e);
                             getCtrlFunc(name).call(c, c);
                             controllers.push(c);
