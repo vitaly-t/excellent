@@ -262,6 +262,8 @@
 
         /**
          * Source DOM element that uses this controller.
+         *
+         * NOTE: In the current implementation the element is static (not live).
          */
         this.node = node;
 

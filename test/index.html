@@ -7,11 +7,11 @@
     <script src="module_sample.js"></script>
     <script src="service_sample.js"></script>
 </head>
-<body>
+<body e-bind="appController">
 
-<h1 e-bind="WhiteColor, BlueBackground">
-    First Element
-</h1>
+<ul e-bind="WhiteColor, BlueBackground, modify">
+    <li>first</li>
+</ul>
 
 </body>
 </html>
@@ -28,6 +28,38 @@
 
         this.onInit = function () {
             this.node.style.backgroundColor = 'SteelBlue';
+        };
+    });
+
+    app.addController('modify', function (ctrl) {
+
+        var nItems = 0;
+
+        this.onReceive = function (data) {
+            nItems = data.items;
+            populate();
+        };
+
+        this.onInit = function () {
+        };
+
+        function populate() {
+            // TODO: Next, how to create elements with controllers!
+            while (ctrl.node.firstChild) {
+                ctrl.node.removeChild(ctrl.node.firstChild);
+            }
+            for (var i = 0; i < nItems; i++) {
+                var e = document.createElement('li');
+                e.innerHTML = 'item-' + i;
+                ctrl.node.appendChild(e);
+            }
+        }
+    });
+
+    app.addController('appController', function (/* self */) {
+        this.onInit = function () {
+            /* here I can initialize all other controllers */
+            this.findOne('[e-bind*="modify"]').controllers[2].send({items: 30});
         };
     });
 
