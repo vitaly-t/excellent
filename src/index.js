@@ -289,6 +289,35 @@
          * @type {function}
          */
         this.onDestroy = null;
+
+        /**
+         * Re-binds all children.
+         */
+        this.bindChildren = function () {
+
+        };
+
+        /**
+         * Verifies that each controller exists within the app,
+         * or else throws an error, if one doesn't.
+         *
+         * This is an optional level of verification, to make it explicit,
+         * and thus more robust.
+         *
+         * For example, it is possible that certain controllers are injected
+         * by your controller only sometimes, and you want to make sure
+         * they are always available.
+         *
+         */
+        this.depends = function (ctrlNames) {
+
+            // TODO: Need better error reporting here, like one saying:
+            // Controller "bla1" requires dependent controller "bla2", which doesn't exist.
+
+            ctrlNames.forEach(function (name) {
+                getCtrlFunc(name);
+            });
+        };
     }
 
     /**

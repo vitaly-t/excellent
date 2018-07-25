@@ -35,12 +35,15 @@
 
         var nItems = 0;
 
+        ctrl.depends(['override']);
+
         this.onReceive = function (data) {
             nItems = data.items;
             populate();
         };
 
         this.onInit = function () {
+
         };
 
         function populate() {
@@ -51,9 +54,15 @@
             for (var i = 0; i < nItems; i++) {
                 var e = document.createElement('li');
                 e.innerHTML = 'item-' + i;
+                e.setAttribute('e-bind', 'override');
                 ctrl.node.appendChild(e);
             }
+            // now need to update the controllers:
+            ctrl.bindChildren();
         }
+    });
+
+    app.addController('override', function (/* self */) {
     });
 
     app.addController('appController', function (/* self */) {

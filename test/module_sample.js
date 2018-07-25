@@ -16,9 +16,26 @@
 (function (e) {
     'use strict';
 
+    // TODO: When a module includes a controller that wants to use
+    // a controller from another module, how will this work?
+    // A: The root needs to provide a method/way to check if that module is available.
+
     function myModuleName(/* self */) {
         /*
         * Can do stuff here, may also use service here
+        *
+        * Can also check if dependent modules are available.
+        *
+        * e.verifyDependencies(arrayOfModuleNames), returns names of modules
+        * that are missing.
+        *
+        * PROBLEM: Modules list isn't available at this point.
+        *
+        * SOLUTION: Do not test it module-wide, as you may have only one
+        * controller that needs, so best is to test it controller-wide only:
+        *
+        * ctrl.depends(['one', 'two', 'three']); that will throw, but? controller vs module?
+        *
         * */
 
         this.controller1 = function () {
