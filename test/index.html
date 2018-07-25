@@ -9,9 +9,15 @@
 </head>
 <body>
 
-<div e-bind="first, first"></div>
-<div e-bind="second"></div>
-<div e-bind="myModuleName.controller1, myModuleName.special.deepCtrl"></div>
+<h1 e-bind="first" class="top">
+    First Element
+</h1>
+<h1 e-bind="second">
+    Second Element
+</h1>
+<h1 e-bind="myModuleName.controller1, myModuleName.special.deepCtrl">
+    Last Element
+</h1>
 <!--
 <div e-controller="third"></div>
 -->
@@ -26,7 +32,9 @@
         // same as returned by `find(search)`.
 
         this.onInit = function () {
-            console.log('first.onInit');
+            this.node.innerHTML = 'Changed';
+
+            console.log('Find Elements:', this.findOne('h1.top'));
         };
 
         console.log('Inside first controller. Node:', this.node);
@@ -36,14 +44,18 @@
 
         console.log(app.services.myServiceName.message(), new Date());
 
+        this.onInit = function () {
+            this.node.style.backgroundColor = 'green';
+        };
+
         this.onReceive = function (data, sender) {
             console.log('received:', data, new Date());
             return 'Ok :)';
         };
-
-        this.post('Hello!', function (data) {
-            console.log('Got back:', data, new Date());
-        });
+        /*
+                this.post('Hello!', function (data) {
+                    console.log('Got back:', data, new Date());
+                });*/
 
         console.log('Inside second controller', new Date());
     });

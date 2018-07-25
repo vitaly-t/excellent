@@ -21,11 +21,6 @@
     var ctrlCache = {};
 
     /**
-     * Complete list of controllers.
-     */
-    var controllers = [];
-
-    /**
      * All valid elements with controllers.
      */
     var elements = [];
@@ -103,9 +98,9 @@
     function find(selectors) {
         var f = document.querySelectorAll(selectors);
         var res = [];
-        for (var i = 0; i < f.length; i++) {
-            res.push(f[i]);
-        }
+        f.forEach(function (e) {
+            res.push(e);
+        });
         return res;
     }
 
@@ -145,11 +140,11 @@
     }
 
     function initControllers() {
-        controllers.length = 0;
+        var allCtrl = [];
         elements.length = 0;
         find('[e-bind]')
             .forEach(function (e) {
-                var added, namesMap = {};
+                var namesMap = {}, eCtrl = [];
                 e.getAttribute('e-bind')
                     .split(',')
                     .forEach(function (name) {
@@ -165,28 +160,24 @@
                             namesMap[name] = true;
                             var c = new EController(e);
                             getCtrlFunc(name).call(c, c);
-                            controllers.push(c);
-                            added = true;
+                            eCtrl.push(c);
+                            allCtrl.push(c);
                         }
                     });
-                if (added) {
-                    // TODO: Need to add controllers here to the element
+                if (eCtrl.length) {
+                    e.controllers = eCtrl;
                     elements.push(e);
                 }
             });
-        controllers.forEach(function (c) {
+        allCtrl.forEach(function (c) {
             if (typeof c.onInit === 'function') {
                 c.onInit();
             }
         });
-        /*
-        This seems obsolete, check MutationObserver instead
-
-        elements.forEach(function (e) {
-            e.on('DOMNodeRemoved', function () {
-                // go through all attached controllers, and call onDestroy
-            });
-        });*/
+        elements.forEach(function (/*e*/) {
+            // TODO: Need to inject onDestroy handler here:
+            // Check: DOMNodeRemoved vs MutationObserver
+        });
     }
 
     /**
@@ -235,14 +226,6 @@
         throw new Error('Module ' + jStr(moduleName) + ' not found.');
     }
 
-    /*
-        to be used on the root level
-
-        function findControllers(selectors) {
-
-        }
-    */
-
     /**
      * @class EController
      * @description
@@ -252,6 +235,7 @@
      * @constructor
      */
     function EController(node) {
+
         /**
          * Source DOM element that uses this controller.
          */
@@ -282,15 +266,18 @@
     }
 
     /**
-     * Searches for all matching elements that have controllers,
-     * and returns the list of controllers.
+     * Searches for all matching elements that have controllers.
+     *
+     * Can only be used after initialization.
      *
      * @param {String} selectors
      *
-     * @returns {Array<EController>}
+     * @returns {Array<Element>}
      */
-    EController.prototype.find = function (/*selectors*/) {
-
+    EController.prototype.find = function (selectors) {
+        return find(selectors).filter(function (e) {
+            return e.controllers;
+        });
     };
 
     /**
@@ -301,10 +288,17 @@
      *
      * @param {String} selectors
      *
-     * @returns {EController}
+     * @returns {Element}
      */
-    EController.prototype.findOne = function (/*selectors*/) {
-
+    EController.prototype.findOne = function (selectors) {
+        var a = this.find(selectors);
+        if (a.length > 1) {
+            throw new Error('A single element was expected, but found ' + a.length + '.');
+        }
+        if (!a.length) {
+            throw new Error('A single element was expected, but none found.');
+        }
+        return a[0];
     };
 
     /**
