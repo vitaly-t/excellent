@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../src"></script>
+    <script src="../src/index.js"></script>
     <script src="module_sample.js"></script>
     <script src="service_sample.js"></script>
 </head>
@@ -17,6 +17,8 @@
 </html>
 
 <script type="application/javascript">
+
+    //var excellent;
 
     app.addController('WhiteColor', function (/* self */) {
         //this.bind();
@@ -66,7 +68,7 @@
     app.addController('appController', function (self) {
         this.onInit = function () {
             /* here I can initialize all other controllers */
-            self.findOne('[e-bind*="modify"]').controllers[0].send({items: 200});
+            self.findOne('[e-bind*="modify"]').controllers[0].post({items: 2000});
         };
     });
 

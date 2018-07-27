@@ -3,7 +3,7 @@
 *
 * TODO: Automated tests
 * */
-(function (window) {
+(function () {
     'use strict';
 
     /**
@@ -448,4 +448,4 @@
 
     initRoot();
 
-})(this);
+})();
