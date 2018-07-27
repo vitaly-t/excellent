@@ -278,16 +278,20 @@
     function Excellent() {
 
         /**
+         * @property Excellent.version
          * Library version
          */
         this.version = '0.0.3';
 
         /**
+         * @property Excellent.services
          * Namespace of all registered and initialized services.
          */
         this.services = {};
 
         /**
+         * @method Excellent.addController
+         * @description
          * Adds/Registers a new controller.
          *
          * If controller with such name already exists, it will be overridden.
@@ -297,6 +301,8 @@
         };
 
         /**
+         * @method Excellent.addService
+         * @description
          * Adds/Registers a new service.
          *
          * If service with such name already exists, it will be overridden.
@@ -306,6 +312,8 @@
         };
 
         /**
+         * @method Excellent.addModule
+         * @description
          * Creates and registers a new module.
          *
          * If module with such name already exists, it will be overridden.
@@ -315,7 +323,12 @@
         };
 
         /**
+         * @method Excellent.bind
+         * @description
          * Searches for elements not yet bound, and binds them to controllers.
+         *
+         * It can be used when a controller creates a new controlled element
+         * outside of its list of children.
          */
         this.bind = function () {
             if (binding) {
@@ -326,6 +339,24 @@
                 bind();
             }
         };
+
+        /**
+         * @method Excellent.find
+         * @description
+         * Searches for controlled elements within document.
+         *
+         * @param {String} selectors
+         * Standard DOM selectors.
+         *
+         * @returns {Array<Element>}
+         * Controlled elements matching the selectors.
+         */
+        this.find = function (selectors) {
+            return find(selectors).filter(function (e) {
+                return e.controllers;
+            });
+        };
+
     }
 
     /**
