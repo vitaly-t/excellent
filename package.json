@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.2",
   "description": "DOM-Manipulation Framework",
   "main": "src/index.js",
   "scripts": {
@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "eslint": "5.2.0",
-    "uglify-js": "3.4.5"
+    "uglify-js": "3.4.6"
   }
 }

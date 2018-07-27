@@ -24,7 +24,11 @@ into a fart in the wind, leaving incomprehensible mess as their legacy.
 </i>
 -->
 
-This project is in its very early stage of development. If you wish to participate, I will be working on
-some [Wiki Documentation], to show the direction in which this project is heading.
+<br/>
+
+If you like working with DOM directly, this tiny (2Kb compressed) library gives you the essential
+tools for organizing your code in such a way that's highly reusable, easy to maintain and distribute.
+
+Although currently in Beta, you can use this library already - see the [Wiki Documentation].
 
 [Wiki documentation]:https://github.com/vitaly-t/excellent/wiki
