@@ -1,3 +1,8 @@
+/*
+* Overall things still outstanding:
+*
+* TODO: Automated tests
+* */
 (function (window) {
     'use strict';
 
@@ -210,44 +215,51 @@
      *
      * @param name
      *
-     * @returns {function}
+     * @param [noError]
+     * Tells it not to throw an errors, rather return null.
+     *
+     * @returns {function|undefined}
      * Either controller function or throws.
      *
      */
-    function getCtrlFunc(name) {
+    function getCtrlFunc(name, noError) {
         if (name in ctrlCache) {
             return ctrlCache[name]; // use the cache
         }
         if (name.indexOf('.') === -1) {
             // it is a simple controller name;
             var f = reg.controllers[name]; // the function
-            if (!f) {
-                throw new Error('Controller ' + jStr(name) + ' not found.');
+            if (f) {
+                ctrlCache[name] = f; // updating cache
+                return f;
             }
-            ctrlCache[name] = f; // updating cache
-            return f;
         }
         // the controller is from a module
         var names = name.split('.');
         var moduleName = names[0];
-        if (moduleName in modules) {
-            var obj = modules[moduleName];
-            for (var i = 1; i < names.length; i++) {
-                var n = names[i];
-                if (n in obj) {
-                    obj = obj[n];
-                } else {
-                    obj = null;
-                    break;
-                }
+        if (!(moduleName in modules)) {
+            if (noError) {
+                return;
             }
-            if (typeof obj === 'function') {
-                ctrlCache[name] = obj;
-                return obj;
-            }
-            throw new Error('Controller ' + jStr(name) + ' not found.'); // TODO: Refactor so thrown in one place only
+            throw new Error('Module ' + jStr(moduleName) + ' not found.');
         }
-        throw new Error('Module ' + jStr(moduleName) + ' not found.');
+        var obj = modules[moduleName];
+        for (var i = 1; i < names.length; i++) {
+            var n = names[i];
+            if (n in obj) {
+                obj = obj[n];
+            } else {
+                obj = null;
+                break;
+            }
+        }
+        if (typeof obj === 'function') {
+            ctrlCache[name] = obj;
+            return obj;
+        }
+        if (!noError) {
+            throw new Error('Controller ' + jStr(name) + ' not found.');
+        }
     }
 
     /**
@@ -272,17 +284,6 @@
          */
         Object.defineProperty(this, 'node', {value: node});
 
-        this.extend = function (/*ctrlName*/) {
-            /*
-            * Checks for the controller already being on the element,
-            * and if so - return in. Otherwise, it will create a new
-            * controller and add it to the element.
-            *
-            * This will allow for both single and multiple inheritances.
-            *
-            * */
-        };
-
         /**
          *
          * @type {function}
@@ -295,37 +296,47 @@
          */
         this.onDestroy = null;
 
-        /**
-         * Re-binds all children.
-         */
-        this.bindChildren = function () {
-
-        };
-
     }
 
     /**
-     * Verifies that each controller exists within the app,
-     * or else throws an error, if one doesn't.
+     * Re-binds all children that were updated.
+     */
+    EController.prototype.bindChildren = function () {
+
+    };
+
+    EController.prototype.extend = function (/*ctrlName*/) {
+        /*
+        * TODO: inheritance support is needed
+        *
+        * Checks for the controller already being on the element,
+        * and if so - return in. Otherwise, it will create a new
+        * controller and add it to the element.
+        *
+        * This will allow for both single and multiple inheritances.
+        *
+        * */
+    };
+
+    /**
+     * @method EController.depends
+     * @description
+     * Verifies that each controller in the list of dependencies exists, or else throws an error.
      *
-     * This is an optional level of verification, to make it explicit,
-     * and thus more robust.
+     * This optional level of verification is useful when sub-controllers are rarely used, or loaded
+     * dynamically. And such explicit verification makes the code more robust.
      *
-     * For example, it is possible that certain controllers are injected
-     * by your controller only sometimes, and you want to make sure
-     * they are always available.
-     *
+     * @param {Array<String>>} ctrlNames
      */
     EController.prototype.depends = function (ctrlNames) {
-
-        // TODO: Need better error reporting here, like one saying:
-        // Controller "bla1" requires dependent controller "bla2", which doesn't exist.
-
-        // That's why each controller needs to know its full name!!!
-
+        if (!Array.isArray(ctrlNames)) {
+            throw new TypeError('Invalid list of controller names.');
+        }
         ctrlNames.forEach(function (name) {
-            getCtrlFunc(name);
-        });
+            if (!getCtrlFunc(name, true)) {
+                throw new Error('Controller ' + jStr(name) + ' depends on ' + jStr(this.name) + ', which was not found.');
+            }
+        }, this);
     };
 
     /**

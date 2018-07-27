@@ -25,7 +25,6 @@
     });
 
     app.addController('BlueBackground', function (/* self */) {
-
         this.onInit = function () {
             this.node.style.backgroundColor = 'SteelBlue';
         };
@@ -35,7 +34,7 @@
 
         var nItems = 0;
 
-        ctrl.depends(['override']);
+        ctrl.depends(['override', 'WhiteColor']);
 
         this.onReceive = function (data) {
             nItems = data.items;
