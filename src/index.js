@@ -58,46 +58,6 @@
         obj[name] = cb;
     }
 
-    function Excellent() {
-
-        /**
-         * Library version
-         */
-        this.version = '0.0.1';
-
-        /**
-         * Namespace of all registered and initialized services.
-         */
-        this.services = {};
-
-        /**
-         * Adds/Registers a new controller.
-         *
-         * If controller with such name already exists, it will be overridden.
-         */
-        this.addController = function (name, cb) {
-            addEntity(name, cb, 'controller', reg.controllers);
-        };
-
-        /**
-         * Adds/Registers a new service.
-         *
-         * If service with such name already exists, it will be overridden.
-         */
-        this.addService = function (name, cb) {
-            addEntity(name, cb, 'service', reg.services);
-        };
-
-        /**
-         * Creates and registers a new module.
-         *
-         * If module with such name already exists, it will be overridden.
-         */
-        this.addModule = function (name, cb) {
-            addEntity(name, cb, 'module', reg.modules);
-        };
-    }
-
     function find(selectors) {
         var f = document.querySelectorAll(selectors);
         var res = [];
@@ -143,33 +103,50 @@
     }
 
     function initControllers() {
-        var allCtrl = [];
-        elements.length = 0;
+        bind();
+    }
+
+    /**
+     * Indicates when the binding is in progress.
+     *
+     * @type {boolean}
+     */
+    var binding;
+
+    /**
+     * Binds all elements to controllers, if not yet bound.
+     */
+    function bind() {
+        binding = true;
+        var allCtrl = [], els = [];
         find('[e-bind]')
             .forEach(function (e) {
-                var namesMap = {}, eCtrl = [];
-                e.getAttribute('e-bind')
-                    .split(',')
-                    .forEach(function (name) {
-                        name = trim(name);
-                        if (name) {
-                            var m = name.match(/([a-z$_][a-z$_0-9]*\.?)*[^.]/i);
-                            if (!m || m[0] !== name) {
-                                throw new Error('Invalid controller name ' + jStr(name));
+                if (elements.indexOf(e) === -1) {
+                    var namesMap = {}, eCtrl = [];
+                    e.getAttribute('e-bind')
+                        .split(',')
+                        .forEach(function (name) {
+                            name = trim(name);
+                            if (name) {
+                                var m = name.match(/([a-z$_][a-z$_0-9]*\.?)*[^.]/i);
+                                if (!m || m[0] !== name) {
+                                    throw new Error('Invalid controller name ' + jStr(name));
+                                }
+                                if (name in namesMap) {
+                                    throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed.');
+                                }
+                                namesMap[name] = true;
+                                var c = new EController(name, e);
+                                getCtrlFunc(name).call(c, c);
+                                eCtrl.push(c);
+                                allCtrl.push(c);
                             }
-                            if (name in namesMap) {
-                                throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed.');
-                            }
-                            namesMap[name] = true;
-                            var c = new EController(name, e);
-                            getCtrlFunc(name).call(c, c);
-                            eCtrl.push(c);
-                            allCtrl.push(c);
-                        }
-                    });
-                if (eCtrl.length) {
-                    e.controllers = eCtrl;
-                    elements.push(e);
+                        });
+                    if (eCtrl.length) {
+                        e.controllers = eCtrl;
+                        elements.push(e);
+                        els.push(e);
+                    }
                 }
             });
         allCtrl.forEach(function (c) {
@@ -177,10 +154,12 @@
                 c.onInit();
             }
         });
-        elements.forEach(function (/*e*/) {
+        els.forEach(function (/*e*/) {
             // TODO: Need to inject onDestroy handler here:
             // Check: DOMNodeRemoved vs MutationObserver
         });
+        binding = false;
+        console.log('Elements Length:', elements.length);
     }
 
     // from: https://stackoverflow.com/questions/30578673/is-it-possible-to-make-queryselectorall-live-like-getelementsbytagname
@@ -260,6 +239,59 @@
         }
     }
 
+    function Excellent() {
+
+        /**
+         * Library version
+         */
+        this.version = '0.0.1';
+
+        /**
+         * Namespace of all registered and initialized services.
+         */
+        this.services = {};
+
+        /**
+         * Adds/Registers a new controller.
+         *
+         * If controller with such name already exists, it will be overridden.
+         */
+        this.addController = function (name, cb) {
+            addEntity(name, cb, 'controller', reg.controllers);
+        };
+
+        /**
+         * Adds/Registers a new service.
+         *
+         * If service with such name already exists, it will be overridden.
+         */
+        this.addService = function (name, cb) {
+            addEntity(name, cb, 'service', reg.services);
+        };
+
+        /**
+         * Creates and registers a new module.
+         *
+         * If module with such name already exists, it will be overridden.
+         */
+        this.addModule = function (name, cb) {
+            addEntity(name, cb, 'module', reg.modules);
+        };
+
+        /**
+         * Searches for elements not yet bound, and binds them to controllers.
+         */
+        this.bind = function () {
+            if (binding) {
+                // Called during construction on initialization,
+                // so need to delay the call, to avoid recursion:
+                setTimeout(bind);
+            } else {
+                bind();
+            }
+        };
+    }
+
     /**
      * @class EController
      * @description
@@ -293,6 +325,8 @@
         this.onDestroy = null;
     }
 
+    var ecp = EController.prototype;
+
     /**
      * Indicates that the element's content has been modified to contain new
      * controller bindings, and such controllers need to be attached.
@@ -300,19 +334,16 @@
      * NOTE: This method picks up only new elements, i.e. you cannot manually extend
      * bindings and expect an update here, only method `extend` can do that.
      */
-    EController.prototype.bind = function () {
-        // TODO: Needs implementation.
+    ecp.bind = function () {
+        // TODO: See if we can automate this through a watch, then it would be awesome!
 
-        /*
-        * Something to consider: maybe through the element watcher, this method
-        * can be triggered automatically.
-        * */
+
     };
 
     /**
      * Inheritance support.
      */
-    EController.prototype.extend = function (/*ctrlName*/) {
+    ecp.extend = function (/*ctrlName*/) {
         /*
         * TODO: inheritance support is needed.
         *
@@ -335,7 +366,7 @@
      *
      * @param {Array<String>>} ctrlNames
      */
-    EController.prototype.depends = function (ctrlNames) {
+    ecp.depends = function (ctrlNames) {
         if (!Array.isArray(ctrlNames)) {
             throw new TypeError('Invalid list of controller names.');
         }
@@ -355,7 +386,7 @@
      *
      * @returns {Array<Element>}
      */
-    EController.prototype.find = function (selectors) {
+    ecp.find = function (selectors) {
         return find(selectors).filter(function (e) {
             return e.controllers;
         });
@@ -371,7 +402,7 @@
      *
      * @returns {Element}
      */
-    EController.prototype.findOne = function (selectors) {
+    ecp.findOne = function (selectors) {
         var a = this.find(selectors);
         if (a.length > 1) {
             throw new Error('A single element was expected, but found ' + a.length + '.');
@@ -393,7 +424,7 @@
      * @returns {}
      * Whatever method onReceive returns.
      */
-    EController.prototype.send = function (data) {
+    ecp.send = function (data) {
         if (typeof this.onReceive === 'function') {
             return this.onReceive(data, this);
         }
@@ -407,7 +438,7 @@
      * @param {Function} [cb]
      * Optional callback to receive the response from method onReceive.
      */
-    EController.prototype.post = function (data, cb) {
+    ecp.post = function (data, cb) {
         var self = this;
         setTimeout(function () {
             if (typeof self.onReceive === 'function') {
