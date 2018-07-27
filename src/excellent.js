@@ -281,7 +281,7 @@
          * @property Excellent.version
          * Library version
          */
-        this.version = '0.0.3';
+        this.version = '0.0.4';
 
         /**
          * @property Excellent.services
@@ -417,19 +417,33 @@
     };
 
     /**
-     * Inheritance support.
+     * @method EController.extend
+     * @description
+     * Extends the current element with another controller, thus providing functional inheritance,
+     * and returns the controller.
+     *
+     * And if the controller's name is already on the list, the existing controller is returned.
+     *
+     * Works only after initialization.
+     *
+     * @param {String} ctrlName
+     *
+     * @returns {EController}
+     * New or existing controller.
      */
-    ecp.extend = function (/*ctrlName*/) {
-        /*
-        * TODO: inheritance support is needed.
-        *
-        * Checks for the controller already being on the element,
-        * and if so - return in. Otherwise, it will create a new
-        * controller and add it to the element.
-        *
-        * This will allow for both single and multiple inheritances.
-        *
-        * */
+    ecp.extend = function (ctrlName) {
+        // TODO: ctrlName should allow an array of strings also,
+        // and do some good validation.
+        var c = this.getController(ctrlName);
+        if (!c) {
+            c = new EController(ctrlName, this.node);
+            this.node.controllers.push(c);
+            getCtrlFunc(ctrlName).call(c, c);
+            if (typeof c.onInit === 'function') {
+                c.onInit();
+            }
+        }
+        return c;
     };
 
     /**

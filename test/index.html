@@ -9,6 +9,10 @@
 </head>
 <body>
 
+<div e-bind="first">
+    Hello World!
+</div>
+
 <ul e-bind="modify, myModule.controller1">
     <li e-bind="WhiteColor">first</li>
     <li e-bind="WhiteColor">second</li>
@@ -20,7 +24,26 @@
 
 <script type="application/javascript">
 
-    //var excellent;
+    app.addController('first', function (/* self */) {
+        this.onInit = function () {
+            this.extend('second');
+            this.extend('third');
+            this.node.style.backgroundColor = 'red';
+            console.log('HERE:', this);
+        };
+    });
+
+    app.addController('second', function (/* self */) {
+        this.onInit = function () {
+            this.node.style.color = 'yellow';
+        };
+    });
+
+    app.addController('third', function (/* self */) {
+        this.onInit = function () {
+            this.node.style.fontWeight = 'bold';
+        };
+    });
 
     app.addController('WhiteColor', function (/* self */) {
         //this.bind();
