@@ -4,8 +4,8 @@
   "description": "DOM-Manipulation Framework",
   "main": "src/excellent.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ./src",
-    "build": "./node_modules/.bin/uglifyjs ./src/index.js -o ./excellent.min.js"
+    "lint": "./node_modules/.bin/eslint ./src/excellent.js",
+    "build": "./node_modules/.bin/uglifyjs ./src/excellent.js -o ./src/excellent.min.js"
   },
   "files": [
     "src"
