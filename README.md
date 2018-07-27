@@ -29,6 +29,6 @@ into a fart in the wind, leaving incomprehensible mess as their legacy.
 If you like working with DOM directly, this tiny (2Kb compressed) library gives you the essential
 tools for organizing your code in such a way that's highly reusable, easy to maintain and distribute.
 
-Although currently in Beta, you can use this library already - see the [Wiki Pages].
+See [Wiki Pages] for all the details.
 
 [Wiki Pages]:https://github.com/vitaly-t/excellent/wiki
