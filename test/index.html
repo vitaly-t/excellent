@@ -9,7 +9,7 @@
 </head>
 <body e-bind="appController">
 
-<ul e-bind="WhiteColor, BlueBackground, modify, myModule.controller1">
+<ul e-bind="modify, myModule.controller1">
     <li>first</li>
 </ul>
 
@@ -19,9 +19,10 @@
 <script type="application/javascript">
 
     app.addController('WhiteColor', function (/* self */) {
+        //this.bind();
+
         this.onInit = function () {
             this.node.style.color = 'white';
-            excellent.bind();
         };
     });
 
@@ -35,7 +36,7 @@
 
         var nItems = 0;
 
-        ctrl.depends(['override', 'WhiteColor']);
+        ctrl.depends(['BlueBackground', 'WhiteColor']);
 
         this.onReceive = function (data) {
             nItems = data.items;
@@ -54,7 +55,7 @@
             for (var i = 0; i < nItems; i++) {
                 var e = document.createElement('li');
                 e.innerHTML = 'item-' + i;
-                e.setAttribute('e-bind', 'override');
+                e.setAttribute('e-bind', 'BlueBackground, WhiteColor');
                 ctrl.node.appendChild(e);
             }
             // now need to update the child controllers:
@@ -62,13 +63,10 @@
         }
     });
 
-    app.addController('override', function (/* self */) {
-    });
-
-    app.addController('appController', function (/* self */) {
+    app.addController('appController', function (self) {
         this.onInit = function () {
             /* here I can initialize all other controllers */
-            this.findOne('[e-bind*="modify"]').controllers[2].send({items: 30});
+            self.findOne('[e-bind*="modify"]').controllers[0].send({items: 200});
         };
     });
 

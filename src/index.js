@@ -43,7 +43,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         initServices();
         initModules();
-        initControllers();
+        bind();
     });
 
     function addEntity(name, cb, entity, obj) {
@@ -58,12 +58,12 @@
         obj[name] = cb;
     }
 
-    function find(selectors) {
-        var f = document.querySelectorAll(selectors);
+    function find(selectors, node) {
+        var f = (node || document).querySelectorAll(selectors);
         var res = [];
-        f.forEach(function (e) {
-            res.push(e);
-        });
+        for (var i = 0; i < f.length; i++) {
+            res.push(f[i]);
+        }
         return res;
     }
 
@@ -102,10 +102,6 @@
         }
     }
 
-    function initControllers() {
-        bind();
-    }
-
     /**
      * Indicates when the binding is in progress.
      *
@@ -116,10 +112,10 @@
     /**
      * Binds all elements to controllers, if not yet bound.
      */
-    function bind() {
+    function bind(node) {
         binding = true;
         var allCtrl = [], els = [];
-        find('[e-bind]')
+        find('[e-bind]', node)
             .forEach(function (e) {
                 if (elements.indexOf(e) === -1) {
                     var namesMap = {}, eCtrl = [];
@@ -159,7 +155,6 @@
             // Check: DOMNodeRemoved vs MutationObserver
         });
         binding = false;
-        console.log('Elements Length:', elements.length);
     }
 
     // from: https://stackoverflow.com/questions/30578673/is-it-possible-to-make-queryselectorall-live-like-getelementsbytagname
@@ -210,30 +205,32 @@
                 ctrlCache[name] = f; // updating cache
                 return f;
             }
-        }
-        // the controller is from a module
-        var names = name.split('.');
-        var moduleName = names[0];
-        if (!(moduleName in modules)) {
-            if (noError) {
-                return;
+        } else {
+            // the controller is from a module
+            var names = name.split('.');
+            var moduleName = names[0];
+            if (!(moduleName in modules)) {
+                if (noError) {
+                    return;
+                }
+                throw new Error('Module ' + jStr(moduleName) + ' not found.');
             }
-            throw new Error('Module ' + jStr(moduleName) + ' not found.');
-        }
-        var obj = modules[moduleName];
-        for (var i = 1; i < names.length; i++) {
-            var n = names[i];
-            if (n in obj) {
-                obj = obj[n];
-            } else {
-                obj = null;
-                break;
+            var obj = modules[moduleName];
+            for (var i = 1; i < names.length; i++) {
+                var n = names[i];
+                if (n in obj) {
+                    obj = obj[n];
+                } else {
+                    obj = null;
+                    break;
+                }
+            }
+            if (typeof obj === 'function') {
+                ctrlCache[name] = obj;
+                return obj;
             }
         }
-        if (typeof obj === 'function') {
-            ctrlCache[name] = obj;
-            return obj;
-        }
+
         if (!noError) {
             throw new Error('Controller ' + jStr(name) + ' not found.');
         }
@@ -336,8 +333,7 @@
      */
     ecp.bind = function () {
         // TODO: See if we can automate this through a watch, then it would be awesome!
-
-
+        bind(this.node);
     };
 
     /**
