@@ -1,6 +1,6 @@
 # Excellent.js
 
-<img align="left" width="299" height="302" src="./images/burns1.gif">
+<img align="left" width="299" height="302" src="./.github/images/burns.gif">
 
 <br/>
 <br/>
@@ -29,6 +29,6 @@ into a fart in the wind, leaving incomprehensible mess as their legacy.
 If you like working with DOM directly, this tiny (2Kb compressed) library gives you the essential
 tools for organizing your code in such a way that's highly reusable, easy to maintain and distribute.
 
-Although currently in Beta, you can use this library already - see the [Wiki Documentation].
+Although currently in Beta, you can use this library already - see the [Wiki Pages].
 
-[Wiki documentation]:https://github.com/vitaly-t/excellent/wiki
+[Wiki Pages]:https://github.com/vitaly-t/excellent/wiki

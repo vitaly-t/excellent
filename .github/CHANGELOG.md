@@ -1,4 +1,4 @@
 Release History
 ---------------
 
-The baby hasn't been born yet.
+* 27/07/2018: First beta published.

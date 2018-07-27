@@ -2,7 +2,7 @@
   "name": "excellent.js",
   "version": "0.0.2",
   "description": "DOM-Manipulation Framework",
-  "main": "src/index.js",
+  "main": "src/excellent.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src",
     "build": "./node_modules/.bin/uglifyjs ./src/index.js -o ./excellent.min.js"

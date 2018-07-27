@@ -2,6 +2,7 @@
 node_modules/
 docs/
 excellent.min.js
+excellent.min.zip
 distr/
 build/
 package-lock.json
