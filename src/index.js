@@ -33,54 +33,12 @@
     /**
      * Library's root object.
      */
-    var root = {
-        /**
-         * Library name.
-         */
-        name: 'Excellent.js',
+    var root = new Excellent();
 
-        /**
-         * Library version
-         */
-        version: '0.0.1',
-
-        /**
-         * Namespace of all registered and initialized services.
-         */
-        services: {},
-
-        /**
-         * Adds/Registers a new controller.
-         *
-         * If controller with such name already exists, it will be overridden.
-         */
-        addController: function (name, cb) {
-            addEntity(name, cb, 'controller', reg.controllers);
-        },
-
-        /**
-         * Adds/Registers a new service.
-         *
-         * If service with such name already exists, it will be overridden.
-         */
-        addService: function (name, cb) {
-            addEntity(name, cb, 'service', reg.services);
-        },
-
-        /**
-         * Creates and registers a new module.
-         *
-         * If module with such name already exists, it will be overridden.
-         */
-        addModule: function (name, cb) {
-            addEntity(name, cb, 'module', reg.modules);
-        }
-    };
+    window.excellent = root;
 
     // Abbreviations:
     var jStr = JSON.stringify.bind(JSON);
-
-    window.excellent = root;
 
     document.addEventListener('DOMContentLoaded', function () {
         initServices();
@@ -95,9 +53,49 @@
             throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
         }
         if (typeof cb !== 'function') {
-            throw new TypeError('Missing function for ' + entity + ' ' + jStr(name) + '.');
+            throw new TypeError('Initialization function in ' + entity + ' ' + jStr(name) + ' is missing.');
         }
         obj[name] = cb;
+    }
+
+    function Excellent() {
+
+        /**
+         * Library version
+         */
+        this.version = '0.0.1';
+
+        /**
+         * Namespace of all registered and initialized services.
+         */
+        this.services = {};
+
+        /**
+         * Adds/Registers a new controller.
+         *
+         * If controller with such name already exists, it will be overridden.
+         */
+        this.addController = function (name, cb) {
+            addEntity(name, cb, 'controller', reg.controllers);
+        };
+
+        /**
+         * Adds/Registers a new service.
+         *
+         * If service with such name already exists, it will be overridden.
+         */
+        this.addService = function (name, cb) {
+            addEntity(name, cb, 'service', reg.services);
+        };
+
+        /**
+         * Creates and registers a new module.
+         *
+         * If module with such name already exists, it will be overridden.
+         */
+        this.addModule = function (name, cb) {
+            addEntity(name, cb, 'module', reg.modules);
+        };
     }
 
     function find(selectors) {
@@ -285,29 +283,38 @@
         Object.defineProperty(this, 'node', {value: node});
 
         /**
-         *
          * @type {function}
          */
         this.onInit = null;
 
         /**
-         *
          * @type {function}
          */
         this.onDestroy = null;
-
     }
 
     /**
-     * Re-binds all children that were updated.
+     * Indicates that the element's content has been modified to contain new
+     * controller bindings, and such controllers need to be attached.
+     *
+     * NOTE: This method picks up only new elements, i.e. you cannot manually extend
+     * bindings and expect an update here, only method `extend` can do that.
      */
-    EController.prototype.bindChildren = function () {
+    EController.prototype.bind = function () {
+        // TODO: Needs implementation.
 
+        /*
+        * Something to consider: maybe through the element watcher, this method
+        * can be triggered automatically.
+        * */
     };
 
+    /**
+     * Inheritance support.
+     */
     EController.prototype.extend = function (/*ctrlName*/) {
         /*
-        * TODO: inheritance support is needed
+        * TODO: inheritance support is needed.
         *
         * Checks for the controller already being on the element,
         * and if so - return in. Otherwise, it will create a new
