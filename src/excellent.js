@@ -74,10 +74,6 @@
 
     function find(selectors, node) {
         var f = (node || document).querySelectorAll(selectors);
-        if (typeof f.forEach === 'function') {
-            return f;
-        }
-        // Otherwise, it is an IE, so we need to convert it into an array:
         var res = [];
         for (var i = 0; i < f.length; i++) {
             res.push(f[i]);
@@ -158,12 +154,12 @@
                     }
                 }
             });
+        els.forEach(observer.watch);
         allCtrl.forEach(function (c) {
             if (typeof c.onInit === 'function') {
                 c.onInit();
             }
         });
-        els.forEach(observer.watch);
         binding = false;
     }
 
@@ -284,7 +280,7 @@
         /**
          * Library version
          */
-        this.version = '0.0.2';
+        this.version = '0.0.3';
 
         /**
          * Namespace of all registered and initialized services.
@@ -417,51 +413,80 @@
     };
 
     /**
-     * Searches for all matching elements that have controllers.
-     *
-     * Can only be used after initialization.
+     * @method EController.find
+     * @description
+     * Searches for controlled elements within children.
      *
      * @param {String} selectors
+     * Standard DOM selectors.
      *
      * @returns {Array<Element>}
+     * Controlled child elements matching the selectors.
      */
     ecp.find = function (selectors) {
-        return find(selectors).filter(function (e) {
+        return find(selectors, this.node).filter(function (e) {
             return e.controllers;
         });
     };
 
     /**
-     * Searches for exactly a single matching element that has a controller,
-     * and returns it.
+     * @method EController.findOne
+     * @description
+     * Searches for a single matching controlled element.
      *
-     * If no matching element found, or more than one found, it throws an error.
+     * If no matching element found, or more than one, it throws an error.
      *
      * @param {String} selectors
+     * Standard DOM selectors.
      *
      * @returns {Element}
+     * One controlled element matching the selectors.
      */
     ecp.findOne = function (selectors) {
         var a = this.find(selectors);
-        if (a.length > 1) {
+        if (a.length !== 1) {
             throw new Error('A single element was expected, but found ' + a.length + '.');
-        }
-        if (!a.length) {
-            throw new Error('A single element was expected, but none found.');
         }
         return a[0];
     };
 
     /**
-     * Synchronously sends data into method onReceive and returns the response,
-     * if the method exists. If onReceive handler does not exist, the method
+     * @method EController.getController
+     * @description
+     * Locates a controller in the element by its name.
+     *
+     * Can only be called after initialization.
+     *
+     * @param {String} name
+     * Name of the controller.
+     *
+     * @returns {EController|null}
+     * Found controller, or `null`, if none found, or if called
+     * before the initialization.
+     */
+    ecp.getController = function (name) {
+        var a = this.node.controllers || [];
+        for (var i = 0; i < a.length; i++) {
+            var c = a[i];
+            if (c.name === name) {
+                return c;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * @method EController.send
+     * @description
+     * Synchronously sends data into method `onReceive`, and returns the response,
+     * if the method exists. If `onReceive` handler does not exist, the method
      * will do nothing, and return `undefined`.
      *
      * @param {} data
-     * Any type of data.
+     * Any type of data to be sent.
      *
      * @returns {}
-     * Whatever method onReceive returns.
+     * Whatever method `onReceive` returns.
      */
     ecp.send = function (data) {
         if (typeof this.onReceive === 'function') {
@@ -470,10 +495,14 @@
     };
 
     /**
-     * Asynchronously sends data into method onReceive, and if the callback specified
-     * - calls it with the response.
+     * @method EController.post
+     * @description
+     * Asynchronously sends data into method `onReceive`, and if the callback
+     * was specified - calls it with the response.
      *
-     * @param data
+     * @param {} [data]
+     * Any data to be sent.
+     *
      * @param {Function} [cb]
      * Optional callback to receive the response from method onReceive.
      */

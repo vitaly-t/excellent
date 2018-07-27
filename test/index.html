@@ -52,11 +52,11 @@
         };
 
         this.onInit = function () {
-
+            console.log('CTRL:', ctrl.getController('myModule.controller1'));
         };
 
         function populate() {
-            // TODO: Next, how to create elements with controllers!
+            console.log('START:', ctrl.find('*').length);
             while (ctrl.node.firstChild) {
                 ctrl.node.removeChild(ctrl.node.firstChild);
             }
@@ -70,6 +70,7 @@
             ctrl.node.appendChild(f);
             // now need to update the child controllers:
             ctrl.bind();
+            console.log('END:', ctrl.find('*').length);
         }
     });
 
