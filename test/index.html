@@ -7,10 +7,12 @@
     <script src="module_sample.js"></script>
     <script src="service_sample.js"></script>
 </head>
-<body e-bind="appController">
+<body>
 
 <ul e-bind="modify, myModule.controller1">
-    <li>first</li>
+    <li e-bind="WhiteColor">first</li>
+    <li e-bind="WhiteColor">second</li>
+    <li e-bind="WhiteColor">third</li>
 </ul>
 
 </body>
@@ -25,6 +27,10 @@
 
         this.onInit = function () {
             this.node.style.color = 'white';
+        };
+
+        this.onDestroy = function () {
+            console.log('onDestroy:', this);
         };
     });
 
@@ -54,22 +60,30 @@
             while (ctrl.node.firstChild) {
                 ctrl.node.removeChild(ctrl.node.firstChild);
             }
+            var f = document.createDocumentFragment();
             for (var i = 0; i < nItems; i++) {
                 var e = document.createElement('li');
                 e.innerHTML = 'item-' + i;
                 e.setAttribute('e-bind', 'BlueBackground, WhiteColor');
-                ctrl.node.appendChild(e);
+                f.appendChild(e);
             }
+            ctrl.node.appendChild(f);
             // now need to update the child controllers:
             ctrl.bind();
         }
     });
 
+    /*
     app.addController('appController', function (self) {
         this.onInit = function () {
-            /* here I can initialize all other controllers */
+            // here I can initialize all other controllers
             self.findOne('[e-bind*="modify"]').controllers[0].post({items: 2000});
         };
-    });
+    });*/
+
+    app.onInit = function () {
+        // need a way to find the controller?
+        document.querySelector('[e-bind*="modify"]').controllers[0].post({items: 20});
+    };
 
 </script>

@@ -26,14 +26,30 @@
     var ctrlCache = {};
 
     /**
-     * All valid elements with controllers.
+     * All elements with controllers, currently in the DOM.
      */
     var elements = [];
 
     /**
      * Library's root object.
+     *
+     * @type {Excellent}
      */
     var root = new Excellent();
+
+    /**
+     * Helps observing when elements are removed.
+     *
+     * @type {DestroyObserver}
+     */
+    var observer = new DestroyObserver();
+
+    /**
+     * Indicates when the binding is in progress.
+     *
+     * @type {boolean}
+     */
+    var binding;
 
     window.excellent = root;
 
@@ -44,6 +60,9 @@
         initServices();
         initModules();
         bind();
+        if (typeof root.onInit === 'function') {
+            root.onInit();
+        }
     });
 
     function addEntity(name, cb, entity, obj) {
@@ -60,6 +79,10 @@
 
     function find(selectors, node) {
         var f = (node || document).querySelectorAll(selectors);
+        if (typeof f.forEach === 'function') {
+            return f;
+        }
+        // Otherwise, it is an IE, so we need to convert it into an array:
         var res = [];
         for (var i = 0; i < f.length; i++) {
             res.push(f[i]);
@@ -79,7 +102,7 @@
             }
             var name = e[0].getAttribute('e-root');
             if (name) {
-                window[name] = root; // expose the root
+                window[name] = root; // expose the alternative root name
             }
         }
     }
@@ -103,21 +126,16 @@
     }
 
     /**
-     * Indicates when the binding is in progress.
-     *
-     * @type {boolean}
-     */
-    var binding;
-
-    /**
      * Binds all elements to controllers, if not yet bound.
      */
     function bind(node) {
         binding = true;
-        var allCtrl = [], els = [];
+        var allCtrl = [], els = [], init = !elements.length;
         find('[e-bind]', node)
             .forEach(function (e) {
-                if (elements.indexOf(e) === -1) {
+                // skipping elements search during the initial binding:
+                var idx = init ? -1 : elements.indexOf(e);
+                if (idx === -1) {
                     var namesMap = {}, eCtrl = [];
                     e.getAttribute('e-bind')
                         .split(',')
@@ -150,36 +168,66 @@
                 c.onInit();
             }
         });
-        els.forEach(function (/*e*/) {
-            // TODO: Need to inject onDestroy handler here:
-            // Check: DOMNodeRemoved vs MutationObserver
-        });
+        els.forEach(observer.watch);
         binding = false;
     }
 
-    // from: https://stackoverflow.com/questions/30578673/is-it-possible-to-make-queryselectorall-live-like-getelementsbytagname
-    /*
-    function querySelectorAllLive(element, selector) {
+    /**
+     * Helps watching node elements removal from DOM, in order to provide onDestroy
+     * notification for all corresponding controllers.
+     *
+     * Currently, it provides safe nada for IE9 and IE10, to be fixed later.
+     *
+     * @constructor
+     */
+    function DestroyObserver() {
 
-        // Initialize results with current nodes.
-        var result = Array.prototype.slice.call(element.querySelectorAll(selector));
+        // TODO: Need to add support for IE9 and IE10, where MutationObserver is not supported.
 
-        // Create observer instance.
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                [].forEach.call(mutation.addedNodes, function(node) {
-                    if (node.nodeType === Node.ELEMENT_NODE && node.matches(selector)) {
-                        result.push(node);
+        var mo = typeof MutationObserver !== 'undefined' && new MutationObserver(mutantCB);
+
+        function mutantCB(mutations) {
+            mutations.forEach(function (m) {
+                for (var i = 0; i < m.removedNodes.length; i++) {
+                    var e = m.removedNodes[i];
+                    if (e.controllers) {
+                        purge(e);
+                    }
+                }
+            });
+        }
+
+        /**
+         * Removes one element from the list of active elements, and sends onDestroy
+         * into all linked controllers.
+         *
+         * @param {Element} e
+         * Element being destroyed.
+         */
+        function purge(e) {
+            var idx = elements.indexOf(e);
+            if (idx >= 0) {
+                elements.splice(idx, 1);
+                e.controllers.forEach(function (c) {
+                    if (typeof c.onDestroy === 'function') {
+                        c.onDestroy();
                     }
                 });
-            });
-        });
+            }
+        }
 
-        // Set up observer.
-        observer.observe(element, { childList: true, subtree: true });
-
-        return result;
-    }*/
+        /**
+         * Initiates watching the element.
+         *
+         * @param {Element} e
+         * Element to be watched.
+         */
+        this.watch = function (e) {
+            if (mo) {
+                mo.observe(e, {childList: true});
+            }
+        };
+    }
 
     /**
      * Searches for controller function, based on the controller's full name.
@@ -188,7 +236,7 @@
      * @param name
      *
      * @param [noError]
-     * Tells it not to throw an errors, rather return null.
+     * Tells it not to throw on errors, and rather return null.
      *
      * @returns {function|undefined}
      * Either controller function or throws.
