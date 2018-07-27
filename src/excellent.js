@@ -290,6 +290,15 @@
         this.services = {};
 
         /**
+         * @property Excellent.onInit
+         * @description
+         * Called after all controllers have been initialized.
+         *
+         * @type {Function|null}
+         */
+        this.onInit = null;
+
+        /**
          * @method Excellent.addController
          * @description
          * Adds/Registers a new controller.
@@ -345,6 +354,8 @@
          * @description
          * Searches for controlled elements within document.
          *
+         * It should only be called after initialization.
+         *
          * @param {String} selectors
          * Standard DOM selectors.
          *
@@ -356,7 +367,6 @@
                 return e.controllers;
             });
         };
-
     }
 
     /**
