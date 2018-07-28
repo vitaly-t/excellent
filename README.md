@@ -6,10 +6,8 @@
       <img align="left" width="299" height="302" src="./.github/images/burns.gif">
     </td>
     <td>
-      <p>
-        
-## DOM-fiddling library.
-
+      <h1>DOM-fiddling library.</h1>
+   </td>
   </tr>
 </table>
   
