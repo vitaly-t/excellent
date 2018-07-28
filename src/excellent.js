@@ -277,9 +277,10 @@
 
         /**
          * @property Excellent.version
-         * Library version
+         * Library version, automatically injected during the build process,
+         * and so available only with the compressed version of the library.
          */
-        this.version = '0.0.4';
+        this.version = '<version>';
 
         /**
          * @property Excellent.services
