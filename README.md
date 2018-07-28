@@ -1,8 +1,6 @@
 # Excellent.js
 
 <br/>
-<br/>
-<br/>
 <img align="left" width="299" height="302" src="./.github/images/burns.gif">
 
 # DOM-fiddling library.
