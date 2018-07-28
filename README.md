@@ -12,8 +12,6 @@
 <br/>
 <br/>
 
-## The most selfish implementation.
-
 <br/>
 
 [![Join the Chat](https://img.shields.io/gitter/room/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
