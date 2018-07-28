@@ -164,17 +164,16 @@
     }
 
     /**
-     * Helps watching node elements removal from DOM, in order to provide onDestroy
-     * notification for all corresponding controllers.
+     * @constructor
+     * @private
+     * @description
+     * Helps watching node elements removal from DOM, in order to provide onDestroy notification
+     * for all corresponding controllers.
      *
      * Currently, it provides safe nada for IE9 and IE10, to be fixed later.
-     *
-     * @constructor
      */
     function DestroyObserver() {
-
         // TODO: Need to add support for IE9 and IE10, where MutationObserver is not supported.
-
         var mo = typeof MutationObserver !== 'undefined' && new MutationObserver(mutantCB);
 
         function mutantCB(mutations) {
@@ -189,8 +188,7 @@
         }
 
         /**
-         * Removes one element from the list of active elements, and sends onDestroy
-         * into all linked controllers.
+         * Removes one element from the list of active elements, and sends onDestroy into all linked controllers.
          *
          * @param {Element} e
          * Element being destroyed.
@@ -405,45 +403,56 @@
     var ecp = EController.prototype;
 
     /**
-     * Indicates that the element's content has been modified to contain new
-     * controller bindings, and such controllers need to be attached.
+     * @method EController.bind
+     * @description
+     * Indicates that the element's content has been modified to contain new controller bindings,
+     * and such controllers need to be attached.
      *
-     * NOTE: This method picks up only new elements, i.e. you cannot manually extend
-     * bindings and expect an update here, only method `extend` can do that.
+     * Requires that controller is initialized.
+     *
+     * NOTE: This method picks up only new elements, i.e. you cannot manually extend bindings
+     * and expect an update here, only method `extend` can do that.
      */
     ecp.bind = function () {
-        // TODO: See if we can automate this through a watch, then it would be awesome!
+        this.reqCtrl('bind');
         bind(this.node);
     };
 
     /**
      * @method EController.extend
      * @description
-     * Extends the current element with another controller, thus providing functional inheritance,
-     * and returns the controller.
+     * Extends the current element with another controller(s), thus providing functional inheritance.
      *
-     * And if the controller's name is already on the list, the existing controller is returned.
+     * Requires that controller is initialized.
      *
-     * Works only after initialization.
+     * @param {String|Array<String>>} ctrlName
+     * Either a single controller name, or an array of names.
      *
-     * @param {String} ctrlName
-     *
-     * @returns {EController}
-     * New or existing controller.
+     * @returns {EController|Array<EController>}
+     * - if you pass in a single controller name, it returns a single controller.
+     * - if you pass in an array of names, it returns an array of controllers.
      */
     ecp.extend = function (ctrlName) {
-        // TODO: ctrlName should allow an array of strings also,
-        // and do some good validation.
-        var c = this.getController(ctrlName);
-        if (!c) {
-            c = new EController(ctrlName, this.node);
-            this.node.controllers.push(c);
-            getCtrlFunc(ctrlName).call(c, c);
-            if (typeof c.onInit === 'function') {
-                c.onInit();
-            }
+        var t = typeof ctrlName, arr = Array.isArray(ctrlName);
+        if (!t || (t !== 'string' && !arr)) {
+            throw new TypeError('Parameter \'ctrlName\' is invalid.');
         }
-        return c;
+        var ctrl = this.reqCtrl('extend');
+
+        function ext(name) {
+            var c = this.getController(name);
+            if (!c) {
+                c = new EController(name, this.node);
+                ctrl.push(c);
+                getCtrlFunc(name).call(c, c);
+                if (typeof c.onInit === 'function') {
+                    c.onInit();
+                }
+            }
+            return c;
+        }
+
+        return arr ? ctrlName.map(ext, this) : ext.call(this, ctrlName);
     };
 
     /**
@@ -472,6 +481,8 @@
      * @description
      * Searches for controlled elements within children.
      *
+     * Requires that controller is initialized.
+     *
      * @param {String} selectors
      * Standard DOM selectors.
      *
@@ -479,6 +490,7 @@
      * Controlled child elements matching the selectors.
      */
     ecp.find = function (selectors) {
+        this.reqCtrl('find');
         return find(selectors, this.node).filter(function (e) {
             return e.controllers;
         });
@@ -487,9 +499,10 @@
     /**
      * @method EController.findOne
      * @description
-     * Searches for a single matching controlled element.
+     * Searches for a single matching controlled element. And if no matching element found,
+     * or more than one, it throws an error.
      *
-     * If no matching element found, or more than one, it throws an error.
+     * Requires that controller is initialized.
      *
      * @param {String} selectors
      * Standard DOM selectors.
@@ -498,6 +511,7 @@
      * One controlled element matching the selectors.
      */
     ecp.findOne = function (selectors) {
+        this.reqCtrl('findOne');
         var a = this.find(selectors);
         if (a.length !== 1) {
             throw new Error('A single element was expected, but found ' + a.length + '.');
@@ -510,7 +524,7 @@
      * @description
      * Locates a controller in the element by its name.
      *
-     * Can only be called after initialization.
+     * Requires that controller is initialized.
      *
      * @param {String} name
      * Name of the controller.
@@ -520,7 +534,7 @@
      * before the initialization.
      */
     ecp.getController = function (name) {
-        var a = this.node.controllers || [];
+        var a = this.reqCtrl('getController');
         for (var i = 0; i < a.length; i++) {
             var c = a[i];
             if (c.name === name) {
@@ -533,9 +547,10 @@
     /**
      * @method EController.send
      * @description
-     * Synchronously sends data into method `onReceive`, and returns the response,
-     * if the method exists. If `onReceive` handler does not exist, the method
-     * will do nothing, and return `undefined`.
+     * Synchronously sends data into method `onReceive`, and returns the response, if the method exists.
+     * If `onReceive` handler does not exist, the method will do nothing, and return `undefined`.
+     *
+     * Requires that controller is initialized.
      *
      * @param {} data
      * Any type of data to be sent.
@@ -544,6 +559,7 @@
      * Whatever method `onReceive` returns.
      */
     ecp.send = function (data) {
+        this.reqCtrl('send');
         if (typeof this.onReceive === 'function') {
             return this.onReceive(data, this);
         }
@@ -552,8 +568,9 @@
     /**
      * @method EController.post
      * @description
-     * Asynchronously sends data into method `onReceive`, and if the callback
-     * was specified - calls it with the response.
+     * Asynchronously sends data into method `onReceive`, and if the callback was specified - calls it with the response.
+     *
+     * Requires that controller is initialized.
      *
      * @param {} [data]
      * Any data to be sent.
@@ -562,6 +579,7 @@
      * Optional callback to receive the response from method onReceive.
      */
     ecp.post = function (data, cb) {
+        this.reqCtrl('post');
         var self = this;
         setTimeout(function () {
             if (typeof self.onReceive === 'function') {
@@ -571,6 +589,27 @@
                 }
             }
         });
+    };
+
+    /**
+     * @method EController.reqCtrl
+     * @private
+     * @description
+     * Requires controllers in a safe way: Verifies that controllers have been initialized,
+     * or else throws an error.
+     *
+     * @param m
+     * Name of the method that requires access to controllers.
+     *
+     * @returns {Array<EController>}
+     * Controllers linked to the element.
+     */
+    ecp.reqCtrl = function (m) {
+        var c = this.node.controllers;
+        if (!c) {
+            throw new Error('Method "' + m + '" cannot be used before initialization.');
+        }
+        return c;
     };
 
     initRoot();
