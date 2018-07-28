@@ -1,6 +1,6 @@
 # Excellent.js
 
-<table style="border:none;">
+<table style="border-size:10px">
   <tr>
     <td>
       <img align="left" width="299" height="302" src="./.github/images/burns.gif">
