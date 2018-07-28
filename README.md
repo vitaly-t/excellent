@@ -2,7 +2,7 @@
 
 <img align="left" width="299" height="302" src="./.github/images/burns.gif">
 
-# DOM-fiddling library.
+## DOM-fiddling library.
   
 [![Join the Chat](https://img.shields.io/gitter/room/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
