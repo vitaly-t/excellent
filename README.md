@@ -16,13 +16,7 @@
 
 <br/>
 
-<!--
-<i>
-A good developer is like a good artist, needs only the basic tools and inspiration to create,
-while fools pile on dogmatic overblown frameworks that promise long-term value, and then turn
-into a fart in the wind, leaving incomprehensible mess as their legacy.
-</i>
--->
+[![Join the Chat](https://img.shields.io/gitter/room/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <br/>
 
