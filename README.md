@@ -18,8 +18,6 @@
 
 [![Join the Chat](https://img.shields.io/gitter/room/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-<br/>
-
 If you like working with DOM directly, this tiny (2Kb compressed) library gives you the essential
 tools for organizing your code in such a way that's highly reusable, easy to maintain and distribute.
 
