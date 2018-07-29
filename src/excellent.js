@@ -275,23 +275,26 @@
         }
     }
 
+    /**
+     * @class Excellent
+     */
     function Excellent() {
 
         /**
-         * @property Excellent.version
+         * @property Excellent#version
          * Library version, automatically injected during the build process,
          * and so available only with the compressed version of the library.
          */
         this.version = '<version>';
 
         /**
-         * @property Excellent.services
+         * @property Excellent#services
          * Namespace of all registered and initialized services.
          */
         this.services = {};
 
         /**
-         * @property Excellent.onInit
+         * @method Excellent.onInit
          * @description
          * Called after all controllers have been initialized.
          *
@@ -367,6 +370,31 @@
             return find(selectors).filter(function (e) {
                 return e.controllers;
             });
+        };
+
+        /**
+         * @method Excellent.findControllers
+         * @description
+         * Searches the entire document for all initialized controllers by a given controller name.
+         *
+         * It will skip controllers that haven't been initialized yet.
+         *
+         * @param {String} ctrlName
+         * Controller name to search by.
+         *
+         * @returns {Array<EController>}
+         * List of found controller objects.
+         */
+        this.findControllers = function (ctrlName) {
+            // TODO: Need to validate the name here!
+            var selectors = '[e-bind*="' + ctrlName + '"]';
+            return this.find(selectors).filter(pick).map(pick);
+
+            function pick(e) {
+                // This also caters for dynamically created controlled
+                // elements that haven't been initialized yet:
+                return e.controllers[ctrlName];
+            }
         };
     }
 
@@ -495,18 +523,17 @@
     /**
      * @method EController.find
      * @description
-     * Searches for controlled elements within children.
+     * Searches for all initialized controlled elements among children.
      *
-     * Requires that controller is initialized.
+     * It will skip controlled elements that haven't been initialized yet.
      *
      * @param {String} selectors
      * Standard DOM selectors.
      *
      * @returns {Array<Element>}
-     * Controlled child elements matching the selectors.
+     * Controlled initialized child elements matching the selectors.
      */
     ecp.find = function (selectors) {
-        this.reqCtrl('find');
         return find(selectors, this.node).filter(function (e) {
             return e.controllers;
         });
@@ -515,10 +542,10 @@
     /**
      * @method EController.findOne
      * @description
-     * Searches for a single matching controlled element. And if no matching element found,
-     * or more than one, it throws an error.
+     * Searches for a single matching initialized controlled element,
+     * skipping uninitialized elements.
      *
-     * Requires that controller is initialized.
+     * It will throw an error, if multiple or no elements found.
      *
      * @param {String} selectors
      * Standard DOM selectors.
@@ -527,7 +554,6 @@
      * One controlled element matching the selectors.
      */
     ecp.findOne = function (selectors) {
-        this.reqCtrl('findOne');
         var a = this.find(selectors);
         if (a.length !== 1) {
             throw new Error('A single element was expected, but found ' + a.length + '.');
@@ -538,20 +564,27 @@
     /**
      * @method EController.findControllers
      * @description
-     * Searches for all child controllers by a given name.
+     * Searches for all initialized child controllers by a given controller name.
+     *
+     * It will skip controllers that haven't been initialized yet.
      *
      * @param {String} ctrlName
+     * Controller name to search by.
      *
      * @returns {Array<EController>}
+     * List of found controllers.
      */
     ecp.findControllers = function (ctrlName) {
+
         // TODO: Should validate the name here!
-        // TODO: Need one on the root level too!
+
         var selectors = '[e-bind*="' + ctrlName + '"]';
         return this.find(selectors).filter(pick).map(pick);
 
         function pick(e) {
-            return e.controllers[ctrlName];
+            // This also caters for dynamically created controlled
+            // elements that haven't been initialized yet:
+            return e.controllers && e.controllers[ctrlName];
         }
     };
 
