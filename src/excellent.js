@@ -441,8 +441,8 @@
      * @description
      * Virtual controller class.
      *
-     * @param name
-     * @param node
+     * @param {String} name
+     * @param {Element} node
      */
     function EController(name, node) {
 
