@@ -14,9 +14,14 @@
 </div>
 
 <ul e-bind="modify, myModule.controller1">
-    <li e-bind="WhiteColor">first</li>
-    <li e-bind="WhiteColor">second</li>
-    <li e-bind="WhiteColor">third</li>
+    <li e-bind="RedColor">first</li>
+    <li e-bind="RedColor">second</li>
+    <li e-bind="RedColor">third</li>
+</ul>
+
+<ul e-bind="modify">
+    <li e-bind="RedColor">four</li>
+    <li e-bind="RedColor">five</li>
 </ul>
 
 </body>
@@ -45,11 +50,11 @@
         };
     });
 
-    app.addController('WhiteColor', function (/* self */) {
+    app.addController('RedColor', function (/* self */) {
         //this.bind();
 
         this.onInit = function () {
-            this.node.style.color = 'white';
+            this.node.style.color = 'red';
         };
 
         this.onDestroy = function () {
@@ -67,7 +72,7 @@
 
         var nItems = 0;
 
-        ctrl.depends(['BlueBackground', 'WhiteColor']);
+        ctrl.depends(['BlueBackground', 'RedColor']);
 
         this.onReceive = function (data) {
             nItems = data.items;
@@ -75,7 +80,7 @@
         };
 
         this.onInit = function () {
-            console.log('CONTROLLERS:', ctrl.findControllers('WhiteColor'));
+            console.log('CONTROLLERS:', ctrl.findControllers('  RedColor  \t'));
             // console.log('CONTROLLER:', ctrl.node.controllers['myModule.controller1']);
         };
 
@@ -87,7 +92,7 @@
             for (var i = 0; i < nItems; i++) {
                 var e = document.createElement('li');
                 e.innerHTML = 'item-' + i;
-                e.setAttribute('e-bind', 'BlueBackground, WhiteColor');
+                e.setAttribute('e-bind', 'BlueBackground, RedColor');
                 f.appendChild(e);
             }
             ctrl.node.appendChild(f);
@@ -106,7 +111,9 @@
 
     app.onInit = function () {
         // need a way to find the controller?
-        document.querySelector('[e-bind*="modify"]').controllers.modify.post({items: 20});
+        app.findControllers('modify').forEach(function (c) {
+            c.post({items: 20});
+        });
     };
 
 </script>
