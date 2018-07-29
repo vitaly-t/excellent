@@ -112,8 +112,31 @@
         return res;
     }
 
+    /**
+     * Trims a string, by removing all trailing spaces, tabs and line breaks.
+     *
+     * @param {String} txt
+     *
+     * @returns {String}
+     */
     function trim(txt) {
         return txt.replace(/^[\s]*|[\s]*$/g, '');
+    }
+
+    /**
+     * Creates a read-only enumerable property on an object.
+     *
+     * @param {Object} target
+     * Target object.
+     *
+     * @param {String} prop
+     * Property name.
+     *
+     * @param {} value
+     * Property value.
+     */
+    function rop(target, prop, value) {
+        Object.defineProperty(target, prop, {value: value, enumerable: true});
     }
 
     function initRoot() {
@@ -130,10 +153,12 @@
     }
 
     function initServices() {
-        root.services = {};
+        // In the current implementation it is impossible
+        // to re-initialize services, which should be ok;
+
         for (var a in reg.services) {
-            var s = {};
-            root.services[a] = s;
+            var s = {}; // service scope
+            rop(root.services, a, s);
             reg.services[a].call(s, s);
         }
     }
@@ -141,7 +166,7 @@
     function initModules() {
         modules = {};
         for (var a in reg.modules) {
-            var s = {}; // scope
+            var s = {}; // module scope
             modules[a] = s;
             reg.modules[a].call(s, s);
         }
@@ -177,12 +202,12 @@
                                 var c = new EController(name, e);
                                 getCtrlFunc(name).call(c, c);
                                 eCtrl = eCtrl || {};
-                                eCtrl[name] = c;
+                                rop(eCtrl, name, c);
                                 allCtrl.push(c);
                             }
                         });
                     if (eCtrl) {
-                        e.controllers = eCtrl;
+                        rop(e, 'controllers', eCtrl);
                         elements.push(e);
                         els.push(e);
                     }
@@ -257,9 +282,9 @@
      * Searches for controller function, based on the controller's full name.
      * For that it uses cache of names, plus modules.
      *
-     * @param name
+     * @param {String} name
      *
-     * @param [noError]
+     * @param {Boolean} [noError=false]
      * Tells it not to throw on errors, and rather return null.
      *
      * @returns {function|undefined}
@@ -333,16 +358,18 @@
 
         /**
          * @property Excellent#version
+         * @readonly
          * Library version, automatically injected during the build process,
          * and so available only with the compressed version of the library.
          */
-        this.version = '<version>';
+        rop(this, 'version', '<version>');
 
         /**
          * @property Excellent#services
+         * @readonly
          * Namespace of all registered and initialized services.
          */
-        this.services = {};
+        rop(this, 'services', {});
 
         /**
          * @method Excellent.onInit
@@ -453,7 +480,7 @@
          * @description
          * Full controller name.
          */
-        Object.defineProperty(this, 'name', {value: name});
+        rop(this, 'name', name);
 
         /**
          * @member EController#node
@@ -464,7 +491,7 @@
          *
          * NOTE: In the current implementation the element is static (not live).
          */
-        Object.defineProperty(this, 'node', {value: node});
+        rop(this, 'node', node);
 
         /**
          * @member EController#onInit

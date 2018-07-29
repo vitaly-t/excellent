@@ -30,6 +30,9 @@
 <script type="application/javascript">
 
     app.addController('first', function (/* self */) {
+
+        console.log('SERVICES:', app.services = 1);
+
         this.onInit = function () {
             this.extend(['  second  ', 'third\t\r\n']);
             this.node.style.backgroundColor = 'red';
