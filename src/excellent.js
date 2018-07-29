@@ -375,17 +375,25 @@
      * @description
      * Virtual controller class.
      *
+     * @param name
      * @param node
-     * @constructor
      */
     function EController(name, node) {
 
         /**
+         * @member EController#name
+         * @type {String}
+         * @readonly
+         * @description
          * Full controller name.
          */
         Object.defineProperty(this, 'name', {value: name});
 
         /**
+         * @member EController#node
+         * @type {Element}
+         * @readonly
+         * @description
          * Source DOM element that uses this controller.
          *
          * NOTE: In the current implementation the element is static (not live).
@@ -393,17 +401,21 @@
         Object.defineProperty(this, 'node', {value: node});
 
         /**
+         * @member EController#onInit
          * @type {function}
+         * @description
+         * Optional initialization event handler.
          */
-        this.onInit = null;
 
         /**
+         * @member EController#onDestroy
          * @type {function}
+         * @description
+         * Optional de-initialization event handler.
          */
-        this.onDestroy = null;
     }
 
-    var ecp = EController.prototype;
+    var ecp = EController.prototype; // abbreviation
 
     /**
      * @method EController.bind
