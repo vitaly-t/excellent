@@ -19,19 +19,12 @@
     <li e-bind="RedColor">third</li>
 </ul>
 
-<ul e-bind="modify">
-    <li e-bind="RedColor">four</li>
-    <li e-bind="RedColor">five</li>
-</ul>
-
 </body>
 </html>
 
 <script type="application/javascript">
 
     app.addController('first', function (/* self */) {
-
-        console.log('SERVICES:', app.services = 1);
 
         this.onInit = function () {
             this.extend(['  second  ', 'third\t\r\n']);

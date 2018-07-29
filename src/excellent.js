@@ -553,7 +553,7 @@
             if (!c) {
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
-                ctrl[cn] = c;
+                rop(ctrl, cn, c);
                 if (typeof c.onInit === 'function') {
                     c.onInit();
                 }
