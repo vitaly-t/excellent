@@ -486,13 +486,10 @@
     /**
      * @method EController.bind
      * @description
-     * Indicates that the element's content has been modified to contain new controller bindings,
-     * and such controllers need to be attached.
+     * Indicates that the element's content has been modified to contain new child controlled elements,
+     * and that it is time to bind those elements and initialize its controllers.
      *
-     * Requires that controller is initialized.
-     *
-     * NOTE: This method picks up only new elements, i.e. you cannot manually extend bindings
-     * and expect an update here, only method `extend` can do that.
+     * Requires that this controller has been initialized.
      */
     ecp.bind = function () {
         this.reqCtrl('bind');
@@ -521,12 +518,15 @@
         var ctrl = this.reqCtrl('extend');
 
         function ext(name) {
-            // TODO: Should validate controller name here!
-            var c = this.node.controllers[name];
+            var cn = validCN(name, true);
+            if (!cn) {
+                throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
+            }
+            var c = this.node.controllers[cn];
             if (!c) {
-                c = new EController(name, this.node);
-                getCtrlFunc(name).call(c, c);
-                ctrl[name] = c;
+                c = new EController(cn, this.node);
+                getCtrlFunc(cn).call(c, c);
+                ctrl[cn] = c;
                 if (typeof c.onInit === 'function') {
                     c.onInit();
                 }
@@ -563,8 +563,6 @@
      * @description
      * Searches for all initialized controlled elements among children.
      *
-     * It will skip controlled elements that haven't been initialized yet.
-     *
      * @param {String} selectors
      * Standard DOM selectors.
      *
@@ -580,8 +578,7 @@
     /**
      * @method EController.findOne
      * @description
-     * Searches for a single matching initialized controlled element,
-     * skipping uninitialized elements.
+     * Searches for a single matching initialized controlled element.
      *
      * It will throw an error, if multiple or no elements found.
      *

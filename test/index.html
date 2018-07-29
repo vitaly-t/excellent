@@ -31,8 +31,7 @@
 
     app.addController('first', function (/* self */) {
         this.onInit = function () {
-            this.extend('second');
-            this.extend('third');
+            this.extend(['  second  ', 'third\t\r\n']);
             this.node.style.backgroundColor = 'red';
             console.log('HERE:', this);
         };
