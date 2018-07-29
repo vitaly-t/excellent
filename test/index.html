@@ -75,7 +75,7 @@
         };
 
         this.onInit = function () {
-            console.log('CTRL:', ctrl.getController('myModule.controller1'));
+            console.log('CONTROLLER:', ctrl.node.controllers['myModule.controller1']);
         };
 
         function populate() {
@@ -105,7 +105,7 @@
 
     app.onInit = function () {
         // need a way to find the controller?
-        document.querySelector('[e-bind*="modify"]').controllers[0].post({items: 20});
+        document.querySelector('[e-bind*="modify"]').controllers.modify.post({items: 20});
     };
 
 </script>

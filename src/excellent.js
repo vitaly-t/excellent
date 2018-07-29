@@ -127,7 +127,7 @@
                 // skipping elements search during the initial binding:
                 var idx = init ? -1 : elements.indexOf(e);
                 if (idx === -1) {
-                    var namesMap = {}, eCtrl = [];
+                    var namesMap = {}, eCtrl;
                     e.getAttribute('e-bind')
                         .split(',')
                         .forEach(function (name) {
@@ -143,11 +143,12 @@
                                 namesMap[name] = true;
                                 var c = new EController(name, e);
                                 getCtrlFunc(name).call(c, c);
-                                eCtrl.push(c);
+                                eCtrl = eCtrl || {};
+                                eCtrl[name] = c;
                                 allCtrl.push(c);
                             }
                         });
-                    if (eCtrl.length) {
+                    if (eCtrl) {
                         e.controllers = eCtrl;
                         elements.push(e);
                         els.push(e);
@@ -190,18 +191,19 @@
         /**
          * Removes one element from the list of active elements, and sends onDestroy into all linked controllers.
          *
-         * @param {Element} e
+         * @param {} e
          * Element being destroyed.
          */
         function purge(e) {
             var idx = elements.indexOf(e);
             if (idx >= 0) {
                 elements.splice(idx, 1);
-                e.controllers.forEach(function (c) {
+                for (var a in e.controllers) {
+                    var c = e.controllers[a];
                     if (typeof c.onDestroy === 'function') {
                         c.onDestroy();
                     }
-                });
+                }
             }
         }
 
@@ -441,11 +443,12 @@
         var ctrl = this.reqCtrl('extend');
 
         function ext(name) {
-            var c = this.getController(name);
+            // TODO: Should validate controller name here!
+            var c = this.node.controllers[name];
             if (!c) {
                 c = new EController(name, this.node);
-                ctrl.push(c);
                 getCtrlFunc(name).call(c, c);
+                ctrl[name] = c;
                 if (typeof c.onInit === 'function') {
                     c.onInit();
                 }
@@ -518,31 +521,6 @@
             throw new Error('A single element was expected, but found ' + a.length + '.');
         }
         return a[0];
-    };
-
-    /**
-     * @method EController.getController
-     * @description
-     * Locates a controller in the element by its name.
-     *
-     * Requires that controller is initialized.
-     *
-     * @param {String} name
-     * Name of the controller.
-     *
-     * @returns {EController|null}
-     * Found controller, or `null`, if none found, or if called
-     * before the initialization.
-     */
-    ecp.getController = function (name) {
-        var a = this.reqCtrl('getController');
-        for (var i = 0; i < a.length; i++) {
-            var c = a[i];
-            if (c.name === name) {
-                return c;
-            }
-        }
-        return null;
     };
 
     /**
