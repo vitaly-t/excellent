@@ -536,6 +536,26 @@
     };
 
     /**
+     * @method EController.findControllers
+     * @description
+     * Searches for all child controllers by a given name.
+     *
+     * @param {String} ctrlName
+     *
+     * @returns {Array<EController>}
+     */
+    ecp.findControllers = function (ctrlName) {
+        // TODO: Should validate the name here!
+        // TODO: Need one on the root level too!
+        var selectors = '[e-bind*="' + ctrlName + '"]';
+        return this.find(selectors).filter(pick).map(pick);
+
+        function pick(e) {
+            return e.controllers[ctrlName];
+        }
+    };
+
+    /**
      * @method EController.send
      * @description
      * Synchronously sends data into method `onReceive`, and returns the response, if the method exists.

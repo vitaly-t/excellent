@@ -75,7 +75,8 @@
         };
 
         this.onInit = function () {
-            console.log('CONTROLLER:', ctrl.node.controllers['myModule.controller1']);
+            console.log('CONTROLLERS:', ctrl.findControllers('WhiteColor'));
+            // console.log('CONTROLLER:', ctrl.node.controllers['myModule.controller1']);
         };
 
         function populate() {
