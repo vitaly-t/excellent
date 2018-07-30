@@ -2,7 +2,7 @@
     'use strict';
 
     /**
-     * Registered entities.
+     * Namespace for all registered entities.
      */
     var reg = {
         controllers: {},
@@ -153,6 +153,8 @@
     }
 
     function initServices() {
+        // TODO: Add support for dynamically loaded services
+
         // In the current implementation it is impossible
         // to re-initialize services, which should be ok;
 
@@ -164,6 +166,8 @@
     }
 
     function initModules() {
+        // TODO: Add support for dynamically loaded modules
+
         modules = {};
         for (var a in reg.modules) {
             var s = {}; // module scope
@@ -173,10 +177,11 @@
     }
 
     /**
-     * Binds all elements to controllers, if not yet bound.
+     * Binds to controllers all elements that are not yet bound.
      *
      * @param {Element} [node]
-     * Node element to start searching from.
+     * Top-level node element to start searching from. When not specified,
+     * the search is done for the entire document.
      */
     function bind(node) {
         binding = true;
@@ -193,7 +198,7 @@
                             name = trim(name);
                             if (name) {
                                 if (!validCN(name)) {
-                                    throw new Error('Invalid controller name ' + jStr(name));
+                                    throw new Error('Invalid controller name ' + jStr(name) + '.');
                                 }
                                 if (name in namesMap) {
                                     throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed.');
@@ -232,7 +237,7 @@
      * Currently, it provides safe nada for IE9 and IE10, to be fixed later.
      */
     function DestroyObserver() {
-        // TODO: Need to add support for IE9 and IE10, where MutationObserver is not supported.
+        // TODO: Add support for IE9 and IE10, where MutationObserver is not supported.
         var mo = typeof MutationObserver !== 'undefined' && new MutationObserver(mutantCB);
 
         function mutantCB(mutations) {
@@ -266,6 +271,8 @@
         }
 
         /**
+         * @member DestroyObserver.watch
+         * @description
          * Initiates watching the element.
          *
          * @param {Element} e
