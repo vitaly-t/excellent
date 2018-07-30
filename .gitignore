@@ -1,6 +1,7 @@
 .idea/
 node_modules/
 docs/
+API/
 excellent.min.js
 npm-debug.log
 distr/

@@ -366,6 +366,7 @@
         /**
          * @property Excellent#version
          * @readonly
+         * @description
          * Library version, automatically injected during the build process,
          * and so available only with the compressed version of the library.
          */
@@ -374,6 +375,7 @@
         /**
          * @property Excellent#services
          * @readonly
+         * @description
          * Namespace of all registered and initialized services.
          */
         rop(this, 'services', {});
@@ -541,7 +543,7 @@
      *
      * Requires that controller is initialized.
      *
-     * @param {String|Array<String>>} ctrlName
+     * @param {String|String[]} ctrlName
      * Either a single controller name, or an array of names.
      *
      * @returns {EController|Array<EController>}
@@ -583,7 +585,7 @@
      * This optional level of verification is useful when sub-controllers are rarely used, or loaded
      * dynamically. And such explicit verification makes the code more robust.
      *
-     * @param {Array<String>>} ctrlNames
+     * @param {Array<String>} ctrlNames
      */
     ecp.depends = function (ctrlNames) {
         if (!Array.isArray(ctrlNames)) {

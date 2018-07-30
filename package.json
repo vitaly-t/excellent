@@ -7,7 +7,8 @@
     "gulp": "./node_modules/.bin/gulp",
     "lint": "./node_modules/.bin/gulp lint",
     "test": "./node_modules/.bin/gulp test",
-    "build": "./node_modules/.bin/gulp build"
+    "build": "./node_modules/.bin/gulp build",
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md"
   },
   "files": [
     "src"
@@ -40,6 +41,7 @@
     "gulp-eslint": "5.0.0",
     "gulp-insert": "0.5.0",
     "gulp-rename": "1.4.0",
-    "gulp-uglify": "3.0.1"
+    "gulp-uglify": "3.0.1",
+    "jsdoc": "3.5.5"
   }
 }
