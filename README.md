@@ -24,11 +24,11 @@ To give your code component-like isolation:
 
 ```js
 app.addController('message', function() {
-    this.node.innerHTML = 'This is awesome! :)';
+    this.node.innerHTML = 'This is awesome! :)'; // this.node = your DOM element
 });
 
 app.addController('awesome', function() {
-    this.node.className = 'awesome';
+    this.node.className = 'awesome'; // css class for a cool green box
 });
 ```
 
