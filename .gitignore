@@ -2,7 +2,7 @@
 node_modules/
 docs/
 API/
-excellent.min.js
+excellent.min.*
 npm-debug.log
 distr/
 build/
