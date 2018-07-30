@@ -14,17 +14,16 @@ See [Wiki Pages] for all the details.
 
 ---
 
-You get the basic element-to-controller binding,
+You get the basic element-to-controller binding:
 
 ```html
 <div e-bind="hello, awesome"></div>
 ```
 
-to give your code component-like isolation,
+To give your code component-like isolation:
 
 ```js
 app.addController('hello', function() {
-    // this.node = your DOM element
     this.node.innerHTML = 'This is awesome! :)';
 });
 
@@ -33,7 +32,7 @@ app.addController('awesome', function() {
 });
 ```
 
-and get out of your way, let you use DOM directly.
+And to get out of your way, let you use DOM directly.
 
 <img align="left" width="260" height="40" src="./.github/images/awesome.png" alt="awesome">
 
