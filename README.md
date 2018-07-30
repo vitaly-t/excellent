@@ -28,7 +28,7 @@ app.addController('message', function() {
 });
 
 app.addController('awesome', function() {
-    this.node.className = 'awesome'; // css class for a cool green box
+    this.node.className = 'green-box'; // css class for a cool green box
 });
 ```
 
