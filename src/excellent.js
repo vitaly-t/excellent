@@ -237,40 +237,14 @@
      * Helps watching node elements removal from DOM, in order to provide onDestroy notification
      * for all corresponding controllers.
      *
-     * Currently, it provides safe nada for IE9 and IE10, to be fixed later.
+     * For IE9/10 that do not support MutationObserver, it executes manual check every 300ms.
      */
     function DestroyObserver() {
-        // TODO: Add support for IE9 and IE10, where MutationObserver is not supported.
-        var mo = typeof MutationObserver !== 'undefined' && new MutationObserver(mutantCB);
-
-        function mutantCB(mutations) {
-            mutations.forEach(function (m) {
-                for (var i = 0; i < m.removedNodes.length; i++) {
-                    var e = m.removedNodes[i];
-                    if (e.controllers) {
-                        purge(e);
-                    }
-                }
-            });
-        }
-
-        /**
-         * Removes one element from the list of active elements, and sends onDestroy into all linked controllers.
-         *
-         * @param {} e
-         * Element being destroyed.
-         */
-        function purge(e) {
-            var idx = elements.indexOf(e);
-            if (idx >= 0) {
-                elements.splice(idx, 1);
-                for (var a in e.controllers) {
-                    var c = e.controllers[a];
-                    if (typeof c.onDestroy === 'function') {
-                        c.onDestroy();
-                    }
-                }
-            }
+        var mo;
+        if (typeof MutationObserver === 'undefined') {
+            setInterval(manualCheck, 300); // This is a work-around for IE9 and IE10
+        } else {
+            mo = new MutationObserver(mutantCB);
         }
 
         /**
@@ -286,6 +260,51 @@
                 mo.observe(e, {childList: true});
             }
         };
+
+        function mutantCB(mutations) {
+            mutations.forEach(function (m) {
+                for (var i = 0; i < m.removedNodes.length; i++) {
+                    var e = m.removedNodes[i];
+                    if (e.controllers) {
+                        var idx = elements.indexOf(e);
+                        if (idx >= 0) {
+                            elements.splice(idx, 1);
+                            notify(e);
+                        }
+                    }
+                }
+            });
+        }
+
+        /**
+         * Manual check for controlled elements that have been deleted from DOM.
+         */
+        function manualCheck() {
+            var ce = find('[e-bind]'); // all controlled elements;
+            var i = elements.length;
+            while (i--) {
+                var e = elements[i];
+                if (ce.indexOf(e) === -1) {
+                    elements.splice(i, 1);
+                    notify(e);
+                }
+            }
+        }
+
+        /**
+         * Sends onDestroy notification into all controllers of an element.
+         *
+         * @param {} e
+         */
+        function notify(e) {
+            for (var i in e.controllers) {
+                var c = e.controllers[i];
+                if (typeof c.onDestroy === 'function') {
+                    c.onDestroy();
+                }
+            }
+        }
+
     }
 
     /**
