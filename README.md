@@ -17,13 +17,13 @@ See [Wiki Pages] for all the details.
 You get the basic element-to-controller binding:
 
 ```html
-<div e-bind="hello, awesome"></div>
+<div e-bind="message, awesome"></div>
 ```
 
 To give your code component-like isolation:
 
 ```js
-app.addController('hello', function() {
+app.addController('message', function() {
     this.node.innerHTML = 'This is awesome! :)';
 });
 
