@@ -415,15 +415,19 @@
         /**
          * @method Excellent.bind
          * @description
-         * Searches for elements not yet bound, and binds them to controllers.
+         * Searches for all elements in the document not yet bound, and binds them to controllers.
          *
-         * It can be used when a controller creates a new controlled element
-         * outside of its list of children.
+         * Normally, a controller creates new controlled elements within its children, and then
+         * uses ctrl.bind() method. It is only if you create a new controlled element that's not
+         * a child element that you would use this global bind method.
+         *
+         * And if you call it while in the process of binding, the call will be delayed, which is
+         * the scenario best to be avoided.
          */
         this.bind = function () {
             if (binding) {
-                // Called during construction on initialization,
-                // so need to delay the call, to avoid recursion:
+                // Called during construction or initialization, so need to delay the call, to avoid recursion.
+                // This usually doesn't happen, unless there is a flaw in how your app is implemented.
                 setTimeout(bind);
             } else {
                 bind();
