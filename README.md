@@ -1,8 +1,8 @@
 # Excellent.js
 
-<img align="left" width="299" height="302" src="./.github/images/burns.gif">
+<img align="left" width="210" height="210" src="./.github/images/burns.gif">
 
-## DOM-fiddling library.
+## DOM-fiddling library :)
 
 <a href="https://gitter.im/vitaly-t/excellent"><img align="left" width="90" height="20" src="./.github/images/chat.png" alt="Join Chat"></a>
 <br/>
