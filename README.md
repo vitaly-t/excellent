@@ -12,7 +12,7 @@ tools for organizing all your JavaScript code in such a way that's highly reusab
 
 See [Wiki Pages] for all the details.
 
-<br/>
+---
 
 You get the basic element-to-controller binding,
 
@@ -35,6 +35,6 @@ app.addController('awesome', function() {
 
 and get out of your way, let you use DOM directly.
 
-<img align="left" width="325" height="50" src="./.github/images/awesome.png" alt="awesome">
+<img align="left" width="260" height="40" src="./.github/images/awesome.png" alt="awesome">
 
 [Wiki Pages]:https://github.com/vitaly-t/excellent/wiki
