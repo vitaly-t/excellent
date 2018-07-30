@@ -392,6 +392,8 @@
 
     /**
      * @class ERoot
+     * @description
+     * Root interface of the library.
      */
     function ERoot() {
 
@@ -420,6 +422,12 @@
          * Adds/Registers a new controller.
          *
          * If controller with such name already exists, it will be overridden.
+         *
+         * @param {String} name
+         * Controller name.
+         *
+         * @param {Function} cb
+         * Controller function.
          */
         this.addController = function (name, cb) {
             addEntity(name, cb, 'controller', reg.controllers);
@@ -431,6 +439,12 @@
          * Adds/Registers a new service.
          *
          * If service with such name already exists, it will be overridden.
+         *
+         * @param {String} name
+         * Service name.
+         *
+         * @param {Function} cb
+         * Service initialization function.
          */
         this.addService = function (name, cb) {
             addEntity(name, cb, 'service', reg.services);
@@ -442,6 +456,12 @@
          * Creates and registers a new module.
          *
          * If module with such name already exists, it will be overridden.
+         *
+         * @param {String} name
+         * Module name.
+         *
+         * @param {Function} cb
+         * Module initialization function.
          */
         this.addModule = function (name, cb) {
             addEntity(name, cb, 'module', reg.modules);
@@ -514,6 +534,8 @@
      * @class EController
      * @description
      * Virtual controller class.
+     *
+     * It can only be created internally by the library.
      *
      * @param {String} name
      * @param {Element} node
@@ -618,12 +640,14 @@
      * dynamically. And such explicit verification makes the code more robust.
      *
      * @param {Array&lt;String>} ctrlNames
+     * List of controller names.
      */
     ecp.depends = function (ctrlNames) {
         if (!Array.isArray(ctrlNames)) {
             throw new TypeError('Invalid list of controller names.');
         }
         ctrlNames.forEach(function (name) {
+            // TODO: Need to validate the name, or else it may crash
             if (!getCtrlFunc(name, true)) {
                 throw new Error('Controller ' + jStr(name) + ' depends on ' + jStr(this.name) + ', which was not found.');
             }
