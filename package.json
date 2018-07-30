@@ -30,6 +30,11 @@
     "name": "Vitaly Tomilov",
     "email": "vitaly.tomilov@gmail.com"
   },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0",
+    "npm": ">=3.10"
+  },
   "devDependencies": {
     "gulp": "3.9.1",
     "gulp-eslint": "5.0.0",
