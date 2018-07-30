@@ -171,19 +171,6 @@
         Object.defineProperty(target, prop, {value: value, enumerable: true});
     }
 
-    function initRoot() {
-        var e = find('[e-root]');
-        if (e.length) {
-            if (e.length > 1) {
-                throw new Error('Multiple e-root elements are not allowed.');
-            }
-            var name = e[0].getAttribute('e-root');
-            if (name) {
-                window[name] = root; // expose the alternative root name
-            }
-        }
-    }
-
     function initServices() {
         // TODO: Add support for dynamically loaded services
 
@@ -577,7 +564,7 @@
          * @description
          * Source DOM element that uses this controller.
          *
-         * NOTE: In the current implementation the element is static (not live).
+         * NOTE: In the current implementation, the element is static (not live).
          */
         rop(this, 'node', node);
     }
@@ -585,13 +572,13 @@
     /**
      * @event EController.onInit
      * @description
-     * Optional initialization event handler.
+     * Initialization event handler.
      */
 
     /**
      * @event EController.onDestroy
      * @description
-     * Optional de-initialization event handler.
+     * De-initialization event handler.
      */
 
     var ecp = EController.prototype; // abbreviation
@@ -666,7 +653,7 @@
             throw new TypeError('Invalid list of controller names.');
         }
         ctrlNames.forEach(function (name) {
-            // TODO: Need to validate the name, or else it may crash
+            // TODO: Need to validate the name, or else it may crash here
             if (!getCtrlFunc(name, true)) {
                 throw new Error('Controller ' + jStr(name) + ' depends on ' + jStr(this.name) + ', which was not found.');
             }
@@ -794,7 +781,21 @@
         return c;
     };
 
-    initRoot();
+    /**
+     * Initializes the optional e-root.
+     */
+    (function () {
+        var e = find('[e-root]');
+        if (e.length) {
+            if (e.length > 1) {
+                throw new Error('Multiple e-root elements are not allowed.');
+            }
+            var name = e[0].getAttribute('e-root');
+            if (name) {
+                window[name] = root; // expose the alternative root name
+            }
+        }
+    })();
 
 })();
 </code></pre>
