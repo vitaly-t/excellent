@@ -31,9 +31,9 @@
     /**
      * Library's root object.
      *
-     * @type {Excellent}
+     * @type {ERoot}
      */
-    var root = new Excellent();
+    var root = new ERoot();
 
     /**
      * Helps observing when elements are removed.
@@ -362,12 +362,12 @@
     }
 
     /**
-     * @class Excellent
+     * @class ERoot
      */
-    function Excellent() {
+    function ERoot() {
 
         /**
-         * @member Excellent#version
+         * @member ERoot#version
          * @type {String}
          * @readonly
          * @description
@@ -377,7 +377,7 @@
         rop(this, 'version', '<version>');
 
         /**
-         * @member Excellent#services
+         * @member ERoot#services
          * @type {Object}
          * @readonly
          * @description
@@ -386,7 +386,7 @@
         rop(this, 'services', {});
 
         /**
-         * @method Excellent#addController
+         * @method ERoot#addController
          * @description
          * Adds/Registers a new controller.
          *
@@ -397,7 +397,7 @@
         };
 
         /**
-         * @method Excellent#addService
+         * @method ERoot#addService
          * @description
          * Adds/Registers a new service.
          *
@@ -408,7 +408,7 @@
         };
 
         /**
-         * @method Excellent#addModule
+         * @method ERoot#addModule
          * @description
          * Creates and registers a new module.
          *
@@ -419,7 +419,7 @@
         };
 
         /**
-         * @method Excellent#bind
+         * @method ERoot#bind
          * @description
          * Searches for all elements in the document not yet bound, and binds them to controllers.
          *
@@ -441,7 +441,7 @@
         };
 
         /**
-         * @method Excellent#find
+         * @method ERoot#find
          * @description
          * Searches for controlled elements within document.
          *
@@ -460,7 +460,7 @@
         };
 
         /**
-         * @method Excellent#findControllers
+         * @method ERoot#findControllers
          * @description
          * Searches the entire document for all initialized controllers by a given controller name.
          *
@@ -474,7 +474,7 @@
     }
 
     /**
-     * @event Excellent#onInit
+     * @event ERoot#onInit
      * @description
      * Called after all controllers have been initialized.
      *
