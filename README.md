@@ -4,7 +4,7 @@
 
 ## DOM-fiddling library.
 
-<a href="https://img.shields.io/gitter/room/vitaly-t/excellent.svg"><img align="left" width="113" height="25" src="./.github/images/chat.png" alt="Join Chat"></a>
+<a href="https://gitter.im/vitaly-t/excellent"><img align="left" width="90" height="20" src="./.github/images/chat.png" alt="Join Chat"></a>
 <br/>
 
 If you like working with DOM directly, this tiny (2Kb compressed) library gives you the essential
