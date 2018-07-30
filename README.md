@@ -1,6 +1,6 @@
 # Excellent.js
 
-<img align="left" width="210" height="210" src="./.github/images/burns.gif">
+<img align="left" width="220" height="220" src="./.github/images/burns.gif">
 
 ## DOM-fiddling library :)
 
@@ -8,7 +8,7 @@
 <br/>
 
 If you like working with DOM directly, this tiny (2Kb compressed) library gives you the essential
-tools for organizing your code in such a way that's highly reusable, easy to maintain and distribute.
+tools for organizing all your JavaScript code in such a way that's highly reusable, easy to maintain and distribute.
 
 See [Wiki Pages] for all the details.
 
