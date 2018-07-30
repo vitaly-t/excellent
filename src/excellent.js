@@ -1,3 +1,6 @@
+/**
+ * @author Vitaly Tomilov
+ */
 (function () {
     'use strict';
 
@@ -364,7 +367,8 @@
     function Excellent() {
 
         /**
-         * @property Excellent#version
+         * @member Excellent#version
+         * @type {String}
          * @readonly
          * @description
          * Library version, automatically injected during the build process,
@@ -373,7 +377,8 @@
         rop(this, 'version', '<version>');
 
         /**
-         * @property Excellent#services
+         * @member Excellent#services
+         * @type {Object}
          * @readonly
          * @description
          * Namespace of all registered and initialized services.
@@ -381,15 +386,7 @@
         rop(this, 'services', {});
 
         /**
-         * @method Excellent.onInit
-         * @description
-         * Called after all controllers have been initialized.
-         *
-         * @type {Function|null}
-         */
-
-        /**
-         * @method Excellent.addController
+         * @method Excellent#addController
          * @description
          * Adds/Registers a new controller.
          *
@@ -400,7 +397,7 @@
         };
 
         /**
-         * @method Excellent.addService
+         * @method Excellent#addService
          * @description
          * Adds/Registers a new service.
          *
@@ -411,7 +408,7 @@
         };
 
         /**
-         * @method Excellent.addModule
+         * @method Excellent#addModule
          * @description
          * Creates and registers a new module.
          *
@@ -422,7 +419,7 @@
         };
 
         /**
-         * @method Excellent.bind
+         * @method Excellent#bind
          * @description
          * Searches for all elements in the document not yet bound, and binds them to controllers.
          *
@@ -444,7 +441,7 @@
         };
 
         /**
-         * @method Excellent.find
+         * @method Excellent#find
          * @description
          * Searches for controlled elements within document.
          *
@@ -463,7 +460,7 @@
         };
 
         /**
-         * @method Excellent.findControllers
+         * @method Excellent#findControllers
          * @description
          * Searches the entire document for all initialized controllers by a given controller name.
          *
@@ -475,6 +472,14 @@
          */
         this.findControllers = findCS.bind(this);
     }
+
+    /**
+     * @event Excellent#onInit
+     * @description
+     * Called after all controllers have been initialized.
+     *
+     * @type {Function|null}
+     */
 
     /**
      * @class EController
@@ -505,26 +510,24 @@
          * NOTE: In the current implementation the element is static (not live).
          */
         rop(this, 'node', node);
-
-        /**
-         * @member EController#onInit
-         * @type {function}
-         * @description
-         * Optional initialization event handler.
-         */
-
-        /**
-         * @member EController#onDestroy
-         * @type {function}
-         * @description
-         * Optional de-initialization event handler.
-         */
     }
+
+    /**
+     * @event EController.onInit
+     * @description
+     * Optional initialization event handler.
+     */
+
+    /**
+     * @event EController.onDestroy
+     * @description
+     * Optional de-initialization event handler.
+     */
 
     var ecp = EController.prototype; // abbreviation
 
     /**
-     * @method EController.bind
+     * @method EController#bind
      * @description
      * Indicates that the element's content has been modified to contain new child controlled elements,
      * and that it is time to bind those elements and initialize its controllers.
@@ -537,7 +540,7 @@
     };
 
     /**
-     * @method EController.extend
+     * @method EController#extend
      * @description
      * Extends the current element with another controller(s), thus providing functional inheritance.
      *
@@ -578,7 +581,7 @@
     };
 
     /**
-     * @method EController.depends
+     * @method EController#depends
      * @description
      * Verifies that each controller in the list of dependencies exists, or else throws an error.
      *
@@ -599,7 +602,7 @@
     };
 
     /**
-     * @method EController.find
+     * @method EController#find
      * @description
      * Searches for all initialized controlled elements among children.
      *
@@ -616,7 +619,7 @@
     };
 
     /**
-     * @method EController.findOne
+     * @method EController#findOne
      * @description
      * Searches for a single matching initialized controlled element.
      *
@@ -637,7 +640,7 @@
     };
 
     /**
-     * @method EController.findControllers
+     * @method EController#findControllers
      * @description
      * Searches for all initialized child controllers by a given controller name.
      *
@@ -652,7 +655,7 @@
     };
 
     /**
-     * @method EController.send
+     * @method EController#send
      * @description
      * Synchronously sends data into method `onReceive`, and returns the response, if the method exists.
      * If `onReceive` handler does not exist, the method will do nothing, and return `undefined`.
@@ -673,7 +676,7 @@
     };
 
     /**
-     * @method EController.post
+     * @method EController#post
      * @description
      * Asynchronously sends data into method `onReceive`, and if the callback was specified - calls it with the response.
      *
@@ -699,7 +702,7 @@
     };
 
     /**
-     * @method EController.reqCtrl
+     * @method EController#reqCtrl
      * @private
      * @description
      * Requires controllers in a safe way: Verifies that controllers have been initialized,
