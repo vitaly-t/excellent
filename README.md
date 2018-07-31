@@ -14,13 +14,13 @@ See [Wiki Pages] for all the details.
 
 ---
 
-You get the basic element-to-controller binding:
+You get the basic element-to-controller bindings:
 
 ```html
 <div e-bind="message, awesome"></div>
 ```
 
-To give your code component-like isolation:
+That gives your code isolation and reusability:
 
 ```js
 app.addController('message', function() {
@@ -32,7 +32,7 @@ app.addController('awesome', function() {
 });
 ```
 
-And to get out of your way, let you use DOM directly.
+And then it gets out of your way, let you use DOM directly.
 
 <img align="left" width="260" height="40" src="./.github/images/awesome.png" alt="awesome">
 
