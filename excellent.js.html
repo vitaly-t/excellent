@@ -34,23 +34,21 @@
     'use strict';
 
     /**
-     * Namespace for all registered entities.
+     * Registered app controllers.
+     *
+     * It is a controller name-to-function map for the app's local controllers.
      */
-    var reg = {
-        controllers: {},
-        modules: {},
-        services: {}
-    };
+    var controllers = {};
 
     /**
-     * Initialized modules.
-     */
-    var modules;
-
-    /**
-     * Controller name-to-function cache/map.
+     * Global name-to-function cache for all controllers.
      */
     var ctrlCache = {};
+
+    /**
+     * All registered modules.
+     */
+    var modules = {};
 
     /**
      * All elements with controllers, currently in the DOM.
@@ -84,15 +82,13 @@
     var jStr = JSON.stringify.bind(JSON);
 
     document.addEventListener('DOMContentLoaded', function () {
-        initServices();
-        initModules();
         bind();
         if (typeof root.onInit === 'function') {
             root.onInit();
         }
     });
 
-    function addEntity(name, cb, entity, obj) {
+    function checkEntity(name, cb, entity) {
         name = typeof name === 'string' ? name : '';
         var m = name.match(/[a-z$_][a-z$_0-9]*/i);
         if (!m || m[0] !== name) {
@@ -101,7 +97,6 @@
         if (typeof cb !== 'function') {
             throw new TypeError('Initialization function in ' + entity + ' ' + jStr(name) + ' is missing.');
         }
-        obj[name] = cb;
     }
 
     /**
@@ -169,30 +164,6 @@
      */
     function rop(target, prop, value) {
         Object.defineProperty(target, prop, {value: value, enumerable: true});
-    }
-
-    function initServices() {
-        // TODO: Add support for dynamically loaded services
-
-        // In the current implementation it is impossible
-        // to re-initialize services, which should be ok;
-
-        for (var a in reg.services) {
-            var s = {}; // service scope
-            rop(root.services, a, s);
-            reg.services[a].call(s, s);
-        }
-    }
-
-    function initModules() {
-        // TODO: Add support for dynamically loaded modules
-
-        modules = {};
-        for (var a in reg.modules) {
-            var s = {}; // module scope
-            modules[a] = s;
-            reg.modules[a].call(s, s);
-        }
     }
 
     /**
@@ -341,8 +312,8 @@
             return ctrlCache[name]; // use the cache
         }
         if (name.indexOf('.') === -1) {
-            // it is a simple controller name;
-            var f = reg.controllers[name]; // the function
+            // it is an in-app controller;
+            var f = controllers[name]; // the function
             if (f) {
                 ctrlCache[name] = f; // updating cache
                 return f;
@@ -427,7 +398,12 @@
          * @description
          * Adds/Registers a new controller.
          *
-         * If controller with such name already exists, it will be overridden.
+         * If controller with such name already exists, then the method will do the following:
+         *
+         *  - will throw an error, if the function is different
+         *  - will do nothing, if the function is the same
+         *
+         * In order to avoid naming conflicts, reusable controllers should reside inside modules.
          *
          * @param {String} name
          * Controller name.
@@ -436,15 +412,26 @@
          * Controller function.
          */
         this.addController = function (name, cb) {
-            addEntity(name, cb, 'controller', reg.controllers);
+            checkEntity(name, cb, 'controller');
+            if (name in controllers) {
+                // controller name has been registered before
+                if (controllers[name] === cb) {
+                    // it is the same controller, so we can just ignore it;
+                    return;
+                }
+                throw new Error('Controller with name ' + jStr(name) + ' already exists.');
+            }
+            controllers[name] = cb;
         };
 
         /**
          * @method ERoot#addService
          * @description
-         * Adds/Registers a new service.
+         * Adds and initializes a new service.
          *
-         * If service with such name already exists, it will be overridden.
+         * If the service with such name already exists, the method will do nothing,
+         * because it cannot determine whether the actual service behind the name is the same,
+         * while services need to be fully reusable, even in dynamically loaded pages.
          *
          * @param {String} name
          * Service name.
@@ -453,15 +440,22 @@
          * Service initialization function.
          */
         this.addService = function (name, cb) {
-            addEntity(name, cb, 'service', reg.services);
+            checkEntity(name, cb, 'service');
+            if (!(name in root.services)) {
+                var s = {}; // service's scope
+                rop(root.services, name, s);
+                cb.call(s, s);
+            }
         };
 
         /**
          * @method ERoot#addModule
          * @description
-         * Creates and registers a new module.
+         * Adds and initializes a new module.
          *
-         * If module with such name already exists, it will be overridden.
+         * If the module with such name already exists, the method will do nothing,
+         * because it cannot determine whether the actual module behind the name is the same,
+         * while modules need to be fully reusable, even in dynamically loaded pages.
          *
          * @param {String} name
          * Module name.
@@ -470,7 +464,12 @@
          * Module initialization function.
          */
         this.addModule = function (name, cb) {
-            addEntity(name, cb, 'module', reg.modules);
+            checkEntity(name, cb, 'module');
+            if (!(name in modules)) {
+                var s = {}; // module's scope
+                modules[name] = s;
+                cb.call(s, s);
+            }
         };
 
         /**

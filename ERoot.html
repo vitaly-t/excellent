@@ -94,7 +94,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line370">line 370</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line341">line 341</a>
     </li></ul></dd>
     
 
@@ -196,7 +196,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line387">line 387</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line358">line 358</a>
     </li></ul></dd>
     
 
@@ -269,7 +269,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line377">line 377</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line348">line 348</a>
     </li></ul></dd>
     
 
@@ -306,7 +306,12 @@ and so available only with the compressed version of the library.</p>
 
 <div class="description">
     <p>Adds/Registers a new controller.</p>
-<p>If controller with such name already exists, it will be overridden.</p>
+<p>If controller with such name already exists, then the method will do the following:</p>
+<ul>
+<li>will throw an error, if the function is different</li>
+<li>will do nothing, if the function is the same</li>
+</ul>
+<p>In order to avoid naming conflicts, reusable controllers should reside inside modules.</p>
 </div>
 
 
@@ -422,7 +427,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line396">line 396</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line367">line 367</a>
     </li></ul></dd>
     
 
@@ -464,8 +469,10 @@ and so available only with the compressed version of the library.</p>
 
 
 <div class="description">
-    <p>Creates and registers a new module.</p>
-<p>If module with such name already exists, it will be overridden.</p>
+    <p>Adds and initializes a new module.</p>
+<p>If the module with such name already exists, the method will do nothing,
+because it cannot determine whether the actual module behind the name is the same,
+while modules need to be fully reusable, even in dynamically loaded pages.</p>
 </div>
 
 
@@ -581,7 +588,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line430">line 430</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line422">line 422</a>
     </li></ul></dd>
     
 
@@ -623,8 +630,10 @@ and so available only with the compressed version of the library.</p>
 
 
 <div class="description">
-    <p>Adds/Registers a new service.</p>
-<p>If service with such name already exists, it will be overridden.</p>
+    <p>Adds and initializes a new service.</p>
+<p>If the service with such name already exists, the method will do nothing,
+because it cannot determine whether the actual service behind the name is the same,
+while services need to be fully reusable, even in dynamically loaded pages.</p>
 </div>
 
 
@@ -740,7 +749,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line413">line 413</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line398">line 398</a>
     </li></ul></dd>
     
 
@@ -831,7 +840,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line447">line 447</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line446">line 446</a>
     </li></ul></dd>
     
 
@@ -967,7 +976,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line469">line 469</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line468">line 468</a>
     </li></ul></dd>
     
 
@@ -1124,7 +1133,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line488">line 488</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line487">line 487</a>
     </li></ul></dd>
     
 
@@ -1253,7 +1262,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line502">line 502</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line501">line 501</a>
     </li></ul></dd>
     
 
