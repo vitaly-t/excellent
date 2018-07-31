@@ -32,7 +32,7 @@ app.addController('awesome', function() {
 });
 ```
 
-And then it gets out of your way, lets you use DOM directly.
+And then it gets out of your way, lets you work with DOM directly.
 
 <a href="https://github.com/vitaly-t/excellent/wiki"><img align="left" width="260" height="40" src="./.github/images/awesome.png" alt="awesome"></a>
 
