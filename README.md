@@ -32,7 +32,7 @@ app.addController('awesome', function() {
 });
 ```
 
-And then it gets out of your way, let you use DOM directly.
+And then it gets out of your way, lets you use DOM directly.
 
 <img align="left" width="260" height="40" src="./.github/images/awesome.png" alt="awesome">
 
