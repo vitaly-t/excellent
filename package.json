@@ -6,7 +6,7 @@
   "scripts": {
     "gulp": "./node_modules/.bin/gulp",
     "lint": "./node_modules/.bin/gulp lint",
-    "test": "jest",
+    "test": "jest --coverage",
     "build": "./node_modules/.bin/gulp build",
     "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md"
   },
@@ -45,8 +45,5 @@
     "jest": "23.4.2",
     "jsdoc": "3.5.5",
     "puppeteer": "1.6.1"
-  },
-  "jest": {
-    "testURL": "http://localhost/"
   }
 }
