@@ -8,15 +8,13 @@
      * Namespace for all registered entities.
      */
     var reg = {
-        controllers: {},
-        modules: {},
-        services: {}
+        controllers: {}
     };
 
     /**
      * Initialized modules.
      */
-    var modules;
+    var modules = {};
 
     /**
      * Controller name-to-function cache/map.
@@ -55,15 +53,13 @@
     var jStr = JSON.stringify.bind(JSON);
 
     document.addEventListener('DOMContentLoaded', function () {
-        initServices();
-        initModules();
         bind();
         if (typeof root.onInit === 'function') {
             root.onInit();
         }
     });
 
-    function addEntity(name, cb, entity, obj) {
+    function checkEntity(name, cb, entity) {
         name = typeof name === 'string' ? name : '';
         var m = name.match(/[a-z$_][a-z$_0-9]*/i);
         if (!m || m[0] !== name) {
@@ -72,7 +68,6 @@
         if (typeof cb !== 'function') {
             throw new TypeError('Initialization function in ' + entity + ' ' + jStr(name) + ' is missing.');
         }
-        obj[name] = cb;
     }
 
     /**
@@ -140,30 +135,6 @@
      */
     function rop(target, prop, value) {
         Object.defineProperty(target, prop, {value: value, enumerable: true});
-    }
-
-    function initServices() {
-        // TODO: Add support for dynamically loaded services
-
-        // In the current implementation it is impossible
-        // to re-initialize services, which should be ok;
-
-        for (var a in reg.services) {
-            var s = {}; // service scope
-            rop(root.services, a, s);
-            reg.services[a].call(s, s);
-        }
-    }
-
-    function initModules() {
-        // TODO: Add support for dynamically loaded modules
-
-        modules = {};
-        for (var a in reg.modules) {
-            var s = {}; // module scope
-            modules[a] = s;
-            reg.modules[a].call(s, s);
-        }
     }
 
     /**
@@ -407,7 +378,8 @@
          * Controller function.
          */
         this.addController = function (name, cb) {
-            addEntity(name, cb, 'controller', reg.controllers);
+            checkEntity(name, cb, 'controller');
+            reg.controllers[name] = cb;
         };
 
         /**
@@ -415,7 +387,7 @@
          * @description
          * Adds/Registers a new service.
          *
-         * If service with such name already exists, it will be overridden.
+         * If service with such name already exists, an error will be thrown.
          *
          * @param {String} name
          * Service name.
@@ -424,7 +396,11 @@
          * Service initialization function.
          */
         this.addService = function (name, cb) {
-            addEntity(name, cb, 'service', reg.services);
+            checkEntity(name, cb, 'service');
+            var s = {}; // service's scope
+            // TODO: Maybe make the error explicit?
+            rop(root.services, name, s); // will throw on the same service name
+            cb.call(s, s);
         };
 
         /**
@@ -441,7 +417,11 @@
          * Module initialization function.
          */
         this.addModule = function (name, cb) {
-            addEntity(name, cb, 'module', reg.modules);
+            // TODO: Maybe should instead throw on repeated module, for consistency?
+            checkEntity(name, cb, 'module');
+            var s = {}; // module's scope
+            modules[name] = s;
+            cb.call(s, s);
         };
 
         /**
