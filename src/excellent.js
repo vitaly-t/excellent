@@ -378,6 +378,9 @@
          * Controller function.
          */
         this.addController = function (name, cb) {
+            // TODO: Controller needs to be dynamic, and it must throw when name is repeated,
+            // Example: multiple developers, working on the same project create in-line
+            // controllers with the same name. It needs to be reported!
             checkEntity(name, cb, 'controller');
             reg.controllers[name] = cb;
         };
@@ -385,9 +388,11 @@
         /**
          * @method ERoot#addService
          * @description
-         * Adds/Registers a new service.
+         * Adds and initializes a new service.
          *
-         * If service with such name already exists, an error will be thrown.
+         * If the service with such name already exists, the method will do nothing,
+         * because it cannot determine whether the actual service behind the name is the same,
+         * while services need to be fully reusable, even in dynamically loaded pages.
          *
          * @param {String} name
          * Service name.
@@ -397,18 +402,21 @@
          */
         this.addService = function (name, cb) {
             checkEntity(name, cb, 'service');
-            var s = {}; // service's scope
-            // TODO: Maybe make the error explicit?
-            rop(root.services, name, s); // will throw on the same service name
-            cb.call(s, s);
+            if (!(name in root.services)) {
+                var s = {}; // service's scope
+                rop(root.services, name, s);
+                cb.call(s, s);
+            }
         };
 
         /**
          * @method ERoot#addModule
          * @description
-         * Creates and registers a new module.
+         * Adds and initializes a new module.
          *
-         * If module with such name already exists, it will be overridden.
+         * If the module with such name already exists, the method will do nothing,
+         * because it cannot determine whether the actual module behind the name is the same,
+         * while modules need to be fully reusable, even in dynamically loaded pages.
          *
          * @param {String} name
          * Module name.
@@ -417,11 +425,12 @@
          * Module initialization function.
          */
         this.addModule = function (name, cb) {
-            // TODO: Maybe should instead throw on repeated module, for consistency?
             checkEntity(name, cb, 'module');
-            var s = {}; // module's scope
-            modules[name] = s;
-            cb.call(s, s);
+            if (!(name in modules)) {
+                var s = {}; // module's scope
+                modules[name] = s;
+                cb.call(s, s);
+            }
         };
 
         /**
