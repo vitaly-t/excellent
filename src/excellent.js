@@ -5,21 +5,21 @@
     'use strict';
 
     /**
-     * Namespace for all registered entities.
+     * Registered app controllers.
+     *
+     * It is a controller name-to-function map for the app's local controllers.
      */
-    var reg = {
-        controllers: {}
-    };
+    var controllers = {};
 
     /**
-     * Initialized modules.
-     */
-    var modules = {};
-
-    /**
-     * Controller name-to-function cache/map.
+     * Global name-to-function cache for all controllers.
      */
     var ctrlCache = {};
+
+    /**
+     * All registered modules.
+     */
+    var modules = {};
 
     /**
      * All elements with controllers, currently in the DOM.
@@ -283,8 +283,8 @@
             return ctrlCache[name]; // use the cache
         }
         if (name.indexOf('.') === -1) {
-            // it is a simple controller name;
-            var f = reg.controllers[name]; // the function
+            // it is an in-app controller;
+            var f = controllers[name]; // the function
             if (f) {
                 ctrlCache[name] = f; // updating cache
                 return f;
@@ -369,7 +369,12 @@
          * @description
          * Adds/Registers a new controller.
          *
-         * If controller with such name already exists, it will be overridden.
+         * If controller with such name already exists, then the method will do the following:
+         *
+         *  - will throw an error, if the function is different
+         *  - will do nothing, if the function is the same
+         *
+         * In order to avoid naming conflicts, reusable controllers should reside inside modules.
          *
          * @param {String} name
          * Controller name.
@@ -378,11 +383,16 @@
          * Controller function.
          */
         this.addController = function (name, cb) {
-            // TODO: Controller needs to be dynamic, and it must throw when name is repeated,
-            // Example: multiple developers, working on the same project create in-line
-            // controllers with the same name. It needs to be reported!
             checkEntity(name, cb, 'controller');
-            reg.controllers[name] = cb;
+            if (name in controllers) {
+                // controller name has been registered before
+                if (controllers[name] === cb) {
+                    // it is the same controller, so we can just ignore it;
+                    return;
+                }
+                throw new Error('Controller with name ' + jStr(name) + ' already exists.');
+            }
+            controllers[name] = cb;
         };
 
         /**
