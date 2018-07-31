@@ -3,6 +3,7 @@ node_modules/
 docs/
 API/
 local_test/
+coverage/
 excellent.min.*
 npm-debug.log
 distr/
