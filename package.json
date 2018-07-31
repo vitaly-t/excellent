@@ -6,7 +6,7 @@
   "scripts": {
     "gulp": "./node_modules/.bin/gulp",
     "lint": "./node_modules/.bin/gulp lint",
-    "test": "./node_modules/.bin/gulp test",
+    "test": "jest",
     "build": "./node_modules/.bin/gulp build",
     "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md"
   },
@@ -42,6 +42,11 @@
     "gulp-insert": "0.5.0",
     "gulp-rename": "1.4.0",
     "gulp-uglify": "3.0.1",
-    "jsdoc": "3.5.5"
+    "jest": "23.4.2",
+    "jsdoc": "3.5.5",
+    "puppeteer": "1.6.1"
+  },
+  "jest": {
+    "testURL": "http://localhost/"
   }
 }
