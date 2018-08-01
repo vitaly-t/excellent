@@ -358,7 +358,8 @@
      * {@link ERoot#addService addService},
      * {@link ERoot#bind bind},
      * {@link ERoot#find find},
-     * {@link ERoot#findControllers findControllers}
+     * {@link ERoot#findControllers findControllers},
+     * {@link ERoot.event:onInit onInit}
      */
     function ERoot() {
 
@@ -529,7 +530,7 @@
      *
      * @see {@link EController.event:onInit EController.onInit}
      *
-     * @type {Function|null}
+     * @type {Function}
      */
 
     /**
@@ -548,7 +549,9 @@
      * {@link EController#findOne findOne},
      * {@link EController#findControllers findControllers},
      * {@link EController#send send},
-     * {@link EController#post post}
+     * {@link EController#post post},
+     * {@link EController.event:onInit onInit},
+     * {@link EController.event:onDestroy onDestroy}
      *
      * @param {String} name
      * Controller name.
@@ -587,6 +590,8 @@
      * It is called after all controllers have finished their initialization,
      * and now ready to communicate with each other.
      *
+     * @type {Function}
+     *
      * @see
      * {@link EController.event:onDestroy onDestroy},
      * {@link ERoot.event:onInit ERoot.onInit}
@@ -603,6 +608,8 @@
      * For any modern browser, the event is triggered automatically, courtesy of `MutationObserver`,
      * while for older browsers, such as IE9 and IE10 it falls back on a manual background check
      * that runs every 500ms.
+     *
+     * @type {Function}
      *
      * @see
      * {@link ERoot.event:onInit ERoot.onInit}
