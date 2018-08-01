@@ -33,7 +33,8 @@ app.addController('awesome', function() {
 ```
 
 <a href="https://github.com/vitaly-t/excellent/wiki"><img align="left" width="260" height="40" src="./.github/images/awesome.png" alt="awesome"></a>
-
+<br/>
+<br/>
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance],
 enable you to build large-scale apps and reusable component libraries with this simple framework.
 
