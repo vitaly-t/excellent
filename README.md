@@ -36,7 +36,7 @@ app.addController('awesome', function() {
 <br/>
 <br/>
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance],
-enable you to build large-scale apps and reusable component libraries with this simple framework.
+enable you to build large-scale, high-performance apps and reusable component libraries with this simple framework.
 
 [Wiki Pages]:https://github.com/vitaly-t/excellent/wiki
 [Modules]:https://github.com/vitaly-t/excellent/wiki/Modules
