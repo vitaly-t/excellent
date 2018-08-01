@@ -66,7 +66,7 @@
             throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
         }
         if (typeof cb !== 'function') {
-            throw new TypeError('Initialization function in ' + entity + ' ' + jStr(name) + ' is missing.');
+            throw new TypeError('Initialization function for ' + entity + ' ' + jStr(name) + ' is missing.');
         }
     }
 

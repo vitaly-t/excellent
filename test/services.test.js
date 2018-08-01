@@ -16,4 +16,13 @@ describe('negative', () => {
             excellent.addService('\t o p s\r\n');
         }).toThrow('Invalid service name "\\t o p s\\r\\n" specified.');
     });
+    it('must throw on invalid functions', () => {
+        const err = 'Initialization function for service "a" is missing';
+        expect(() => {
+            excellent.addService('a');
+        }).toThrow(err);
+        expect(() => {
+            excellent.addService('a', 123);
+        }).toThrow(err);
+    });
 });

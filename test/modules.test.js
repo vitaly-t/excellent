@@ -55,6 +55,14 @@ describe('negative', () => {
         expect(() => {
             excellent.addModule('\t o p s\r\n');
         }).toThrow('Invalid module name "\\t o p s\\r\\n" specified.');
-
+    });
+    it('must throw on invalid functions', () => {
+        const err = 'Initialization function for module "a" is missing';
+        expect(() => {
+            excellent.addModule('a');
+        }).toThrow(err);
+        expect(() => {
+            excellent.addModule('a', 123);
+        }).toThrow(err);
     });
 });
