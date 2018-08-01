@@ -146,12 +146,10 @@
      */
     function bind(node) {
         binding = true;
-        var allCtrl = [], els = [], init = !elements.length;
+        var allCtrl = [], els = [];
         find('[e-bind]', node)
             .forEach(function (e) {
-                // skipping elements search during the initial binding:
-                var idx = init ? -1 : elements.indexOf(e);
-                if (idx === -1) {
+                if (!e.controllers) {
                     var namesMap = {}, eCtrl;
                     e.getAttribute('e-bind')
                         .split(',')
@@ -195,12 +193,12 @@
      * Helps watching node elements removal from DOM, in order to provide onDestroy notification
      * for all corresponding controllers.
      *
-     * For IE9/10 that do not support MutationObserver, it executes manual check every 300ms.
+     * For IE9/10 that do not support MutationObserver, it executes manual check every 500ms.
      */
     function DestroyObserver() {
         var mo;
         if (typeof MutationObserver === 'undefined') {
-            setInterval(manualCheck, 300); // This is a work-around for IE9 and IE10
+            setInterval(manualCheck, 500); // This is a work-around for IE9 and IE10
         } else {
             mo = new MutationObserver(mutantCB);
         }
@@ -238,13 +236,15 @@
          * Manual check for controlled elements that have been deleted from DOM.
          */
         function manualCheck() {
-            var ce = find('[e-bind]'); // all controlled elements;
             var i = elements.length;
-            while (i--) {
-                var e = elements[i];
-                if (ce.indexOf(e) === -1) {
-                    elements.splice(i, 1);
-                    notify(e);
+            if (i) {
+                var ce = find('[e-bind]'); // all controlled elements;
+                while (i--) {
+                    var e = elements[i];
+                    if (ce.indexOf(e) === -1) {
+                        elements.splice(i, 1);
+                        notify(e);
+                    }
                 }
             }
         }
@@ -341,7 +341,7 @@
     /**
      * @class ERoot
      * @description
-     * Root interface of the library.
+     * Root interface of the library, available via global variable `excellent`.
      */
     function ERoot() {
 
@@ -361,6 +361,9 @@
          * @readonly
          * @description
          * Namespace of all registered and initialized services.
+         *
+         * @see {@link ERoot#addService addService}
+         *
          */
         rop(this, 'services', {});
 
@@ -403,6 +406,8 @@
          * If the service with such name already exists, the method will do nothing,
          * because it cannot determine whether the actual service behind the name is the same,
          * while services need to be fully reusable, even in dynamically loaded pages.
+         *
+         * Every added service becomes accessible via property {@link ERoot#services services}.
          *
          * @param {String} name
          * Service name.
