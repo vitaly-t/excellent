@@ -4,8 +4,8 @@
 
 ## DOM-fiddling library :)
 
-[![Build Status](https://travis-ci.org/vitaly-t/pg-tuple.svg?branch=master)](https://travis-ci.org/vitaly-t/excellent)
-[![Join Chat](https://badges.gitter.im/vitaly-t/pg-tuple.svg)](https://gitter.im/vitaly-t/excellent)
+[![Build Status](https://travis-ci.org/vitaly-t/excellent.svg?branch=master)](https://travis-ci.org/vitaly-t/excellent)
+[![Join Chat](https://badges.gitter.im/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent)
 
 If you like working with DOM directly, this tiny (2Kb compressed) library gives you the essential
 tools for organizing all your JavaScript code in such a way that's highly reusable, easy to maintain and distribute.
