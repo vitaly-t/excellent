@@ -13,9 +13,10 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#event:onInit">onInit</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul>
+    <br>
     <div class="home-link">
-        <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
+        <a href="https://github.com/vitaly-t/excellent">GitHub</a>
     </div>
 </nav>
 
@@ -50,8 +51,8 @@
 
 
 <div class="description">
-    <p>Virtual controller class.</p>
-<p>It can only be created internally by the library.</p>
+    <p>Controller class, automatically associated with a DOM element, internally by the library,
+for every controller name listed within <code>e-bind</code> attribute.</p>
 </div>
 
 
@@ -103,7 +104,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Controller name.</p></td>
         </tr>
 
     
@@ -126,7 +127,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>DOM element, associated with the controller.</p></td>
         </tr>
 
     
@@ -167,12 +168,19 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line514">line 514</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line526">line 526</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="EController.html#name">name</a>,<a href="EController.html#node">node</a>,<a href="EController.html#bind">bind</a>,<a href="EController.html#depends">depends</a>,<a href="EController.html#extend">extend</a>,<a href="EController.html#find">find</a>,<a href="EController.html#findOne">findOne</a>,<a href="EController.html#findControllers">findControllers</a>,<a href="EController.html#send">send</a>,<a href="EController.html#post">post</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -269,7 +277,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line526">line 526</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line552">line 552</a>
     </li></ul></dd>
     
 
@@ -342,7 +350,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line535">line 535</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line561">line 561</a>
     </li></ul></dd>
     
 
@@ -380,7 +388,7 @@
 <div class="description">
     <p>Indicates that the element's content has been modified to contain new child controlled elements,
 and that it is time to bind those elements and initialize its controllers.</p>
-<p>Requires that this controller has been initialized.</p>
+<p>This method requires that its controller has been initialized.</p>
 </div>
 
 
@@ -424,7 +432,7 @@ and that it is time to bind those elements and initialize its controllers.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line561">line 561</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line604">line 604</a>
     </li></ul></dd>
     
 
@@ -468,7 +476,7 @@ and that it is time to bind those elements and initialize its controllers.</p>
 <div class="description">
     <p>Verifies that each controller in the list of dependencies exists, or else throws an error.</p>
 <p>This optional level of verification is useful when sub-controllers are rarely used, or loaded
-dynamically. And such explicit verification makes the code more robust.</p>
+dynamically. Such explicit verification simply makes the code more robust.</p>
 </div>
 
 
@@ -520,7 +528,9 @@ dynamically. And such explicit verification makes the code more robust.</p>
 
             
 
-            <td class="description last"><p>List of controller names.</p></td>
+            <td class="description last"><p>List of controller names.</p>
+<p>You would specify all controller names that this controller may be extending via method <a href="EController.html#extend">extend</a>,
+plus any others that your controller may generate dynamically.</p></td>
         </tr>
 
     
@@ -561,7 +571,7 @@ dynamically. And such explicit verification makes the code more robust.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line615">line 615</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line658">line 658</a>
     </li></ul></dd>
     
 
@@ -603,8 +613,8 @@ dynamically. And such explicit verification makes the code more robust.</p>
 
 
 <div class="description">
-    <p>Extends the current element with another controller(s), thus providing functional inheritance.</p>
-<p>Requires that controller is initialized.</p>
+    <p>Extends other controller(s) with new functionality, thus providing functional inheritance.</p>
+<p>This method requires that its controller has been initialized.</p>
 </div>
 
 
@@ -700,7 +710,7 @@ dynamically. And such explicit verification makes the code more robust.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line574">line 574</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line617">line 617</a>
     </li></ul></dd>
     
 
@@ -863,7 +873,7 @@ dynamically. And such explicit verification makes the code more robust.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line638">line 638</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line684">line 684</a>
     </li></ul></dd>
     
 
@@ -1020,7 +1030,7 @@ dynamically. And such explicit verification makes the code more robust.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line676">line 676</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line722">line 722</a>
     </li></ul></dd>
     
 
@@ -1178,7 +1188,7 @@ dynamically. And such explicit verification makes the code more robust.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line655">line 655</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line701">line 701</a>
     </li></ul></dd>
     
 
@@ -1376,7 +1386,7 @@ dynamically. And such explicit verification makes the code more robust.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line712">line 712</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line758">line 758</a>
     </li></ul></dd>
     
 
@@ -1508,7 +1518,7 @@ If <code>onReceive</code> handler does not exist, the method will do nothing, an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line691">line 691</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line737">line 737</a>
     </li></ul></dd>
     
 
@@ -1569,6 +1579,11 @@ If <code>onReceive</code> handler does not exist, the method will do nothing, an
 
 <div class="description">
     <p>De-initialization event handler.</p>
+<p>It signals the controller that its element has been removed from the DOM,
+and it is time to release any pre-allocated resources, if necessary.</p>
+<p>For any modern browser, the event is triggered automatically, courtesy of <code>MutationObserver</code>,
+while for older browsers, such as IE9 and IE10 it falls back on a manual background check
+that runs every 500ms.</p>
 </div>
 
 
@@ -1612,12 +1627,19 @@ If <code>onReceive</code> handler does not exist, the method will do nothing, an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line553">line 553</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line586">line 586</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#.event:onInit">ERoot.onInit</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -1655,6 +1677,8 @@ If <code>onReceive</code> handler does not exist, the method will do nothing, an
 
 <div class="description">
     <p>Initialization event handler.</p>
+<p>It is called after all controllers have finished their initialization,
+and now ready to communicate with each other.</p>
 </div>
 
 
@@ -1698,12 +1722,19 @@ If <code>onReceive</code> handler does not exist, the method will do nothing, an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line547">line 547</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line573">line 573</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="EController.html#.event:onDestroy">onDestroy</a>,<a href="ERoot.html#.event:onInit">ERoot.onInit</a></li>
+        </ul>
+    </dd>
     
 
     
