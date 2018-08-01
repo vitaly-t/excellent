@@ -1,10 +1,10 @@
-const {createTest} = require('../header');
+const {createTest} = require('./header');
 
-describe('basic controller', () => {
+describe('positive', () => {
 
     let t;
     beforeEach(async () => {
-        t = await createTest('./core/index.html');
+        t = await createTest('./html/controllers.html');
         await t.page.evaluate(() => {
             excellent.addController('first', function () {
                 this.node.innerHTML = 'first message';
@@ -16,14 +16,14 @@ describe('basic controller', () => {
         await t.bind();
     });
 
-    test('must work via this', async () => {
+    test('controller must work via this', async () => {
         const selector = '[e-bind*="first"]';
         await t.page.waitForSelector(selector);
         const html = await t.page.$eval(selector, e => e.innerHTML);
         expect(html).toBe('first message');
     });
 
-    test('must work via parameter', async () => {
+    test('controller must work via parameter', async () => {
         const selector = '[e-bind*="second"]';
         await t.page.waitForSelector(selector);
         const html = await t.page.$eval(selector, e => e.innerHTML);
@@ -35,3 +35,17 @@ describe('basic controller', () => {
     });
 });
 
+describe('negative', () => {
+    it('must throw on invalid controller names', () => {
+        expect(() => {
+            excellent.addController();
+        }).toThrow('Invalid controller name "" specified.');
+        expect(() => {
+            excellent.addController('t e s t');
+        }).toThrow('Invalid controller name "t e s t" specified.');
+        expect(() => {
+            excellent.addController('\t o p s\r\n');
+        }).toThrow('Invalid controller name "\\t o p s\\r\\n" specified.');
+
+    });
+});
