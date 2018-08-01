@@ -342,6 +342,16 @@
      * @class ERoot
      * @description
      * Root interface of the library, available via global variable `excellent`.
+     *
+     * @see
+     * {@link ERoot#services services},
+     * {@link ERoot#version version},
+     * {@link ERoot#addController addController},
+     * {@link ERoot#addModule addModule},
+     * {@link ERoot#addService addService},
+     * {@link ERoot#bind bind},
+     * {@link ERoot#find find},
+     * {@link ERoot#findControllers findControllers}
      */
     function ERoot() {
 
@@ -504,9 +514,11 @@
     }
 
     /**
-     * @event ERoot#onInit
+     * @event ERoot.onInit
      * @description
-     * Called after all controllers have been initialized.
+     * Called once in the beginning, after all controllers have been initialized.
+     *
+     * @see {@link EController.event:onInit EController.onInit}
      *
      * @type {Function|null}
      */
@@ -514,12 +526,26 @@
     /**
      * @class EController
      * @description
-     * Virtual controller class.
+     * Controller class, automatically associated with a DOM element, internally by the library,
+     * for every controller name listed within `e-bind` attribute.
      *
-     * It can only be created internally by the library.
+     * @see
+     * {@link EController#name name},
+     * {@link EController#node node},
+     * {@link EController#bind bind},
+     * {@link EController#depends depends},
+     * {@link EController#extend extend},
+     * {@link EController#find find},
+     * {@link EController#findOne findOne},
+     * {@link EController#findControllers findControllers},
+     * {@link EController#send send},
+     * {@link EController#post post}
      *
      * @param {String} name
+     * Controller name.
+     *
      * @param {Element} node
+     * DOM element, associated with the controller.
      */
     function EController(name, node) {
 
@@ -548,12 +574,29 @@
      * @event EController.onInit
      * @description
      * Initialization event handler.
+     *
+     * It is called after all controllers have finished their initialization,
+     * and now ready to communicate with each other.
+     *
+     * @see
+     * {@link EController.event:onDestroy onDestroy},
+     * {@link ERoot.event:onInit ERoot.onInit}
      */
 
     /**
      * @event EController.onDestroy
      * @description
      * De-initialization event handler.
+     *
+     * It signals the controller that its element has been removed from the DOM,
+     * and it is time to release any pre-allocated resources, if necessary.
+     *
+     * For any modern browser, the event is triggered automatically, courtesy of `MutationObserver`,
+     * while for older browsers, such as IE9 and IE10 it falls back on a manual background check
+     * that runs every 500ms.
+     *
+     * @see
+     * {@link ERoot.event:onInit ERoot.onInit}
      */
 
     var ecp = EController.prototype; // abbreviation
@@ -564,7 +607,7 @@
      * Indicates that the element's content has been modified to contain new child controlled elements,
      * and that it is time to bind those elements and initialize its controllers.
      *
-     * Requires that this controller has been initialized.
+     * This method requires that its controller has been initialized.
      */
     ecp.bind = function () {
         this.reqCtrl('bind');
@@ -574,9 +617,9 @@
     /**
      * @method EController#extend
      * @description
-     * Extends the current element with another controller(s), thus providing functional inheritance.
+     * Extends other controller(s) with new functionality, thus providing functional inheritance.
      *
-     * Requires that controller is initialized.
+     * This method requires that its controller has been initialized.
      *
      * @param {String|String[]} ctrlName
      * Either a single controller name, or an array of names.
@@ -618,10 +661,13 @@
      * Verifies that each controller in the list of dependencies exists, or else throws an error.
      *
      * This optional level of verification is useful when sub-controllers are rarely used, or loaded
-     * dynamically. And such explicit verification makes the code more robust.
+     * dynamically. Such explicit verification simply makes the code more robust.
      *
      * @param {Array<String>} ctrlNames
      * List of controller names.
+     *
+     * You would specify all controller names that this controller may be extending via method {@link EController#extend extend},
+     * plus any others that your controller may generate dynamically.
      */
     ecp.depends = function (ctrlNames) {
         if (!Array.isArray(ctrlNames)) {
