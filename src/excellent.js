@@ -133,7 +133,7 @@
      * @param {} value
      * Property value.
      */
-    function rop(target, prop, value) {
+    function ReadOnlyProp(target, prop, value) {
         Object.defineProperty(target, prop, {value: value, enumerable: true});
     }
 
@@ -166,12 +166,12 @@
                                 var c = new EController(name, e);
                                 getCtrlFunc(name).call(c, c);
                                 eCtrl = eCtrl || {};
-                                rop(eCtrl, name, c);
+                                ReadOnlyProp(eCtrl, name, c);
                                 allCtrl.push(c);
                             }
                         });
                     if (eCtrl) {
-                        rop(e, 'controllers', eCtrl);
+                        ReadOnlyProp(e, 'controllers', eCtrl);
                         elements.push(e);
                         els.push(e);
                     }
@@ -343,6 +343,13 @@
      * @description
      * Root interface of the library, available via global variable `excellent`.
      *
+     * You can make this interface also available via an alias name that can be set
+     * via attribute `e-root` on the `HTML` element:
+     *
+     * ```html
+     * <HTML e-root="app">
+     * ```
+     *
      * @see
      * {@link ERoot#services services},
      * {@link ERoot#version version},
@@ -360,10 +367,10 @@
          * @type {String}
          * @readonly
          * @description
-         * Library version, automatically injected during the build process,
+         * Library version, automatically injected during the build/compression process,
          * and so available only with the compressed version of the library.
          */
-        rop(this, 'version', '<version>');
+        ReadOnlyProp(this, 'version', '<version>');
 
         /**
          * @member ERoot#services
@@ -375,7 +382,7 @@
          * @see {@link ERoot#addService addService}
          *
          */
-        rop(this, 'services', {});
+        ReadOnlyProp(this, 'services', {});
 
         /**
          * @method ERoot#addController
@@ -429,7 +436,7 @@
             checkEntity(name, cb, 'service');
             if (!(name in root.services)) {
                 var s = {}; // service's scope
-                rop(root.services, name, s);
+                ReadOnlyProp(root.services, name, s);
                 cb.call(s, s);
             }
         };
@@ -485,7 +492,7 @@
          * @description
          * Searches for controlled elements within document.
          *
-         * It should only be called after initialization.
+         * It should only be called after initialization, or it will skip all uninitialized controllers.
          *
          * @param {String} selectors
          * Standard DOM selectors.
@@ -510,7 +517,9 @@
          * @returns {Array<EController>}
          * List of found initialized controllers.
          */
-        this.findControllers = findCS.bind(this);
+        this.findControllers = function (ctrlName) {
+            return findCS.call(this, ctrlName);
+        }
     }
 
     /**
@@ -556,7 +565,7 @@
          * @description
          * Full controller name.
          */
-        rop(this, 'name', name);
+        ReadOnlyProp(this, 'name', name);
 
         /**
          * @member EController#node
@@ -567,7 +576,7 @@
          *
          * NOTE: In the current implementation, the element is static (not live).
          */
-        rop(this, 'node', node);
+        ReadOnlyProp(this, 'node', node);
     }
 
     /**
@@ -644,7 +653,7 @@
             if (!c) {
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
-                rop(ctrl, cn, c);
+                ReadOnlyProp(ctrl, cn, c);
                 if (typeof c.onInit === 'function') {
                     c.onInit();
                 }
