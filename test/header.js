@@ -11,7 +11,14 @@ async function createTest(file) {
     const page = await browser.newPage();
     await page.goto(`file://${path.join(__dirname, file)}`);
     await page.addScriptTag({path: 'src/excellent.js'});
-    return {page, browser};
+
+    async function bind() {
+        await page.evaluate(() => {
+            excellent.bind();
+        });
+    }
+
+    return {page, browser, bind};
 }
 
 module.exports = {createTest};
