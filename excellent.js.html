@@ -95,7 +95,7 @@
             throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
         }
         if (typeof cb !== 'function') {
-            throw new TypeError('Initialization function in ' + entity + ' ' + jStr(name) + ' is missing.');
+            throw new TypeError('Initialization function for ' + entity + ' ' + jStr(name) + ' is missing.');
         }
     }
 
@@ -370,7 +370,7 @@
     /**
      * @class ERoot
      * @description
-     * Root interface of the library.
+     * Root interface of the library, available via global variable `excellent`.
      */
     function ERoot() {
 
@@ -390,6 +390,9 @@
          * @readonly
          * @description
          * Namespace of all registered and initialized services.
+         *
+         * @see {@link ERoot#addService addService}
+         *
          */
         rop(this, 'services', {});
 
@@ -432,6 +435,8 @@
          * If the service with such name already exists, the method will do nothing,
          * because it cannot determine whether the actual service behind the name is the same,
          * while services need to be fully reusable, even in dynamically loaded pages.
+         *
+         * Every added service becomes accessible via property {@link ERoot#services services}.
          *
          * @param {String} name
          * Service name.
