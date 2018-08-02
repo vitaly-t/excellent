@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "DOM-Manipulation Framework",
   "main": "src/excellent.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "lint": "./node_modules/.bin/gulp lint",
     "test": "jest",
     "build": "./node_modules/.bin/gulp build",
-    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md"
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md",
+    "travis": "npm run lint && npm test"
   },
   "files": [
     "src"
@@ -44,6 +45,6 @@
     "gulp-uglify": "3.0.1",
     "jest": "23.4.2",
     "jsdoc": "3.5.5",
-    "puppeteer": "1.6.1"
+    "puppeteer": "1.6.2"
   }
 }
