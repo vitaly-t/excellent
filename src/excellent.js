@@ -111,6 +111,29 @@
     }
 
     /**
+     * Gets the primary attribute's value, if the attribute exists,
+     * or else it gets the secondary attribute's value.
+     *
+     * @param e
+     * Element to get the value from.
+     *
+     * @param primary
+     * Primary attribute name.
+     *
+     * @param secondary
+     * Secondary attribute name.
+     *
+     * @returns {string}
+     * The attribute's value.
+     */
+    function getAttribute(e, primary, secondary) {
+        if (e.hasAttribute(primary)) {
+            return e.getAttribute(primary);
+        }
+        return e.getAttribute(secondary);
+    }
+
+    /**
      * Trims a string, by removing all trailing spaces, tabs and line breaks.
      *
      * @param {String} txt
@@ -133,7 +156,7 @@
      * @param {} value
      * Property value.
      */
-    function ReadOnlyProp(target, prop, value) {
+    function readOnlyProp(target, prop, value) {
         Object.defineProperty(target, prop, {value: value, enumerable: true});
     }
 
@@ -147,11 +170,11 @@
     function bind(node) {
         binding = true;
         var allCtrl = [], els = [];
-        find('[e-bind]', node)
+        find('[e-bind],[data-e-bind]', node)
             .forEach(function (e) {
                 if (!e.controllers) {
                     var namesMap = {}, eCtrl;
-                    e.getAttribute('e-bind')
+                    getAttribute(e, 'e-bind', 'data-e-bind')
                         .split(',')
                         .forEach(function (name) {
                             name = trim(name);
@@ -166,12 +189,12 @@
                                 var c = new EController(name, e);
                                 getCtrlFunc(name).call(c, c);
                                 eCtrl = eCtrl || {};
-                                ReadOnlyProp(eCtrl, name, c);
+                                readOnlyProp(eCtrl, name, c);
                                 allCtrl.push(c);
                             }
                         });
                     if (eCtrl) {
-                        ReadOnlyProp(e, 'controllers', eCtrl);
+                        readOnlyProp(e, 'controllers', eCtrl);
                         elements.push(e);
                         els.push(e);
                     }
@@ -238,7 +261,7 @@
         function manualCheck() {
             var i = elements.length;
             if (i) {
-                var ce = find('[e-bind]'); // all controlled elements;
+                var ce = find('[e-bind],[data-e-bind]'); // all controlled elements;
                 while (i--) {
                     var e = elements[i];
                     if (ce.indexOf(e) === -1) {
@@ -328,7 +351,7 @@
         if (!cn) {
             throw new TypeError('Invalid controller name specified.');
         }
-        var s = '[e-bind*="' + cn + '"]'; // selectors
+        var s = '[e-bind*="' + cn + '"],[data-e-bind*="' + cn + '"]'; // selectors
         return this.find(s).filter(pick).map(pick);
 
         function pick(e) {
@@ -371,7 +394,7 @@
          * Library version, automatically injected during the build/compression process,
          * and so available only with the compressed version of the library.
          */
-        ReadOnlyProp(this, 'version', '<version>');
+        readOnlyProp(this, 'version', '<version>');
 
         /**
          * @member ERoot#services
@@ -383,7 +406,7 @@
          * @see {@link ERoot#addService addService}
          *
          */
-        ReadOnlyProp(this, 'services', {});
+        readOnlyProp(this, 'services', {});
 
         /**
          * @method ERoot#addController
@@ -437,7 +460,7 @@
             checkEntity(name, cb, 'service');
             if (!(name in root.services)) {
                 var s = {}; // service's scope
-                ReadOnlyProp(root.services, name, s);
+                readOnlyProp(root.services, name, s);
                 cb.call(s, s);
             }
         };
@@ -520,7 +543,7 @@
          */
         this.findControllers = function (ctrlName) {
             return findCS.call(this, ctrlName);
-        }
+        };
     }
 
     /**
@@ -537,7 +560,7 @@
      * @class EController
      * @description
      * Controller class, automatically associated with a DOM element, internally by the library,
-     * for every controller name listed within `e-bind` attribute.
+     * for every controller name listed with either `e-bind` or `data-e-bind` attribute.
      *
      * @see
      * {@link EController#name name},
@@ -568,7 +591,7 @@
          * @description
          * Full controller name.
          */
-        ReadOnlyProp(this, 'name', name);
+        readOnlyProp(this, 'name', name);
 
         /**
          * @member EController#node
@@ -579,7 +602,7 @@
          *
          * NOTE: In the current implementation, the element is static (not live).
          */
-        ReadOnlyProp(this, 'node', node);
+        readOnlyProp(this, 'node', node);
     }
 
     /**
@@ -660,7 +683,7 @@
             if (!c) {
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
-                ReadOnlyProp(ctrl, cn, c);
+                readOnlyProp(ctrl, cn, c);
                 if (typeof c.onInit === 'function') {
                     c.onInit();
                 }
@@ -822,12 +845,13 @@
      * Initializes the optional e-root.
      */
     (function () {
-        var e = find('[e-root]');
+        var e = find('[e-root],[data-e-root]');
         if (e.length) {
             if (e.length > 1) {
                 throw new Error('Multiple e-root elements are not allowed.');
             }
-            var name = e[0].getAttribute('e-root');
+            var name = getAttribute(e[0], 'e-root', 'data-e-root');
+            // TODO: Should validate the name here
             if (name) {
                 window[name] = root; // expose the alternative root name
             }
