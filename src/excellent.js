@@ -756,12 +756,12 @@
      * Verifies that each controller in the list of dependencies exists, or else throws an error.
      *
      * This optional level of verification is useful when sub-controllers are rarely used, or loaded
-     * dynamically. Such explicit verification simply makes the code more robust.
+     * dynamically. Such explicit verification makes the code more robust.
      *
      * @param {string[]} ctrlNames
      * List of controller names.
      *
-     * You would specify all controller names that this controller may be extending via method {@link EController#extend extend},
+     * You would specify all controller names this controller may be extending via method {@link EController#extend extend},
      * plus any others that your controller may generate dynamically.
      */
     EController.prototype.depends = function (ctrlNames) {
@@ -774,7 +774,7 @@
                 throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
             }
             if (!getCtrlFunc(cn, true)) {
-                throw new Error('Controller ' + jStr(cn) + ' depends on ' + jStr(this.name) + ', which was not found.');
+                throw new Error('Controller ' + jStr(this.name) + ' depends on ' + jStr(cn) + ', which was not found.');
             }
         }, this);
     };
