@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">GitHub</a>
@@ -98,7 +98,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line372">line 372</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line424">line 424</a>
     </li></ul></dd>
     
 
@@ -207,7 +207,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line407">line 407</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line459">line 459</a>
     </li></ul></dd>
     
 
@@ -287,7 +287,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line397">line 397</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line449">line 449</a>
     </li></ul></dd>
     
 
@@ -326,8 +326,8 @@ and so available only with the compressed version of the library.</p>
     <p>Adds/Registers a new controller.</p>
 <p>If controller with such name already exists, then the method will do the following:</p>
 <ul>
-<li>will throw an error, if the function is different</li>
-<li>will do nothing, if the function is the same</li>
+<li>throw an error, if the function is different</li>
+<li>nothing, if the function is the same</li>
 </ul>
 <p>In order to avoid naming conflicts, reusable controllers should reside inside modules.</p>
 </div>
@@ -445,7 +445,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line419">line 419</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line471">line 471</a>
     </li></ul></dd>
     
 
@@ -606,7 +606,7 @@ while modules need to be fully reusable, even in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line476">line 476</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line528">line 528</a>
     </li></ul></dd>
     
 
@@ -652,7 +652,7 @@ while modules need to be fully reusable, even in dynamically loaded pages.</p>
 <p>If the service with such name already exists, the method will do nothing,
 because it cannot determine whether the actual service behind the name is the same,
 while services need to be fully reusable, even in dynamically loaded pages.</p>
-<p>Every added service becomes accessible via property <a href="ERoot.html#services">services</a>.</p>
+<p>Every added service becomes accessible by its name, from property <a href="ERoot.html#services">services</a>.</p>
 </div>
 
 
@@ -768,7 +768,7 @@ while services need to be fully reusable, even in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line450">line 450</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line502">line 502</a>
     </li></ul></dd>
     
 
@@ -812,8 +812,8 @@ while services need to be fully reusable, even in dynamically loaded pages.</p>
 <div class="description">
     <p>Searches for all elements in the document not yet bound, and binds them to controllers.</p>
 <p>Normally, a controller creates new controlled elements within its children, and then
-uses ctrl.bind() method. It is only if you create a new controlled element that's not
-a child element that you would use this global bind method.</p>
+uses <a href="EController.html#bind">EController.bind</a> method. It is only if you create a new
+controlled element that's not a child element that you would use this global binding.</p>
 <p>And if you call it while in the process of binding, the call will be delayed, which is
 the scenario best to be avoided.</p>
 </div>
@@ -859,7 +859,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line500">line 500</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line552">line 552</a>
     </li></ul></dd>
     
 
@@ -893,7 +893,7 @@ the scenario best to be avoided.</p>
     
 
     
-    <h4 class="name" id="find"><span class="type-signature"></span>find<span class="signature">(selectors)</span><span class="type-signature"> &rarr; {Array.&lt;Element>}</span></h4>
+    <h4 class="name" id="find"><span class="type-signature"></span>find<span class="signature">(selectors)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="ControlledElement.html">ControlledElement</a>>}</span></h4>
     
 
     
@@ -901,7 +901,7 @@ the scenario best to be avoided.</p>
 
 
 <div class="description">
-    <p>Searches for controlled elements within document.</p>
+    <p>Searches for controlled elements within the entire document.</p>
 <p>It should only be called after initialization, or it will skip all uninitialized controllers.</p>
 </div>
 
@@ -995,7 +995,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line522">line 522</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line574">line 574</a>
     </li></ul></dd>
     
 
@@ -1033,7 +1033,7 @@ the scenario best to be avoided.</p>
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;Element></span>
+<span class="param-type">Array.&lt;<a href="ControlledElement.html">ControlledElement</a>></span>
 
 
     </dd>
@@ -1059,7 +1059,7 @@ the scenario best to be avoided.</p>
 
 
 <div class="description">
-    <p>Searches the entire document for all initialized controllers by a given controller name.</p>
+    <p>Searches the entire document for all initialized controllers, by a given controller name.</p>
 </div>
 
 
@@ -1152,7 +1152,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line541">line 541</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line593">line 593</a>
     </li></ul></dd>
     
 
@@ -1278,7 +1278,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line557">line 557</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line609">line 609</a>
     </li></ul></dd>
     
 
