@@ -61,8 +61,7 @@
 
     function checkEntity(name, cb, entity) {
         name = typeof name === 'string' ? name : '';
-        var m = name.match(/[a-z$_][a-z$_0-9]*/i);
-        if (!m || m[0] !== name) {
+        if (!validJsVariable(name)) {
             throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
         }
         if (typeof cb !== 'function') {
@@ -85,11 +84,22 @@
     function validCN(cn, t) {
         if (typeof cn === 'string') {
             cn = t ? trim(cn) : cn;
-            var m = cn.match(/([a-z$_][a-z$_0-9]*\.?)*[^.]/i);
+            var m = cn.match(/^[a-z$_][$\w]*(\.[a-z$_][$\w]*)*$/i);
             if (m && m[0] === cn) {
                 return cn;
             }
         }
+    }
+
+    /**
+     * Validates a string to be a proper JavaScript open name.
+     *
+     * @param name
+     * @returns {boolean}
+     */
+    function validJsVariable(name) {
+        var m = name.match(/[a-z$_][a-z$_0-9]*/i);
+        return m && m[0] === name;
     }
 
     /**
@@ -713,9 +723,12 @@
             throw new TypeError('Invalid list of controller names.');
         }
         ctrlNames.forEach(function (name) {
-            // TODO: Need to validate the name, or else it may crash here
-            if (!getCtrlFunc(name, true)) {
-                throw new Error('Controller ' + jStr(name) + ' depends on ' + jStr(this.name) + ', which was not found.');
+            var cn = validCN(name, true);
+            if (!cn) {
+                throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
+            }
+            if (!getCtrlFunc(cn, true)) {
+                throw new Error('Controller ' + jStr(cn) + ' depends on ' + jStr(this.name) + ', which was not found.');
             }
         }, this);
     };
@@ -851,10 +864,10 @@
                 throw new Error('Multiple e-root elements are not allowed.');
             }
             var name = getAttribute(e[0], 'e-root', 'data-e-root');
-            // TODO: Should validate the name here
-            if (name) {
-                window[name] = root; // expose the alternative root name
+            if (!validJsVariable(name)) {
+                throw new Error('Value "' + name + '" is not a valid root name.');
             }
+            window[name] = root; // expose the alternative root name
         }
     })();
 
