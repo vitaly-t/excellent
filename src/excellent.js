@@ -111,11 +111,11 @@
      */
     function find(selectors, node) {
         var f = (node || document).querySelectorAll(selectors);
-        var res = [];
-        for (var i = 0; i < f.length; i++) {
-            res.push(f[i]);
+        var l = f.length, arr = new Array(l);
+        while (l--) {
+            arr[l] = f[l];
         }
-        return res;
+        return arr;
     }
 
     /**
@@ -792,7 +792,7 @@
      */
     EController.prototype.find = function (selectors) {
         return find(selectors, this.node).filter(function (e) {
-            return e.controllers;
+            return !!e.controllers;
         });
     };
 
