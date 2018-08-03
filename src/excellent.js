@@ -92,7 +92,7 @@
     /**
      * Validates a string to be a proper JavaScript open name.
      *
-     * @param name
+     * @param {string} name
      * @returns {boolean}
      */
     function validJsVariable(name) {
@@ -107,7 +107,7 @@
      *
      * @param {Element} [node]
      *
-     * @returns {Array<Element>}
+     * @returns {Element[] | ControlledElement[]}
      */
     function find(selectors, node) {
         var f = (node || document).querySelectorAll(selectors);
@@ -221,10 +221,10 @@
      * @constructor
      * @private
      * @description
-     * Helps watching node elements removal from DOM, in order to provide onDestroy notification
+     * Helps watching node elements removal from DOM, in order to provide `onDestroy` notification
      * for all corresponding controllers.
      *
-     * For IE9/10 that do not support MutationObserver, it executes manual check every 500ms.
+     * For IE9/10 that do not support `MutationObserver`, it executes manual check every 500ms.
      */
     function DestroyObserver() {
         var mo;
@@ -283,7 +283,7 @@
         /**
          * Sends onDestroy notification into all controllers of an element.
          *
-         * @param {} e
+         * @param {ControlledElement} e
          */
         function notify(e) {
             for (var i in e.controllers) {
@@ -297,8 +297,54 @@
     }
 
     /**
-     * Searches for controller function, based on the controller's full name.
-     * For that it uses cache of names, plus modules.
+     * @class ControlledElement
+     * @extends Element
+     * @description
+     * Represents a standard DOM element, extended with read-only property `controllers`.
+     *
+     * This type is provided by the library automatically, after binding the element to controllers.
+     *
+     * @see
+     * {@link ERoot#bind ERoot.bind},
+     * {@link EController#bind EController.bind}
+     */
+
+    /**
+     * @member {Object.<string, EController>} ControlledElement#controllers
+     * @readonly
+     * @description
+     * An object - map, with each property (controller name) of type {@link EController}.
+     * And each property in the object is read-only.
+     *
+     * This property is available only after the controller has been initialized.
+     *
+     * For example, if you have a binding like this:
+     *
+     * ```html
+     * <div e-bind="homeCtrl, view.main"></div>
+     * ```
+     *
+     * Then you can access those controllers like this:
+     *
+     * ```js
+     * app.addController('homeCtrl', function(ctrl) {
+     *
+     *     // During the controller's construction,
+     *     // this.node.controllers is undefined.
+     *
+     *     this.onInit = function() {
+     *         var ctrl1 = this.node.controllers.homeCtrl;
+     *         // ctrl1 = ctrl = this
+     *
+     *         var ctrl2 = this.node.controllers['view.main'];
+     *     };
+     * });
+     * ```
+     */
+
+    /**
+     * Searches for a controller function, based on the controller's full name.
+     * For that it uses the cache of names, plus modules.
      *
      * @param {string} name
      *
@@ -306,7 +352,8 @@
      * Tells it not to throw on errors, and rather return null.
      *
      * @returns {function|undefined}
-     * Either controller function or throws.
+     * Either controller function or throws. But if noError is true,
+     * and no controller found, it returns `undefined`.
      *
      */
     function getCtrlFunc(name, noError) {
@@ -353,6 +400,11 @@
 
     /**
      * Finds all initialized controllers from a controller name.
+     *
+     * @param {string} cn
+     * Controller name.
+     *
+     * @returns {EController[]}
      */
     function findCS(cn) {
         cn = validCN(cn, true);
@@ -423,15 +475,15 @@
          *
          * If controller with such name already exists, then the method will do the following:
          *
-         *  - will throw an error, if the function is different
-         *  - will do nothing, if the function is the same
+         *  - throw an error, if the function is different
+         *  - nothing, if the function is the same
          *
          * In order to avoid naming conflicts, reusable controllers should reside inside modules.
          *
          * @param {string} name
          * Controller name.
          *
-         * @param {Function} cb
+         * @param {function} cb
          * Controller function.
          */
         this.addController = function (name, cb) {
@@ -456,12 +508,12 @@
          * because it cannot determine whether the actual service behind the name is the same,
          * while services need to be fully reusable, even in dynamically loaded pages.
          *
-         * Every added service becomes accessible via property {@link ERoot#services services}.
+         * Every added service becomes accessible by its name, from property {@link ERoot#services services}.
          *
          * @param {string} name
          * Service name.
          *
-         * @param {Function} cb
+         * @param {function} cb
          * Service initialization function.
          */
         this.addService = function (name, cb) {
@@ -485,7 +537,7 @@
          * @param {string} name
          * Module name.
          *
-         * @param {Function} cb
+         * @param {function} cb
          * Module initialization function.
          */
         this.addModule = function (name, cb) {
@@ -503,8 +555,8 @@
          * Searches for all elements in the document not yet bound, and binds them to controllers.
          *
          * Normally, a controller creates new controlled elements within its children, and then
-         * uses ctrl.bind() method. It is only if you create a new controlled element that's not
-         * a child element that you would use this global bind method.
+         * uses {@link EController#bind EController.bind} method. It is only if you create a new
+         * controlled element that's not a child element that you would use this global binding.
          *
          * And if you call it while in the process of binding, the call will be delayed, which is
          * the scenario best to be avoided.
@@ -522,14 +574,14 @@
         /**
          * @method ERoot#find
          * @description
-         * Searches for controlled elements within document.
+         * Searches for controlled elements within the entire document.
          *
          * It should only be called after initialization, or it will skip all uninitialized controllers.
          *
          * @param {string} selectors
          * Standard DOM selectors.
          *
-         * @returns {Array<Element>}
+         * @returns {ControlledElement[]}
          * Controlled elements matching the selectors.
          */
         this.find = function (selectors) {
@@ -541,12 +593,12 @@
         /**
          * @method ERoot#findControllers
          * @description
-         * Searches the entire document for all initialized controllers by a given controller name.
+         * Searches the entire document for all initialized controllers, by a given controller name.
          *
          * @param {string} ctrlName
          * Controller name to search by.
          *
-         * @returns {Array<EController>}
+         * @returns {EController[]}
          * List of found initialized controllers.
          */
         this.findControllers = function (ctrlName) {
@@ -561,7 +613,7 @@
      *
      * @see {@link EController.event:onInit EController.onInit}
      *
-     * @type {Function}
+     * @type {function}
      */
 
     /**
@@ -587,7 +639,7 @@
      * @param {string} name
      * Controller name.
      *
-     * @param {Element} node
+     * @param {ControlledElement} node
      * DOM element, associated with the controller.
      */
     function EController(name, node) {
@@ -603,12 +655,10 @@
 
         /**
          * @member EController#node
-         * @type {Element}
+         * @type {ControlledElement}
          * @readonly
          * @description
          * Source DOM element that uses this controller.
-         *
-         * NOTE: In the current implementation, the element is static (not live).
          */
         readOnlyProp(this, 'node', node);
     }
@@ -621,7 +671,7 @@
      * It is called after all controllers have finished their initialization,
      * and now ready to communicate with each other.
      *
-     * @type {Function}
+     * @type {function}
      *
      * @see
      * {@link EController.event:onDestroy onDestroy},
@@ -640,13 +690,11 @@
      * while for older browsers, such as IE9 and IE10 it falls back on a manual background check
      * that runs every 500ms.
      *
-     * @type {Function}
+     * @type {function}
      *
      * @see
      * {@link ERoot.event:onInit ERoot.onInit}
      */
-
-    var ecp = EController.prototype; // abbreviation
 
     /**
      * @method EController#bind
@@ -656,8 +704,8 @@
      *
      * This method requires that its controller has been initialized.
      */
-    ecp.bind = function () {
-        this.reqCtrl('bind');
+    EController.prototype.bind = function () {
+        this.verifyInit('bind');
         bind(this.node);
     };
 
@@ -671,16 +719,16 @@
      * @param {string|string[]} ctrlName
      * Either a single controller name, or an array of names.
      *
-     * @returns {EController|Array<EController>}
+     * @returns {EController|EController[]}
      * - if you pass in a single controller name, it returns a single controller.
      * - if you pass in an array of names, it returns an array of controllers.
      */
-    ecp.extend = function (ctrlName) {
+    EController.prototype.extend = function (ctrlName) {
         var t = typeof ctrlName, arr = Array.isArray(ctrlName);
         if (!t || (t !== 'string' && !arr)) {
             throw new TypeError('Parameter \'ctrlName\' is invalid.');
         }
-        var ctrl = this.reqCtrl('extend');
+        var ctrl = this.verifyInit('extend');
 
         function ext(name) {
             var cn = validCN(name, true);
@@ -710,13 +758,13 @@
      * This optional level of verification is useful when sub-controllers are rarely used, or loaded
      * dynamically. Such explicit verification simply makes the code more robust.
      *
-     * @param {Array<string>} ctrlNames
+     * @param {string[]} ctrlNames
      * List of controller names.
      *
      * You would specify all controller names that this controller may be extending via method {@link EController#extend extend},
      * plus any others that your controller may generate dynamically.
      */
-    ecp.depends = function (ctrlNames) {
+    EController.prototype.depends = function (ctrlNames) {
         if (!Array.isArray(ctrlNames)) {
             throw new TypeError('Invalid list of controller names.');
         }
@@ -739,10 +787,10 @@
      * @param {string} selectors
      * Standard DOM selectors.
      *
-     * @returns {Array<Element>}
-     * Controlled initialized child elements matching the selectors.
+     * @returns {ControlledElement[]}
+     * Controlled initialized child elements, matching the selectors.
      */
-    ecp.find = function (selectors) {
+    EController.prototype.find = function (selectors) {
         return find(selectors, this.node).filter(function (e) {
             return e.controllers;
         });
@@ -758,10 +806,10 @@
      * @param {string} selectors
      * Standard DOM selectors.
      *
-     * @returns {Element}
+     * @returns {ControlledElement}
      * One controlled element matching the selectors.
      */
-    ecp.findOne = function (selectors) {
+    EController.prototype.findOne = function (selectors) {
         var a = this.find(selectors);
         if (a.length !== 1) {
             throw new Error('A single element was expected, but found ' + a.length + '.');
@@ -777,10 +825,10 @@
      * @param {string} ctrlName
      * Controller name to search by.
      *
-     * @returns {Array<EController>}
+     * @returns {EController[]}
      * List of found initialized controllers.
      */
-    ecp.findControllers = function (ctrlName) {
+    EController.prototype.findControllers = function (ctrlName) {
         return findCS.call(this, ctrlName);
     };
 
@@ -798,8 +846,8 @@
      * @returns {}
      * Whatever method `onReceive` returns.
      */
-    ecp.send = function (data) {
-        this.reqCtrl('send');
+    EController.prototype.send = function (data) {
+        this.verifyInit('send');
         if (typeof this.onReceive === 'function') {
             return this.onReceive(data, this);
         }
@@ -815,11 +863,11 @@
      * @param {} [data]
      * Any data to be sent.
      *
-     * @param {Function} [cb]
+     * @param {function} [cb]
      * Optional callback to receive the response from method onReceive.
      */
-    ecp.post = function (data, cb) {
-        this.reqCtrl('post');
+    EController.prototype.post = function (data, cb) {
+        this.verifyInit('post');
         var self = this;
         setTimeout(function () {
             if (typeof self.onReceive === 'function') {
@@ -832,19 +880,20 @@
     };
 
     /**
-     * @method EController#reqCtrl
+     * @method EController#verifyInit
      * @private
      * @description
-     * Requires controllers in a safe way: Verifies that controllers have been initialized,
-     * or else throws an error.
+     * Verifies that this controller has been initialized, or else throws an error.
      *
-     * @param m
-     * Name of the method that requires access to controllers.
+     * This method is for internal use only.
      *
-     * @returns {Array<EController>}
+     * @param {string} m
+     * Name of the method that requires verification.
+     *
+     * @returns {EController[]}
      * Controllers linked to the element.
      */
-    ecp.reqCtrl = function (m) {
+    EController.prototype.verifyInit = function (m) {
         var c = this.node.controllers;
         if (!c) {
             throw new Error('Method "' + m + '" cannot be used before initialization.');
@@ -853,8 +902,7 @@
     };
 
     /**
-     * Sets the default root name, plus the alternative
-     * root name, if it is specified.
+     * Sets the default root name, plus the alternative root name, if it is specified.
      */
     (function () {
         window.excellent = root; // default root name
@@ -867,7 +915,7 @@
             if (!validJsVariable(name)) {
                 throw new Error('Invalid ' + jStr(name) + ' root name specified.');
             }
-            window[name] = root; // the alternative root name
+            window[name] = root; // alternative root name
         }
     })();
 

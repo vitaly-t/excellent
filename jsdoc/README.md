@@ -1,7 +1,7 @@
 Excellent.js
 ------------
 
-The library consists of only two classes:
+The library exposes two main types:
 
 * [ERoot] - the root namespace of the library
 * [EController] - interface for all controllers
