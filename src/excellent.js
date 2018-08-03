@@ -47,8 +47,6 @@
      */
     var binding;
 
-    window.excellent = root;
-
     // Abbreviations:
     var jStr = JSON.stringify.bind(JSON);
 
@@ -855,9 +853,11 @@
     };
 
     /**
-     * Initializes the optional e-root.
+     * Sets the default root name, plus the alternative
+     * root name, if it is specified.
      */
     (function () {
+        window.excellent = root; // default root name
         var e = find('[e-root],[data-e-root]');
         if (e.length) {
             if (e.length > 1) {
@@ -867,7 +867,7 @@
             if (!validJsVariable(name)) {
                 throw new Error('Value "' + name + '" is not a valid root name.');
             }
-            window[name] = root; // expose the alternative root name
+            window[name] = root; // the alternative root name
         }
     })();
 
