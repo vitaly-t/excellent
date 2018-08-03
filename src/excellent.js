@@ -70,13 +70,13 @@
     /**
      * Validates controller name, optionally trimmed.
      *
-     * @param {String} cn
+     * @param {string} cn
      * Controller name.
      *
-     * @param {Boolean} [t]
+     * @param {boolean} [t]
      * Trims the name before validation.
      *
-     * @returns {String|undefined}
+     * @returns {string|undefined}
      * Valid controller name, or nothing.
      */
     function validCN(cn, t) {
@@ -103,7 +103,7 @@
     /**
      * Searches for all elements that match selectors.
      *
-     * @param {String} selectors
+     * @param {string} selectors
      *
      * @param {Element} [node]
      *
@@ -144,9 +144,9 @@
     /**
      * Trims a string, by removing all trailing spaces, tabs and line breaks.
      *
-     * @param {String} txt
+     * @param {string} txt
      *
-     * @returns {String}
+     * @returns {string}
      */
     function trim(txt) {
         return txt.replace(/^[\s]*|[\s]*$/g, '');
@@ -155,10 +155,10 @@
     /**
      * Creates a read-only enumerable property on an object.
      *
-     * @param {Object} target
+     * @param {object} target
      * Target object.
      *
-     * @param {String} prop
+     * @param {string} prop
      * Property name.
      *
      * @param {} value
@@ -178,11 +178,11 @@
     function bind(node) {
         binding = true;
         var allCtrl = [], els = [];
-        find('[e-bind],[data-e-bind]', node)
+        find('[data-e-bind],[e-bind]', node)
             .forEach(function (e) {
                 if (!e.controllers) {
                     var namesMap = {}, eCtrl;
-                    getAttribute(e, 'e-bind', 'data-e-bind')
+                    getAttribute(e, 'data-e-bind', 'e-bind')
                         .split(',')
                         .forEach(function (name) {
                             name = trim(name);
@@ -269,7 +269,7 @@
         function manualCheck() {
             var i = elements.length;
             if (i) {
-                var ce = find('[e-bind],[data-e-bind]'); // all controlled elements;
+                var ce = find('[data-e-bind],[e-bind]'); // all controlled elements;
                 while (i--) {
                     var e = elements[i];
                     if (ce.indexOf(e) === -1) {
@@ -300,9 +300,9 @@
      * Searches for controller function, based on the controller's full name.
      * For that it uses cache of names, plus modules.
      *
-     * @param {String} name
+     * @param {string} name
      *
-     * @param {Boolean} [noError=false]
+     * @param {boolean} [noError=false]
      * Tells it not to throw on errors, and rather return null.
      *
      * @returns {function|undefined}
@@ -352,14 +352,14 @@
     }
 
     /**
-     * Finds all initialized controllers from controller name.
+     * Finds all initialized controllers from a controller name.
      */
     function findCS(cn) {
         cn = validCN(cn, true);
         if (!cn) {
             throw new TypeError('Invalid controller name specified.');
         }
-        var s = '[e-bind*="' + cn + '"],[data-e-bind*="' + cn + '"]'; // selectors
+        var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
         return this.find(s).filter(pick).map(pick);
 
         function pick(e) {
@@ -375,7 +375,7 @@
      * Root interface of the library, available via global variable `excellent`.
      *
      * You can make this interface also available via an alias name that can be set via
-     * attribute `e-root` (or `data-e-root`) on the `HTML` element:
+     * attribute `e-root` or `data-e-root` on the `HTML` element:
      *
      * ```html
      * <HTML e-root="app">
@@ -396,7 +396,7 @@
 
         /**
          * @member ERoot#version
-         * @type {String}
+         * @type {string}
          * @readonly
          * @description
          * Library version, automatically injected during the build/compression process,
@@ -406,7 +406,7 @@
 
         /**
          * @member ERoot#services
-         * @type {Object}
+         * @type {object}
          * @readonly
          * @description
          * Namespace of all registered and initialized services.
@@ -428,7 +428,7 @@
          *
          * In order to avoid naming conflicts, reusable controllers should reside inside modules.
          *
-         * @param {String} name
+         * @param {string} name
          * Controller name.
          *
          * @param {Function} cb
@@ -458,7 +458,7 @@
          *
          * Every added service becomes accessible via property {@link ERoot#services services}.
          *
-         * @param {String} name
+         * @param {string} name
          * Service name.
          *
          * @param {Function} cb
@@ -482,7 +482,7 @@
          * because it cannot determine whether the actual module behind the name is the same,
          * while modules need to be fully reusable, even in dynamically loaded pages.
          *
-         * @param {String} name
+         * @param {string} name
          * Module name.
          *
          * @param {Function} cb
@@ -526,7 +526,7 @@
          *
          * It should only be called after initialization, or it will skip all uninitialized controllers.
          *
-         * @param {String} selectors
+         * @param {string} selectors
          * Standard DOM selectors.
          *
          * @returns {Array<Element>}
@@ -543,7 +543,7 @@
          * @description
          * Searches the entire document for all initialized controllers by a given controller name.
          *
-         * @param {String} ctrlName
+         * @param {string} ctrlName
          * Controller name to search by.
          *
          * @returns {Array<EController>}
@@ -584,7 +584,7 @@
      * {@link EController.event:onInit onInit},
      * {@link EController.event:onDestroy onDestroy}
      *
-     * @param {String} name
+     * @param {string} name
      * Controller name.
      *
      * @param {Element} node
@@ -594,7 +594,7 @@
 
         /**
          * @member EController#name
-         * @type {String}
+         * @type {string}
          * @readonly
          * @description
          * Full controller name.
@@ -668,7 +668,7 @@
      *
      * This method requires that its controller has been initialized.
      *
-     * @param {String|String[]} ctrlName
+     * @param {string|string[]} ctrlName
      * Either a single controller name, or an array of names.
      *
      * @returns {EController|Array<EController>}
@@ -710,7 +710,7 @@
      * This optional level of verification is useful when sub-controllers are rarely used, or loaded
      * dynamically. Such explicit verification simply makes the code more robust.
      *
-     * @param {Array<String>} ctrlNames
+     * @param {Array<string>} ctrlNames
      * List of controller names.
      *
      * You would specify all controller names that this controller may be extending via method {@link EController#extend extend},
@@ -736,7 +736,7 @@
      * @description
      * Searches for all initialized controlled elements among children.
      *
-     * @param {String} selectors
+     * @param {string} selectors
      * Standard DOM selectors.
      *
      * @returns {Array<Element>}
@@ -755,7 +755,7 @@
      *
      * It will throw an error, if multiple or no elements found.
      *
-     * @param {String} selectors
+     * @param {string} selectors
      * Standard DOM selectors.
      *
      * @returns {Element}
@@ -774,7 +774,7 @@
      * @description
      * Searches for all initialized child controllers by a given controller name.
      *
-     * @param {String} ctrlName
+     * @param {string} ctrlName
      * Controller name to search by.
      *
      * @returns {Array<EController>}
@@ -858,14 +858,14 @@
      */
     (function () {
         window.excellent = root; // default root name
-        var e = find('[e-root],[data-e-root]');
+        var e = find('[data-e-root],[e-root]');
         if (e.length) {
             if (e.length > 1) {
                 throw new Error('Multiple e-root elements are not allowed.');
             }
-            var name = getAttribute(e[0], 'e-root', 'data-e-root');
+            var name = getAttribute(e[0], 'data-e-root', 'e-root');
             if (!validJsVariable(name)) {
-                throw new Error('Value "' + name + '" is not a valid root name.');
+                throw new Error('Invalid ' + jStr(name) + ' root name specified.');
             }
             window[name] = root; // the alternative root name
         }
