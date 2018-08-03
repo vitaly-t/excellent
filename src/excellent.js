@@ -376,8 +376,8 @@
      * @description
      * Root interface of the library, available via global variable `excellent`.
      *
-     * You can make this interface also available via an alias name that can be set
-     * via attribute `e-root` on the `HTML` element:
+     * You can make this interface also available via an alias name that can be set via
+     * attribute `e-root` (or `data-e-root`) on the `HTML` element:
      *
      * ```html
      * <HTML e-root="app">
