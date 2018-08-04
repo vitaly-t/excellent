@@ -26,6 +26,14 @@ describe('positive', () => {
         jest.resetModules();
     });
 
+    it('should call onInit on DOMContentLoaded', () => {
+        require('../src/excellent');
+        excellent.onInit = jest.fn();
+        window.document.dispatchEvent(new Event("DOMContentLoaded", {}));
+        expect(excellent.onInit).toBeCalled();
+        jest.resetModules();
+    });
+
 });
 
 
