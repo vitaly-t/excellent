@@ -22,25 +22,24 @@ describe('positive', () => {
         document.body.innerHTML = `<div e-root="${name}"></div>`;
         require('../src/excellent');
         expect(window[name]).not.toBeUndefined();
-        document.body.innerHTML = "";
+        document.body.innerHTML = '';
         jest.resetModules();
     });
 
     it('should call onInit on DOMContentLoaded', () => {
         require('../src/excellent');
         excellent.onInit = jest.fn();
-        window.document.dispatchEvent(new Event("DOMContentLoaded", {}));
+        window.document.dispatchEvent(new Event('DOMContentLoaded', {}));
         expect(excellent.onInit).toBeCalled();
         jest.resetModules();
     });
 
 });
 
-
 describe('negative', () => {
 
     afterEach(() => {
-        document.body.innerHTML = "";
+        document.body.innerHTML = '';
         jest.resetModules();
     });
 
@@ -49,8 +48,8 @@ describe('negative', () => {
         expect(() => require('../src/excellent')).toThrow('Multiple e-root elements are not allowed.');
     });
     it('should fail on an invalid alternate name', () => {
-        document.body.innerHTML = `<div e-root="123"></div>`;
-        expect(() => require('../src/excellent')).toThrow(`Invalid "123" root name specified.`);
+        document.body.innerHTML = '<div e-root="123"></div>';
+        expect(() => require('../src/excellent')).toThrow('Invalid "123" root name specified.');
     });
 
 });

@@ -21,15 +21,15 @@ describe('positive', () => {
     });
 
     afterEach(() => {
-        document.body.innerHTML = "";
+        document.body.innerHTML = '';
         jest.resetModules();
     });
 
-    test('simple names', async () => {
+    test('simple names', () => {
         expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first value');
     });
 
-    test('nested namespaces', async () => {
+    test('nested namespaces', () => {
         expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second value');
     });
 

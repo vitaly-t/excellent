@@ -23,7 +23,7 @@ describe('positive', () => {
     });
 
     afterEach(() => {
-        document.body.innerHTML = "";
+        document.body.innerHTML = '';
         jest.resetModules();
     });
 
@@ -31,7 +31,7 @@ describe('positive', () => {
         expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first message.');
     });
 
-    test('controller must work via parameter', async () => {
+    test('controller must work via parameter', () => {
         expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second message.');
     });
 
