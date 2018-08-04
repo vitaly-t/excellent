@@ -982,7 +982,7 @@
         var e = find('[data-e-root],[e-root]');
         if (e.length) {
             if (e.length > 1) {
-                throw new Error('Multiple e-root elements are not allowed.');
+                throw new Error('Multiple root elements are not allowed.');
             }
             var name = getAttribute(e[0], 'data-e-root', 'e-root');
             if (!validJsVariable(name)) {

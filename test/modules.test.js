@@ -25,16 +25,12 @@ describe('positive', () => {
         jest.resetModules();
     });
 
-    test('simple names', () => {
+    test('should resolve top-level controller', () => {
         expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first value');
     });
 
-    test('nested namespaces', () => {
+    test('should resolve nested controllers', () => {
         expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second value');
-    });
-
-    test('must throw on invalid module name', () => {
-
     });
 
 });

@@ -7,7 +7,7 @@ const rename = require('gulp-rename');
 const insert = require('gulp-insert');
 
 const SOURCE = './src/excellent.js';
-const SOURCE_LINT = ['./src/excellent.js', './test/*.js'];
+const SOURCE_LINT = ['./src/excellent.js', './test/*.test.js'];
 const DEST = 'excellent.min.js';
 
 const version = require('./package.json').version;
