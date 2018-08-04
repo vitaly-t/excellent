@@ -3,8 +3,5 @@ module.exports = {
     collectCoverageFrom: [
         'src/excellent.js'
     ],
-    testURL: 'http://localhost/',
-    setupFiles: [
-        './src/excellent.js'
-    ]
+    testURL: 'http://localhost/'
 };
