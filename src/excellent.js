@@ -9,7 +9,15 @@
      *
      * It is a controller name-to-function map for the app's local controllers.
      */
-    var controllers = {};
+    var ctrlRegistered = {};
+
+    /**
+     * All live controllers (initialized, but not destroyed), with each property -
+     * controller name set to an array of controller objects.
+     *
+     * @type {{Object.<string, EController[]>>}}
+     */
+    var ctrlLive = {};
 
     /**
      * Global name-to-function cache for all controllers.
@@ -199,6 +207,8 @@
                                 eCtrl = eCtrl || {};
                                 readOnlyProp(eCtrl, name, c);
                                 allCtrl.push(c);
+                                ctrlLive[name] = ctrlLive[name] || [];
+                                ctrlLive[name].push(c);
                             }
                         });
                     if (eCtrl) {
@@ -258,9 +268,25 @@
                             elements.splice(idx, 1);
                             notify(e);
                         }
+                        removeControllers(e);
                     }
                 }
             });
+        }
+
+        /**
+         * Removes all controllers from ctrlLive, as per the element.
+         *
+         * @param {ControlledElement} e
+         */
+        function removeControllers(e) {
+            for (var a in e.controllers) {
+                var i = ctrlLive[a].indexOf(e.controllers[a]);
+                ctrlLive[a].splice(i, 1);
+                if (!ctrlLive[a].length) {
+                    delete ctrlLive[a];
+                }
+            }
         }
 
         /**
@@ -275,6 +301,7 @@
                     if (ce.indexOf(e) === -1) {
                         elements.splice(i, 1);
                         notify(e);
+                        removeControllers(e);
                     }
                 }
             }
@@ -362,7 +389,7 @@
         }
         if (name.indexOf('.') === -1) {
             // it is an in-app controller;
-            var f = controllers[name]; // the function
+            var f = ctrlRegistered[name]; // the function
             if (f) {
                 ctrlCache[name] = f; // updating cache
                 return f;
@@ -399,26 +426,20 @@
     }
 
     /**
-     * Finds all initialized controllers from a controller name.
+     * Parses a controller name, allowing for trailing spaces.
      *
      * @param {string} cn
      * Controller name.
      *
-     * @returns {EController[]}
+     * @returns {string}
+     * Validated controller name (without trailing spaces).
      */
-    function findCS(cn) {
-        cn = validCN(cn, true);
-        if (!cn) {
-            throw new TypeError('Invalid controller name specified.');
+    function parseControllerName(cn) {
+        var name = validCN(cn, true);
+        if (!name) {
+            throw new TypeError('Invalid controller name ' + jStr(cn) + ' specified.');
         }
-        var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
-        return this.find(s).filter(pick).map(pick);
-
-        function pick(e) {
-            // This also caters for dynamically created controlled
-            // elements that haven't been initialized yet:
-            return e.controllers && e.controllers[cn];
-        }
+        return name;
     }
 
     /**
@@ -488,15 +509,15 @@
          */
         this.addController = function (name, cb) {
             checkEntity(name, cb, 'controller');
-            if (name in controllers) {
+            if (name in ctrlRegistered) {
                 // controller name has been registered before
-                if (controllers[name] === cb) {
+                if (ctrlRegistered[name] === cb) {
                     // it is the same controller, so we can just ignore it;
                     return;
                 }
                 throw new Error('Controller with name ' + jStr(name) + ' already exists.');
             }
-            controllers[name] = cb;
+            ctrlRegistered[name] = cb;
         };
 
         /**
@@ -593,7 +614,11 @@
         /**
          * @method ERoot#findControllers
          * @description
-         * Searches the entire document for all initialized controllers, by a given controller name.
+         * Searches for all initialized controller objects, in the entire application, based on the controller name.
+         *
+         * The search is based on the internal instant-access controller map, without involving DOM, and is thus very fast.
+         * In most cases it will significantly outperform {@link EController#findControllers EController.findControllers},
+         * even though the latter searches only among children, but it uses DOM.
          *
          * @param {string} ctrlName
          * Controller name to search by.
@@ -602,7 +627,11 @@
          * List of found initialized controllers.
          */
         this.findControllers = function (ctrlName) {
-            return findCS.call(this, ctrlName);
+            var cn = parseControllerName(ctrlName);
+            if (cn in ctrlLive) {
+                return ctrlLive[cn].slice();
+            }
+            return [];
         };
     }
 
@@ -822,14 +851,28 @@
      * @description
      * Searches for all initialized child controllers by a given controller name.
      *
+     * This method searches through DOM, as it needs to iterate over child elements.
+     * And because of that, even though it searches through just a sub-set of elements,
+     * it often can be way slower than the global {@link ERoot#findControllers ERoot.findControllers} method.
+     *
      * @param {string} ctrlName
      * Controller name to search by.
      *
      * @returns {EController[]}
      * List of found initialized controllers.
+     *
+     * @see {@link ERoot#findControllers ERoot.findControllers}
      */
     EController.prototype.findControllers = function (ctrlName) {
-        return findCS.call(this, ctrlName);
+        var cn = parseControllerName(ctrlName);
+        var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
+        return this.find(s).filter(pick).map(pick);
+
+        function pick(e) {
+            // This also caters for dynamically created controlled
+            // elements that haven't been initialized yet:
+            return e.controllers && e.controllers[cn];
+        }
     };
 
     /**
