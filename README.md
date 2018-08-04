@@ -20,7 +20,7 @@ You get the essential element-to-controller bindings:
 <div e-bind="awesome, twinkling, message"></div>
 ```
 
-That gives your code isolation and high reusability:
+That gives your code isolation and reusability:
 
 ```js
 app.addController('message', function() {
