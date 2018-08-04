@@ -1,4 +1,5 @@
-const {createTest} = require('./header');
+require('../src/excellent');
+const { createTest } = require('./header');
 
 describe('positive', () => {
 
