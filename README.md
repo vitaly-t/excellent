@@ -34,8 +34,7 @@ app.addController('awesome', function() {
 app.addController('twinkling', function() {
   var s = this.node.style, a = -0.01;
   setInterval(function() {
-    var b = +s.opacity;
-    a = (b < 0 || b > 1) ? -a : a;
+    a = (s.opacity < 0 || s.opacity > 1) ? -a : a;
     s.opacity = +s.opacity + a;
   }, 40);
 });
