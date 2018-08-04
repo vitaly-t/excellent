@@ -44,7 +44,7 @@ app.addController('twinkling', function() {
 &lt;- click it to see the demo
 <br/>
 <br/>
-Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance] enable you to build large-scale apps and high-performance reusable component libraries with this simple framework.
+Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance] enable you to build large-scale apps and reusable component libraries.
 
 ### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 
