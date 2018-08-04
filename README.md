@@ -24,7 +24,7 @@ That gives your code isolation and high reusability:
 
 ```js
 app.addController('message', function() {
-    this.node.innerHTML = 'This is awesome! :)'; // this.node = your DOM element
+    this.node.innerHTML = 'Awesome twinkling message :)'; // this.node = your DOM element
 });
 
 app.addController('awesome', function() {
