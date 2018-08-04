@@ -17,10 +17,10 @@ See [Wiki Pages] for all the details.
 You get the essential element-to-controller bindings:
 
 ```html
-<div e-bind="message, awesome"></div>
+<div e-bind="awesome, twinkling, message"></div>
 ```
 
-That gives your code isolation and reusability:
+That gives your code isolation and high reusability:
 
 ```js
 app.addController('message', function() {
@@ -30,9 +30,18 @@ app.addController('message', function() {
 app.addController('awesome', function() {
     this.node.className = 'green-box'; // css class for a green box
 });
+
+app.addController('twinkling', function() {
+  var s = this.node.style, a = -0.01;
+  setInterval(function() {
+    var b = +s.opacity;
+    a = (b < -0.1 || b > 1) ? -a : a;
+    s.opacity = +s.opacity + a;
+  }, 10);
+});
 ```
 
-<a href="https://github.com/vitaly-t/excellent/wiki"><img align="left" width="260" height="40" src="./.github/images/awesome.png" alt="awesome"></a>
+<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview"><img align="left" width="260" height="40" src="./.github/images/message.gif" alt="awesome"></a>
 <br/>
 <br/>
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance] enable you to build large-scale apps and high-performance reusable component libraries with this simple framework.
