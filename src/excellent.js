@@ -15,7 +15,7 @@
      * All live controllers (initialized, but not destroyed), with each property -
      * controller name set to an array of controller objects.
      *
-     * @type {{Object.<string, EController[]>>}}
+     * @type {Object.<string, EController[]>}
      */
     var ctrlLive = {};
 
@@ -231,8 +231,8 @@
      * @constructor
      * @private
      * @description
-     * Helps watching node elements removal from DOM, in order to provide `onDestroy` notification
-     * for all corresponding controllers.
+     * Helps watching node elements removal from DOM, in order to provide {@link EController.event:onDestroy onDestroy}
+     * notification for all corresponding controllers.
      *
      * For IE9/10 that do not support `MutationObserver`, it executes manual check every 500ms.
      */
@@ -308,7 +308,7 @@
         }
 
         /**
-         * Sends onDestroy notification into all controllers of an element.
+         * Sends `onDestroy` notification into all controllers of an element.
          *
          * @param {ControlledElement} e
          */
@@ -616,9 +616,9 @@
          * @description
          * Searches for all initialized controller objects, in the entire application, based on the controller name.
          *
-         * The search is based on the internal instant-access controller map, without involving DOM, and is thus very fast.
-         * In most cases it will significantly outperform {@link EController#findControllers EController.findControllers},
-         * even though the latter searches only among children, but it uses DOM.
+         * The search is based solely on the internal map of controllers, without involving DOM, and provides instant results.
+         * It will always significantly outperform method {@link EController#findControllers EController.findControllers},
+         * even though the latter searches for only child elements, but it searches through DOM.
          *
          * @param {string} ctrlName
          * Controller name to search by.
@@ -637,12 +637,11 @@
 
     /**
      * @event ERoot.onInit
+     * @type {function}
      * @description
      * Called once in the beginning, after all controllers have been initialized.
      *
      * @see {@link EController.event:onInit EController.onInit}
-     *
-     * @type {function}
      */
 
     /**
@@ -663,7 +662,8 @@
      * {@link EController#send send},
      * {@link EController#post post},
      * {@link EController.event:onInit onInit},
-     * {@link EController.event:onDestroy onDestroy}
+     * {@link EController.event:onDestroy onDestroy},
+     * {@link EController.event:onReceive onReceive}
      *
      * @param {string} name
      * Controller name.
@@ -694,13 +694,12 @@
 
     /**
      * @event EController.onInit
+     * @type {function}
      * @description
      * Initialization event handler.
      *
      * It is called after all controllers have finished their initialization,
      * and now ready to communicate with each other.
-     *
-     * @type {function}
      *
      * @see
      * {@link EController.event:onDestroy onDestroy},
@@ -709,6 +708,7 @@
 
     /**
      * @event EController.onDestroy
+     * @type {function}
      * @description
      * De-initialization event handler.
      *
@@ -719,16 +719,31 @@
      * while for older browsers, such as IE9 and IE10 it falls back on a manual background check
      * that runs every 500ms.
      *
-     * @type {function}
-     *
      * @see
      * {@link ERoot.event:onInit ERoot.onInit}
      */
 
     /**
+     * @event EController.onReceive
+     * @type {function}
+     * @description
+     * Generic data receiver, sent via method {@link EController#send send} or {@link EController#post post}.
+     *
+     * @param {} data
+     * Data that was sent / posted.
+     *
+     * @param {EController} sender
+     * Controller that sent the data.
+     *
+     * @see
+     * {@link EController#send send},
+     * {@link EController#post post}
+     */
+
+    /**
      * @method EController#bind
      * @description
-     * Indicates that the element's content has been modified to contain new child controlled elements,
+     * Signals the framework that the element's content has been modified to contain new child controlled elements,
      * and that it is time to bind those elements and initialize its controllers.
      *
      * This method requires that its controller has been initialized.
@@ -852,14 +867,14 @@
      * Searches for all initialized child controllers by a given controller name.
      *
      * This method searches through DOM, as it needs to iterate over child elements.
-     * And because of that, even though it searches through just a sub-set of elements,
-     * it often can be way slower than the global {@link ERoot#findControllers ERoot.findControllers} method.
+     * And because of that, even though it searches just through a sub-set of elements,
+     * it is always slower than the global {@link ERoot#findControllers ERoot.findControllers} method.
      *
      * @param {string} ctrlName
      * Controller name to search by.
      *
      * @returns {EController[]}
-     * List of found initialized controllers.
+     * List of initialized child controllers.
      *
      * @see {@link ERoot#findControllers ERoot.findControllers}
      */
@@ -878,16 +893,23 @@
     /**
      * @method EController#send
      * @description
-     * Synchronously sends data into method `onReceive`, and returns the response, if the method exists.
-     * If `onReceive` handler does not exist, the method will do nothing, and return `undefined`.
+     * Synchronously sends data into this controller:
+     * - If this controller implements {@link EController.event:onReceive onReceive} handler,
+     *   the method returns the value returned by the handler.
+     * - And if this controller does not implement {@link EController.event:onReceive onReceive} handler,
+     *   the method will do nothing, and return `undefined`.
      *
-     * Requires that controller is initialized.
+     * This method requires that controller is initialized.
      *
      * @param {} data
      * Any type of data to be sent.
      *
      * @returns {}
-     * Whatever method `onReceive` returns.
+     * Whatever method {@link EController.event:onReceive onReceive} returns.
+     *
+     * @see
+     * {@link EController#post post},
+     * {@link EController.event:onReceive onReceive}
      */
     EController.prototype.send = function (data) {
         this.verifyInit('send');
@@ -899,15 +921,23 @@
     /**
      * @method EController#post
      * @description
-     * Asynchronously sends data into method `onReceive`, and if the callback was specified - calls it with the response.
+     * Asynchronously sends data into this controller:
+     * - If this controller implements {@link EController.event:onReceive onReceive} handler,
+     *    the returned value will be passed into optional `cb` - callback function.
+     * - And if this controller does not implement {@link EController.event:onReceive onReceive} handler,
+     *   the method will do nothing.
      *
-     * Requires that controller is initialized.
+     * This method requires that controller is initialized.
      *
-     * @param {} [data]
-     * Any data to be sent.
+     * @param {} data
+     * Any type of data to be sent.
      *
      * @param {function} [cb]
-     * Optional callback to receive the response from method onReceive.
+     * Optional callback to receive the response from {@link EController.event:onReceive onReceive} handler.
+     *
+     * @see
+     * {@link EController#send send},
+     * {@link EController.event:onReceive onReceive}
      */
     EController.prototype.post = function (data, cb) {
         this.verifyInit('post');
