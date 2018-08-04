@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReceive">onReceive</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">GitHub</a>
@@ -98,7 +98,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line424">line 424</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line445">line 445</a>
     </li></ul></dd>
     
 
@@ -207,7 +207,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line459">line 459</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line480">line 480</a>
     </li></ul></dd>
     
 
@@ -287,7 +287,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line449">line 449</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line470">line 470</a>
     </li></ul></dd>
     
 
@@ -445,7 +445,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line471">line 471</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line492">line 492</a>
     </li></ul></dd>
     
 
@@ -606,7 +606,7 @@ while modules need to be fully reusable, even in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line528">line 528</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line549">line 549</a>
     </li></ul></dd>
     
 
@@ -768,7 +768,7 @@ while services need to be fully reusable, even in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line502">line 502</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line523">line 523</a>
     </li></ul></dd>
     
 
@@ -859,7 +859,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line552">line 552</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line573">line 573</a>
     </li></ul></dd>
     
 
@@ -995,7 +995,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line574">line 574</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line595">line 595</a>
     </li></ul></dd>
     
 
@@ -1059,7 +1059,10 @@ the scenario best to be avoided.</p>
 
 
 <div class="description">
-    <p>Searches the entire document for all initialized controllers, by a given controller name.</p>
+    <p>Searches for all initialized controller objects, in the entire application, based on the controller name.</p>
+<p>The search is based solely on the internal map of controllers, without involving DOM, and provides instant results.
+It will always significantly outperform method <a href="EController.html#findControllers">EController.findControllers</a>,
+even though the latter searches for only child elements, but it searches through DOM.</p>
 </div>
 
 
@@ -1152,7 +1155,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line593">line 593</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line614">line 614</a>
     </li></ul></dd>
     
 
@@ -1278,7 +1281,7 @@ the scenario best to be avoided.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line609">line 609</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line638">line 638</a>
     </li></ul></dd>
     
 
