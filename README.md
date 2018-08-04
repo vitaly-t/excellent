@@ -40,9 +40,7 @@ app.addController('twinkling', function() {
   }, 10);
 });
 ```
-
-<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview"><img align="left" width="260" height="40" src="./.github/images/message.gif" alt="awesome"></a>
-<br/>
+<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview"><img width="370" height="55" src="./.github/images/message.gif" alt="awesome"></a>
 <br/>
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance] enable you to build large-scale apps and high-performance reusable component libraries with this simple framework.
 
