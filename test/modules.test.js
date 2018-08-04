@@ -1,51 +1,50 @@
-require('../src/excellent');
-const { createTest } = require('./header');
-
 describe('positive', () => {
 
-    let t;
-    beforeEach(async () => {
-        t = await createTest('./html/modules.html');
-        await t.page.evaluate(() => {
-            excellent.addModule('mod', function () {
-                this.first = function () {
-                    this.node.innerHTML = 'first value';
-                };
-                this.space = {
-                    second: function () {
-                        this.node.innerHTML = 'second value';
-                    }
-                };
-            });
+    beforeEach(() => {
+        require('../src/excellent');
+        document.body.innerHTML = `
+            <div e-bind="mod.first"></div>
+            <div e-bind="mod.space.second"></div>
+        `;
+
+        excellent.addModule('mod', function () {
+            this.first = function () {
+                this.node.innerHTML = 'first value';
+            };
+            this.space = {
+                second: function () {
+                    this.node.innerHTML = 'second value';
+                }
+            };
         });
-        await t.bind();
+        excellent.bind();
+    });
+
+    afterEach(() => {
+        document.body.innerHTML = "";
+        jest.resetModules();
     });
 
     test('simple names', async () => {
-        const selectors = '[e-bind*="first"]';
-        await t.page.waitForSelector(selectors);
-        const html = await t.page.$eval(selectors, e => e.innerHTML);
-        expect(html).toBe('first value');
+        expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first value');
     });
 
     test('nested namespaces', async () => {
-        const selectors = '[e-bind*="second"]';
-        await t.page.waitForSelector(selectors);
-        const html = await t.page.$eval(selectors, e => e.innerHTML);
-        expect(html).toBe('second value');
+        expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second value');
     });
 
     test('must throw on invalid module name', () => {
 
     });
 
-    afterEach(() => {
-        t.browser.close();
-    });
-
 });
 
 describe('negative', () => {
+
+    beforeAll(() => {
+        require('../src/excellent');
+    });
+
     it('must throw on invalid module names', () => {
         expect(() => {
             excellent.addModule();

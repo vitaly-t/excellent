@@ -1,54 +1,52 @@
-require('../src/excellent');
-const { createTest } = require('./header');
-
 describe('positive', () => {
 
-    let t;
-    beforeEach(async () => {
-        t = await createTest('./html/controllers.html');
-        await t.page.evaluate(() => {
-            excellent.addController('first', function () {
-                this.node.innerHTML += 'first message.';
-            });
-            excellent.addController('second', ctrl => {
-                ctrl.node.innerHTML += 'second message.';
-            });
-            excellent.addController('combined', ctrl => {
-                ctrl.onInit = function () {
-                    this.extend(['first', 'second']);
-                };
-            });
+    beforeEach(() => {
+        require('../src/excellent');
+        document.body.innerHTML = `
+            <div e-bind="first"></div>
+            <div e-bind="second"></div>
+            <div e-bind="combined"></div>
+        `;
+
+        excellent.addController('first', function () {
+            this.node.innerHTML += 'first message.';
         });
-        await t.bind();
-    });
-
-    test('controller must work via this', async () => {
-        const selector = '[e-bind*="first"]';
-        await t.page.waitForSelector(selector);
-        const html = await t.page.$eval(selector, e => e.innerHTML);
-        expect(html).toBe('first message.');
-    });
-
-    test('controller must work via parameter', async () => {
-        const selector = '[e-bind*="second"]';
-        await t.page.waitForSelector(selector);
-        const html = await t.page.$eval(selector, e => e.innerHTML);
-        expect(html).toBe('second message.');
-    });
-
-    test('inheritance', async () => {
-        const selector = '[e-bind*="combined"]';
-        await t.page.waitForSelector(selector);
-        const html = await t.page.$eval(selector, e => e.innerHTML);
-        expect(html).toBe('first message.second message.');
+        excellent.addController('second', ctrl => {
+            ctrl.node.innerHTML += 'second message.';
+        });
+        excellent.addController('combined', ctrl => {
+            ctrl.onInit = function () {
+                this.extend(['first', 'second']);
+            };
+        });
+        excellent.bind();
     });
 
     afterEach(() => {
-        t.browser.close();
+        document.body.innerHTML = "";
+        jest.resetModules();
     });
+
+    test('controller must work via this', () => {
+        expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first message.');
+    });
+
+    test('controller must work via parameter', async () => {
+        expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second message.');
+    });
+
+    test('inheritance', () => {
+        expect(document.querySelector('[e-bind*="combined"]').innerHTML).toBe('first message.second message.');
+    });
+
 });
 
 describe('negative', () => {
+
+    beforeAll(() => {
+        require('../src/excellent');
+    });
+
     it('must throw on invalid controller names', () => {
         expect(() => {
             excellent.addController();
