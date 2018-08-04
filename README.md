@@ -40,7 +40,7 @@ app.addController('twinkling', function() {
   }, 10);
 });
 ```
-<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview" target="_blank" alt="Awesome twinkling message :)"><img align="left" width="370" height="55" src="./.github/images/message.gif" alt="awesome"></a>
+<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview" target="_blank"><img align="left" width="370" height="55" src="./.github/images/message.gif" alt="Awesome twinkling message :)"></a>
 <br/>
 &lt;- click it to see the app.
 <br/>
