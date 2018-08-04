@@ -35,12 +35,12 @@ app.addController('twinkling', function() {
   var s = this.node.style, a = -0.01;
   setInterval(function() {
     var b = +s.opacity;
-    a = (b < -0.1 || b > 1) ? -a : a;
+    a = (b < 0 || b > 1) ? -a : a;
     s.opacity = +s.opacity + a;
-  }, 10);
+  }, 40);
 });
 ```
-<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview" target="_blank"><img align="left" width="370" height="55" src="./.github/images/message.gif" alt="Awesome twinkling message :)"></a>
+<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview" target="_blank"><img align="left" width="375" height="47" src="./.github/images/message.gif" alt="Awesome twinkling message :)"></a>
 <br/>
 &lt;- click it to see the app.
 <br/>
