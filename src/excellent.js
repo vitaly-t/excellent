@@ -855,7 +855,7 @@
     EController.prototype.find = function (ctrlName) {
         var cn = parseControllerName(ctrlName);
         var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
-        return this.find(s).filter(pick).map(pick);
+        return find(s, this.node).filter(pick).map(pick);
 
         function pick(e) {
             // This also caters for dynamically created controlled

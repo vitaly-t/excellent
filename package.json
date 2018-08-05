@@ -12,7 +12,8 @@
     "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md"
   },
   "files": [
-    "src"
+    "src/excellent.js",
+    "src/excellent.min.js"
   ],
   "homepage": "https://github.com/vitaly-t/excellent",
   "repository": {
