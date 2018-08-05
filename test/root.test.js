@@ -16,7 +16,7 @@ describe('positive', () => {
         expect(typeof e.addService).toBe('function');
         expect(typeof e.bind).toBe('function');
         expect(typeof e.find).toBe('function');
-        expect(typeof e.findControllers).toBe('function');
+        expect(typeof e.findOne).toBe('function');
         expect(e.onInit).toBeUndefined();
     });
 

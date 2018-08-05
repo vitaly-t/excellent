@@ -127,6 +127,22 @@
     }
 
     /**
+     * Searches for a single controller by its name.
+     *
+     * @param ctrlName
+     * Controller name to search by.
+     *
+     * @returns {EController}
+     */
+    function findOne(ctrlName) {
+        var a = this.find(ctrlName);
+        if (a.length !== 1) {
+            throw new Error('A single controller ' + jStr(ctrlName) + ' was expected, but found ' + a.length + '.');
+        }
+        return a[0];
+    }
+
+    /**
      * Gets the primary attribute's value, if the attribute exists,
      * or else it gets the secondary attribute's value.
      *
@@ -462,7 +478,7 @@
      * {@link ERoot#addService addService},
      * {@link ERoot#bind bind},
      * {@link ERoot#find find},
-     * {@link ERoot#findControllers findControllers},
+     * {@link ERoot#findOne findOne},
      * {@link ERoot.event:onInit onInit}
      */
     function ERoot() {
@@ -595,29 +611,10 @@
         /**
          * @method ERoot#find
          * @description
-         * Searches for controlled elements within the entire document.
-         *
-         * It should only be called after initialization, or it will skip all uninitialized controllers.
-         *
-         * @param {string} selectors
-         * Standard DOM selectors.
-         *
-         * @returns {ControlledElement[]}
-         * Controlled elements matching the selectors.
-         */
-        this.find = function (selectors) {
-            return find(selectors).filter(function (e) {
-                return e.controllers;
-            });
-        };
-
-        /**
-         * @method ERoot#findControllers
-         * @description
-         * Searches for all initialized controller objects, in the entire application, based on the controller name.
+         * Searches for all initialized controllers, in the entire application, based on the controller name.
          *
          * The search is based solely on the internal map of controllers, without involving DOM, and provides instant results.
-         * It will always significantly outperform method {@link EController#findControllers EController.findControllers},
+         * It will always significantly outperform method {@link EController#find EController.find},
          * even though the latter searches for only child elements, but it searches through DOM.
          *
          * @param {string} ctrlName
@@ -626,13 +623,31 @@
          * @returns {EController[]}
          * List of found initialized controllers.
          */
-        this.findControllers = function (ctrlName) {
+        this.find = function (ctrlName) {
             var cn = parseControllerName(ctrlName);
             if (cn in ctrlLive) {
                 return ctrlLive[cn].slice();
             }
             return [];
         };
+
+        /**
+         * @method ERoot#findOne
+         * @description
+         * Searches for a single initialized controller, in the entire application, based on the controller name.
+         *
+         * It will throw an error, if multiple or no controllers found.
+         *
+         * @param {string} ctrlName
+         * Controller name to search by.
+         *
+         * @returns {EController}
+         * One controller matching the name.
+         */
+        this.findOne = function (ctrlName) {
+            return findOne.call(this, ctrlName);
+        };
+
     }
 
     /**
@@ -658,12 +673,8 @@
      * {@link EController#extend extend},
      * {@link EController#find find},
      * {@link EController#findOne findOne},
-     * {@link EController#findControllers findControllers},
-     * {@link EController#send send},
-     * {@link EController#post post},
      * {@link EController.event:onInit onInit},
-     * {@link EController.event:onDestroy onDestroy},
-     * {@link EController.event:onReceive onReceive}
+     * {@link EController.event:onDestroy onDestroy}
      *
      * @param {string} name
      * Controller name.
@@ -721,23 +732,6 @@
      *
      * @see
      * {@link ERoot.event:onInit ERoot.onInit}
-     */
-
-    /**
-     * @event EController.onReceive
-     * @type {function}
-     * @description
-     * Generic data receiver, sent via method {@link EController#send send} or {@link EController#post post}.
-     *
-     * @param {} data
-     * Data that was sent / posted.
-     *
-     * @param {EController} sender
-     * Controller that sent the data.
-     *
-     * @see
-     * {@link EController#send send},
-     * {@link EController#post post}
      */
 
     /**
@@ -824,51 +818,31 @@
     };
 
     /**
-     * @method EController#find
-     * @description
-     * Searches for all initialized controlled elements among children.
-     *
-     * @param {string} selectors
-     * Standard DOM selectors.
-     *
-     * @returns {ControlledElement[]}
-     * Controlled initialized child elements, matching the selectors.
-     */
-    EController.prototype.find = function (selectors) {
-        return find(selectors, this.node).filter(function (e) {
-            return !!e.controllers;
-        });
-    };
-
-    /**
      * @method EController#findOne
      * @description
-     * Searches for a single matching initialized controlled element.
+     * Searches for a single initialized child controller by a given controller name.
      *
-     * It will throw an error, if multiple or no elements found.
+     * It will throw an error, if multiple or no controllers found.
      *
-     * @param {string} selectors
-     * Standard DOM selectors.
+     * @param {string} ctrlName
+     * Controller name to search by.
      *
-     * @returns {ControlledElement}
-     * One controlled element matching the selectors.
+     * @returns {EController}
+     * One controller matching the name.
      */
-    EController.prototype.findOne = function (selectors) {
-        var a = this.find(selectors);
-        if (a.length !== 1) {
-            throw new Error('A single element was expected, but found ' + a.length + '.');
-        }
-        return a[0];
+    EController.prototype.findOne = function (ctrlName) {
+        // TODO: Improve on the generic error, by including name of this controller.
+        return findOne.call(this, ctrlName);
     };
 
     /**
-     * @method EController#findControllers
+     * @method EController#find
      * @description
      * Searches for all initialized child controllers by a given controller name.
      *
      * This method searches through DOM, as it needs to iterate over child elements.
      * And because of that, even though it searches just through a sub-set of elements,
-     * it is always slower than the global {@link ERoot#findControllers ERoot.findControllers} method.
+     * it is always slower than the global {@link ERoot#find ERoot.find} method.
      *
      * @param {string} ctrlName
      * Controller name to search by.
@@ -876,9 +850,9 @@
      * @returns {EController[]}
      * List of initialized child controllers.
      *
-     * @see {@link ERoot#findControllers ERoot.findControllers}
+     * @see {@link ERoot#find ERoot.find}
      */
-    EController.prototype.findControllers = function (ctrlName) {
+    EController.prototype.find = function (ctrlName) {
         var cn = parseControllerName(ctrlName);
         var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
         return this.find(s).filter(pick).map(pick);
@@ -888,68 +862,6 @@
             // elements that haven't been initialized yet:
             return e.controllers && e.controllers[cn];
         }
-    };
-
-    /**
-     * @method EController#send
-     * @description
-     * Synchronously sends data into this controller:
-     * - If this controller implements {@link EController.event:onReceive onReceive} handler,
-     *   the method returns the value returned by the handler.
-     * - And if this controller does not implement {@link EController.event:onReceive onReceive} handler,
-     *   the method will do nothing, and return `undefined`.
-     *
-     * This method requires that controller is initialized.
-     *
-     * @param {} data
-     * Any type of data to be sent.
-     *
-     * @returns {}
-     * Whatever method {@link EController.event:onReceive onReceive} returns.
-     *
-     * @see
-     * {@link EController#post post},
-     * {@link EController.event:onReceive onReceive}
-     */
-    EController.prototype.send = function (data) {
-        this.verifyInit('send');
-        if (typeof this.onReceive === 'function') {
-            return this.onReceive(data, this);
-        }
-    };
-
-    /**
-     * @method EController#post
-     * @description
-     * Asynchronously sends data into this controller:
-     * - If this controller implements {@link EController.event:onReceive onReceive} handler,
-     *    the returned value will be passed into optional `cb` - callback function.
-     * - And if this controller does not implement {@link EController.event:onReceive onReceive} handler,
-     *   the method will do nothing.
-     *
-     * This method requires that controller is initialized.
-     *
-     * @param {} data
-     * Any type of data to be sent.
-     *
-     * @param {function} [cb]
-     * Optional callback to receive the response from {@link EController.event:onReceive onReceive} handler.
-     *
-     * @see
-     * {@link EController#send send},
-     * {@link EController.event:onReceive onReceive}
-     */
-    EController.prototype.post = function (data, cb) {
-        this.verifyInit('post');
-        var self = this;
-        setTimeout(function () {
-            if (typeof self.onReceive === 'function') {
-                var response = self.onReceive(data, self);
-                if (typeof cb === 'function') {
-                    cb(response);
-                }
-            }
-        });
     };
 
     /**
