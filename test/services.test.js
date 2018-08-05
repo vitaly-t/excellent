@@ -1,6 +1,23 @@
 require('../src/excellent');
 
 describe('positive', () => {
+    beforeEach(() => {
+        require('../src/excellent');
+        excellent.addService('srv', function () {
+            this.first = function () {
+                return 'first';
+            };
+            this.second = 'second';
+        });
+    });
+
+    test('should allow access to functions', () => {
+        expect(excellent.services.srv.first()).toBe('first');
+    });
+
+    test('should allow access to properties', () => {
+        expect(excellent.services.srv.second).toBe('second');
+    });
 
 });
 

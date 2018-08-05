@@ -4,16 +4,22 @@ describe('positive', () => {
         require('../src/excellent');
         document.body.innerHTML = `
             <div e-bind="mod.first"></div>
-            <div e-bind="mod.space.second"></div>
+            <div e-bind="mod.deep.second"></div>
+            <div e-bind="mod.deep.space.third"></div>
         `;
 
         excellent.addModule('mod', function () {
             this.first = function () {
-                this.node.innerHTML = 'first value';
+                this.node.innerHTML = 'first';
             };
-            this.space = {
+            this.deep = {
                 second: function () {
-                    this.node.innerHTML = 'second value';
+                    this.node.innerHTML = 'second';
+                },
+                space: {
+                    third: function () {
+                        this.node.innerHTML = 'third';
+                    }
                 }
             };
         });
@@ -26,11 +32,12 @@ describe('positive', () => {
     });
 
     test('should resolve top-level controller', () => {
-        expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first value');
+        expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first');
     });
 
     test('should resolve nested controllers', () => {
-        expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second value');
+        expect(document.querySelector('[e-bind*="mod.deep.second"]').innerHTML).toBe('second');
+        expect(document.querySelector('[e-bind*="mod.deep.space.third"]').innerHTML).toBe('third');
     });
 
 });

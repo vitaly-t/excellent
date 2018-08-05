@@ -9,10 +9,10 @@ describe('positive', () => {
         `;
 
         excellent.addController('first', function () {
-            this.node.innerHTML += 'first message.';
+            this.node.innerHTML += 'first.';
         });
         excellent.addController('second', ctrl => {
-            ctrl.node.innerHTML += 'second message.';
+            ctrl.node.innerHTML += 'second.';
         });
         excellent.addController('combined', ctrl => {
             ctrl.onInit = function () {
@@ -28,15 +28,15 @@ describe('positive', () => {
     });
 
     test('controller must work via this', () => {
-        expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first message.');
+        expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first.');
     });
 
     test('controller must work via parameter', () => {
-        expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second message.');
+        expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second.');
     });
 
     test('inheritance', () => {
-        expect(document.querySelector('[e-bind*="combined"]').innerHTML).toBe('first message.second message.');
+        expect(document.querySelector('[e-bind*="combined"]').innerHTML).toBe('first.second.');
     });
 
 });
