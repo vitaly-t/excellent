@@ -1,30 +1,36 @@
-describe('positive', () => {
+function firstController() {
+    this.node.innerHTML += 'first.';
+}
 
-    beforeEach(() => {
-        require('../src/excellent');
-        document.body.innerHTML = `
+beforeEach(() => {
+    require('../src/excellent');
+    document.body.innerHTML = `
             <div e-bind="first"></div>
             <div e-bind="second"></div>
             <div e-bind="combined"></div>
         `;
 
-        excellent.addController('first', function () {
-            this.node.innerHTML += 'first.';
-        });
-        excellent.addController('second', ctrl => {
-            ctrl.node.innerHTML += 'second.';
-        });
-        excellent.addController('combined', ctrl => {
-            ctrl.onInit = function () {
-                this.extend(['first', 'second']);
-            };
-        });
-        excellent.bind();
+    excellent.addController('first', firstController);
+    excellent.addController('second', ctrl => {
+        ctrl.node.innerHTML += 'second.';
     });
+    excellent.addController('combined', ctrl => {
+        ctrl.onInit = function () {
+            this.extend(['first', 'second']);
+        };
+    });
+    excellent.bind();
+});
 
-    afterEach(() => {
-        document.body.innerHTML = '';
-        jest.resetModules();
+afterEach(() => {
+    document.body.innerHTML = '';
+    jest.resetModules();
+});
+
+describe('positive', () => {
+
+    test('must now throw on re-registration with the same function', () => {
+        expect(excellent.addController('first', firstController)).toBeUndefined();
     });
 
     test('controller must work via this', () => {
@@ -43,8 +49,11 @@ describe('positive', () => {
 
 describe('negative', () => {
 
-    beforeAll(() => {
-        require('../src/excellent');
+    test('must throw on re-registration with a different function', () => {
+        expect(() => {
+            excellent.addController('first', () => {
+            });
+        }).toThrow('Controller with name "first" already exists.');
     });
 
     it('must throw on invalid controller names', () => {
