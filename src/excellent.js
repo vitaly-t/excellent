@@ -127,22 +127,6 @@
     }
 
     /**
-     * Searches for a single controller by its name.
-     *
-     * @param ctrlName
-     * Controller name to search by.
-     *
-     * @returns {EController}
-     */
-    function findOne(ctrlName) {
-        var a = this.find(ctrlName);
-        if (a.length !== 1) {
-            throw new Error('A single controller ' + jStr(ctrlName) + ' was expected, but found ' + a.length + '.');
-        }
-        return a[0];
-    }
-
-    /**
      * Gets the primary attribute's value, if the attribute exists,
      * or else it gets the secondary attribute's value.
      *
@@ -645,7 +629,11 @@
          * One controller matching the name.
          */
         this.findOne = function (ctrlName) {
-            return findOne.call(this, ctrlName);
+            var a = this.find(ctrlName);
+            if (a.length !== 1) {
+                throw new Error('Global search findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
+            }
+            return a[0];
         };
 
     }
@@ -831,8 +819,11 @@
      * One controller matching the name.
      */
     EController.prototype.findOne = function (ctrlName) {
-        // TODO: Improve on the generic error, by including name of this controller.
-        return findOne.call(this, ctrlName);
+        var a = this.find(ctrlName);
+        if (a.length !== 1) {
+            throw new Error('Search ' + jStr(this.name) + '.findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
+        }
+        return a[0];
     };
 
     /**
