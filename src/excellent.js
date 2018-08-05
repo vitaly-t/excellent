@@ -55,9 +55,6 @@
      */
     var binding;
 
-    // Abbreviations:
-    var jStr = JSON.stringify.bind(JSON);
-
     document.addEventListener('DOMContentLoaded', function () {
         bind();
         if (typeof root.onInit === 'function') {
@@ -106,6 +103,17 @@
     function validJsVariable(name) {
         var m = name.match(/[a-z$_][a-z$_0-9]*/i);
         return m && m[0] === name;
+    }
+
+    function jStr(value) {
+        var t = typeof value;
+        if (t === 'undefined' || t === 'boolean' || t === 'number' || value === null) {
+            return '<' + value + '>';
+        }
+        if (t === 'function') {
+            return '<' + value.toString() + '>';
+        }
+        return JSON.stringify(value);
     }
 
     /**

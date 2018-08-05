@@ -1,3 +1,7 @@
+function dummy() {
+
+}
+
 beforeEach(() => {
     require('../src/excellent');
     document.body.innerHTML = `
@@ -14,6 +18,8 @@ beforeEach(() => {
                 </div>
                 <div e-bind="last">
                     Empty
+                </div>
+                <div e-bind="bottom">                    
                 </div>`;
     excellent.addController('main', () => {
     });
@@ -24,9 +30,24 @@ beforeEach(() => {
     excellent.addController('nested', ctrl => {
         ctrl.node.innerHTML = 'nested';
     });
-    excellent.addController('last', ctrl => {
-        ctrl.node.innerHTML = 'last';
+    excellent.addController('base', ctrl => {
+        ctrl.node.innerHTML = 'base';
     });
+    excellent.addController('last', ctrl => {
+        ctrl.depends(['base']);
+        ctrl.onInit = function () {
+            ctrl.extend('base');
+            ctrl.node.innerHTML += '-last';
+        };
+    });
+    excellent.addController('bottom', ctrl => {
+        ctrl.depends(['base', 'last']);
+        ctrl.onInit = function () {
+            ctrl.extend(['base', 'last']);
+            ctrl.node.innerHTML += '-bottom';
+        };
+    });
+
     excellent.bind();
 });
 
@@ -63,6 +84,20 @@ describe('positive', () => {
             });
         });
     });
+
+    describe('inheritance', () => {
+        it('must allow single derivation', () => {
+            expect(excellent.findOne('last').node.innerHTML).toBe('base-last');
+            expect(excellent.findOne('bottom').node.innerHTML).toBe('base-last-bottom');
+        });
+        it('must hide repeated types through levels', () => {
+            const c = excellent.findOne('bottom').node.controllers;
+            // we get: bottom, base, last(base):
+            // TODO: Problem: Should be 2, not allow this inheritance issue:
+            expect(Object.keys(c).length).toBe(3);
+            // TODO: Should the singularity of inheritance be enforced?
+        });
+    });
 });
 
 describe('negative', () => {
@@ -74,24 +109,31 @@ describe('negative', () => {
     it('must throw on invalid controller names', () => {
         expect(() => {
             excellent.find();
-            // TODO: Should the error be better formatted for such cases?
-        }).toThrow('Invalid controller name undefined specified.');
+        }).toThrow('Invalid controller name <undefined> specified.');
         expect(() => {
-            // TODO: Should the error be better formatted for such cases?
             excellent.find(123);
-        }).toThrow('Invalid controller name 123 specified.');
+        }).toThrow('Invalid controller name <123> specified.');
+        expect(() => {
+            excellent.find(true);
+        }).toThrow('Invalid controller name <true> specified.');
+        expect(() => {
+            excellent.find(dummy);
+        }).toThrow('Invalid controller name <function dummy() {}> specified.');
         expect(() => {
             excellent.find('one two');
         }).toThrow('Invalid controller name "one two" specified.');
-
         expect(() => {
             excellent.findOne();
-            // TODO: Should the error be better formatted for such cases?
-        }).toThrow('Invalid controller name undefined specified.');
+        }).toThrow('Invalid controller name <undefined> specified.');
         expect(() => {
-            // TODO: Should the error be better formatted for such cases?
             excellent.findOne(123);
-        }).toThrow('Invalid controller name 123 specified.');
+        }).toThrow('Invalid controller name <123> specified.');
+        expect(() => {
+            excellent.findOne(false);
+        }).toThrow('Invalid controller name <false> specified.');
+        expect(() => {
+            excellent.findOne(dummy);
+        }).toThrow('Invalid controller name <function dummy() {}> specified.');
         expect(() => {
             excellent.findOne('one two');
         }).toThrow('Invalid controller name "one two" specified.');
