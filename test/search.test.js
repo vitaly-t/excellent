@@ -16,11 +16,8 @@ beforeEach(() => {
                         <div e-bind="nested"></div>
                     </div>
                 </div>
-                <div e-bind="last">
-                    Empty
-                </div>
-                <div e-bind="bottom">                    
-                </div>`;
+                <div e-bind="last">Empty</div>`;
+
     excellent.addController('main', () => {
     });
     excellent.addController('first', () => {
@@ -30,22 +27,7 @@ beforeEach(() => {
     excellent.addController('nested', ctrl => {
         ctrl.node.innerHTML = 'nested';
     });
-    excellent.addController('base', ctrl => {
-        ctrl.node.innerHTML = 'base';
-    });
-    excellent.addController('last', ctrl => {
-        ctrl.depends(['base']);
-        ctrl.onInit = function () {
-            ctrl.extend('base');
-            ctrl.node.innerHTML += '-last';
-        };
-    });
-    excellent.addController('bottom', ctrl => {
-        ctrl.depends(['base', 'last']);
-        ctrl.onInit = function () {
-            ctrl.extend(['base', 'last']);
-            ctrl.node.innerHTML += '-bottom';
-        };
+    excellent.addController('last', () => {
     });
 
     excellent.bind();
@@ -82,20 +64,6 @@ describe('positive', () => {
             e2.forEach(a => {
                 expect(a.node.innerHTML).toBe('nested');
             });
-        });
-    });
-
-    describe('inheritance', () => {
-        it('must allow single derivation', () => {
-            expect(excellent.findOne('last').node.innerHTML).toBe('base-last');
-            expect(excellent.findOne('bottom').node.innerHTML).toBe('base-last-bottom');
-        });
-        it('must hide repeated types through levels', () => {
-            const c = excellent.findOne('bottom').node.controllers;
-            // we get: bottom, base, last(base):
-            // TODO: Problem: Should be 2, not allow this inheritance issue:
-            expect(Object.keys(c).length).toBe(3);
-            // TODO: Should the singularity of inheritance be enforced?
         });
     });
 });

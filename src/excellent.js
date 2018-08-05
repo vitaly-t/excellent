@@ -289,10 +289,16 @@
          */
         function removeControllers(e) {
             for (var a in e.controllers) {
-                var i = ctrlLive[a].indexOf(e.controllers[a]);
-                ctrlLive[a].splice(i, 1);
-                if (!ctrlLive[a].length) {
-                    delete ctrlLive[a];
+                var c = ctrlLive[a];
+                if (c) {
+                    // This verification, for a NULL-array is a bit stupid,
+                    // as it is logically impossible, but during synthetic
+                    // tests in JEST it just keeps happening anyway.
+                    var i = c.indexOf(e.controllers[a]);
+                    ctrlLive[a].splice(i, 1);
+                    if (!ctrlLive[a].length) {
+                        delete ctrlLive[a];
+                    }
                 }
             }
         }
@@ -760,6 +766,7 @@
     EController.prototype.extend = function (ctrlName) {
         var t = typeof ctrlName, arr = Array.isArray(ctrlName);
         if (!t || (t !== 'string' && !arr)) {
+            // TODO: Improve the error here?
             throw new TypeError('Parameter \'ctrlName\' is invalid.');
         }
         var ctrl = this.verifyInit('extend');
