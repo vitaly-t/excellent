@@ -631,7 +631,7 @@
         this.findOne = function (ctrlName) {
             var a = this.find(ctrlName);
             if (a.length !== 1) {
-                throw new Error('Global search findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
+                throw new Error('Global findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
             }
             return a[0];
         };
