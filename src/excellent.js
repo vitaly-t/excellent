@@ -187,7 +187,8 @@
      */
     var bindings = {
         nodes: [], // local elements
-        cb: [] // all callbacks
+        cb: [], // all callbacks
+        busy: false
     };
 
     /**
@@ -223,10 +224,15 @@
             if (cb) {
                 bindings.cb.push(cb);
             }
+            if (bindings.busy) {
+                return;
+            }
+            bindings.busy = true;
             setTimeout(function () {
                 var glob = !bindings.nodes.length;
                 var cbs = bindings.cb.slice();
                 bindings.cb.length = 0;
+                bindings.busy = false;
                 if (glob) {
                     bind();
                 } else {
