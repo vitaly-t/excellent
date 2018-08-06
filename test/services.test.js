@@ -18,7 +18,6 @@ describe('positive', () => {
     test('should allow access to properties', () => {
         expect(excellent.services.srv.second).toBe('second');
     });
-
 });
 
 describe('negative', () => {

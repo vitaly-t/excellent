@@ -5,19 +5,21 @@ function firstController() {
 beforeEach(() => {
     require('../src/excellent');
     document.body.innerHTML = `
-            <div e-bind="first"></div>
-            <div e-bind="second"></div>            
+            <div e-bind=" , first"></div>
+            <div e-bind="second,,,"></div>            
             <div e-bind="combined"></div>
             <div e-bind="base"></div>
             <div e-bind="last"></div>
             <div e-bind="bottom_1"></div>
             <div e-bind="bottom_2"></div>
             <div id="dynamic">dynamic</div>
-            <div id="to-remove">dynamic</div>`;
+            <div e-bind="removable">dynamic</div>
+            <div e-bind=" , ,,,,,  , "></div>`;
 
     excellent.addController('first', firstController);
     excellent.addController('second', ctrl => {
         ctrl.node.innerHTML += 'second.';
+        excellent.bind(); // triggering nested binding;
     });
     excellent.addController('combined', ctrl => {
         ctrl.onInit = function () {
@@ -47,6 +49,8 @@ beforeEach(() => {
             ctrl.node.innerHTML += '-bottom2';
         };
     });
+    excellent.addController('removable', () => {
+    });
 
     excellent.bind();
 });
@@ -58,7 +62,7 @@ afterEach(() => {
 
 describe('positive', () => {
 
-    test('must now throw on re-registration with the same function', () => {
+    test('must not throw on re-registration with the same function', () => {
         expect(excellent.addController('first', firstController)).toBeUndefined();
     });
 
@@ -107,12 +111,13 @@ describe('positive', () => {
                     destroyed.push(ctrl.name);
                 };
             });
-            const e = document.getElementById('to-remove');
-            e.innerHTML = '<div e-bind="notify1"></div><div e-bind="notify2"></div>';
-            excellent.bind();
-            e.innerHTML = '';
+            const removable = excellent.findOne('removable');
+            //const e = document.getElementById('to-remove');
+            removable.node.innerHTML = '<div e-bind="notify1"></div><div e-bind="notify2"></div><div e-bind="notify2"></div>';
+            removable.bind();
+            removable.node.innerHTML = '';
             const p = new Promise(resolve => setTimeout(() => resolve(destroyed), 1000));
-            return expect(p).resolves.toEqual(['notify2', 'notify1']);
+            return expect(p).resolves.toEqual(['notify2', 'notify2', 'notify1']);
         });
     });
 });
@@ -137,6 +142,7 @@ describe('negative', () => {
             excellent.addController('\t o p s\r\n');
         }).toThrow('Invalid controller name "\\t o p s\\r\\n" specified.');
     });
+
     it('must throw on invalid functions', () => {
         const err = 'Initialization function for controller "a" is missing';
         expect(() => {
@@ -156,7 +162,8 @@ describe('negative', () => {
             excellent.bind();
         }).toThrow('Method "extend" cannot be used before initialization.');
     });
-    it('must throw on invalid extend parameters', () => {
+
+    it('must throw on invalid "extend" parameters', () => {
         document.getElementById('dynamic').setAttribute('e-bind', 'bla2');
         excellent.addController('bla2', ctrl => {
             ctrl.onInit = function () {
@@ -169,7 +176,7 @@ describe('negative', () => {
         }).toThrow('Parameter \'ctrlName\' is invalid.');
     });
 
-    it('must throw on invalid extend controller names', () => {
+    it('must throw when extending with invalid extend controller names', () => {
         document.getElementById('dynamic').setAttribute('e-bind', 'bla3');
         excellent.addController('bla3', ctrl => {
             ctrl.onInit = function () {
@@ -179,6 +186,71 @@ describe('negative', () => {
         expect(() => {
             excellent.bind();
         }).toThrow('Invalid controller name "one two" specified.');
+    });
+
+    it('must throw when controller does not exist', () => {
+        document.getElementById('dynamic').setAttribute('e-bind', 'nonExisting');
+        expect(() => {
+            excellent.bind();
+        }).toThrow('Controller "nonExisting" not found.');
+    });
+
+    it('must throw on invalid controller name in the bindings', () => {
+        document.getElementById('dynamic').setAttribute('e-bind', 'one two');
+        expect(() => {
+            excellent.bind();
+        }).toThrow('Invalid controller name "one two".');
+    });
+
+    it('must throw on duplicate bindings', () => {
+        document.getElementById('dynamic').setAttribute('e-bind', 'first, first');
+        expect(() => {
+            excellent.bind();
+        }).toThrow('Duplicate controller name "first" not allowed.');
+    });
+
+    describe('Method "depends"', () => {
+        it('must throw on invalid inputs', () => {
+            const e = document.getElementById('dynamic');
+            e.innerHTML = '<div e-bind="depends1"></div>';
+            excellent.addController('depends1', ctrl => {
+                ctrl.depends();
+            });
+            expect(() => {
+                excellent.bind();
+            }).toThrow('Invalid list of controller names.');
+        });
+        it('must throw on invalid controller names', () => {
+            const e = document.getElementById('dynamic');
+            e.innerHTML = '<div e-bind="depends2"></div>';
+            excellent.addController('depends2', ctrl => {
+                ctrl.depends(['one two']);
+            });
+            expect(() => {
+                excellent.bind();
+            }).toThrow('Invalid controller name "one two" specified.');
+        });
+        it('must throw when controller not found', () => {
+            const e = document.getElementById('dynamic');
+            e.innerHTML = '<div e-bind="depends3"></div>';
+            excellent.addController('depends3', ctrl => {
+                ctrl.depends(['nonExisting']);
+            });
+            expect(() => {
+                excellent.bind();
+            }).toThrow('Controller "depends3" depends on "nonExisting", which was not found.');
+        });
+        it('must throw when module not found', () => {
+            const e = document.getElementById('dynamic');
+            e.innerHTML = '<div e-bind="depends4"></div>';
+            excellent.addController('depends4', ctrl => {
+                ctrl.depends(['nonExisting.bla']);
+            });
+            expect(() => {
+                excellent.bind();
+            }).toThrow('Controller "depends4" depends on "nonExisting.bla", which was not found.');
+        });
+
     });
 
 });

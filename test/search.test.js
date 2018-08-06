@@ -15,6 +15,9 @@ beforeEach(() => {
                         <div e-bind="nested"></div>
                         <div e-bind="nested"></div>
                     </div>
+                    <div e-bind="third">
+                        <div e-bind="nested"></div>
+                    </div>                    
                 </div>
                 <div e-bind="last">Empty</div>`;
 
@@ -23,6 +26,8 @@ beforeEach(() => {
     excellent.addController('first', () => {
     });
     excellent.addController('second', () => {
+    });
+    excellent.addController('third', () => {
     });
     excellent.addController('nested', ctrl => {
         ctrl.node.innerHTML = 'nested';
@@ -42,7 +47,7 @@ describe('positive', () => {
 
     describe('globally', () => {
         it('must find all controllers by name', () => {
-            expect(excellent.find('nested').length).toBe(5);
+            expect(excellent.find('nested').length).toBe(6);
             expect(excellent.find('invalid').length).toBe(0);
         });
         it('must find individual controllers by name', () => {
@@ -64,6 +69,8 @@ describe('positive', () => {
             e2.forEach(a => {
                 expect(a.node.innerHTML).toBe('nested');
             });
+            const thirdNested = excellent.findOne('third').findOne('nested');
+            expect(thirdNested && thirdNested.name === 'nested').toBe(true);
         });
     });
 });
@@ -110,7 +117,7 @@ describe('negative', () => {
     it('must throw when unexpected number of controllers found', () => {
         expect(() => {
             excellent.findOne('nested');
-        }).toThrow('Global findOne("nested") expected a single controller, but found 5.');
+        }).toThrow('Global findOne("nested") expected a single controller, but found 6.');
         expect(() => {
             excellent.findOne('first').findOne('nested');
         }).toThrow('Search "first".findOne("nested") expected a single controller, but found 3.');

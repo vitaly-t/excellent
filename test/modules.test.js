@@ -1,34 +1,42 @@
-describe('positive', () => {
-
-    beforeEach(() => {
-        require('../src/excellent');
-        document.body.innerHTML = `
+beforeEach(() => {
+    require('../src/excellent');
+    document.body.innerHTML = `
             <div e-bind="mod.first"></div>
             <div e-bind="mod.deep.second"></div>
             <div e-bind="mod.deep.space.third"></div>
-        `;
+            <div id="last"></div>`;
 
-        excellent.addModule('mod', function () {
-            this.first = function () {
-                this.node.innerHTML = 'first';
-            };
-            this.deep = {
-                second: function () {
-                    this.node.innerHTML = 'second';
-                },
-                space: {
-                    third: function () {
-                        this.node.innerHTML = 'third';
-                    }
+    excellent.addModule('mod', function () {
+        this.first = function () {
+            this.node.innerHTML = 'first';
+        };
+        this.deep = {
+            second: function () {
+                this.node.innerHTML = 'second';
+            },
+            space: {
+                third: function () {
+                    this.node.innerHTML = 'third';
                 }
-            };
-        });
-        excellent.bind();
+            }
+        };
     });
+    excellent.bind();
+});
 
-    afterEach(() => {
-        document.body.innerHTML = '';
-        jest.resetModules();
+afterEach(() => {
+    document.body.innerHTML = '';
+    jest.resetModules();
+});
+
+describe('positive', () => {
+
+    test('should ignore re-registration attempts', () => {
+        excellent.addModule('mod', () => {
+            // all the other tests will continue working,
+            // which is in itself the indication that repeated
+            // registration was ignored.
+        });
     });
 
     test('should resolve top-level controller', () => {
@@ -44,10 +52,6 @@ describe('positive', () => {
 
 describe('negative', () => {
 
-    beforeAll(() => {
-        require('../src/excellent');
-    });
-
     it('must throw on invalid module names', () => {
         expect(() => {
             excellent.addModule();
@@ -59,6 +63,7 @@ describe('negative', () => {
             excellent.addModule('\t o p s\r\n');
         }).toThrow('Invalid module name "\\t o p s\\r\\n" specified.');
     });
+
     it('must throw on invalid functions', () => {
         const err = 'Initialization function for module "a" is missing';
         expect(() => {
@@ -68,4 +73,19 @@ describe('negative', () => {
             excellent.addModule('a', 123);
         }).toThrow(err);
     });
+
+    it('must throw when module does not exist', () => {
+        document.getElementById('last').setAttribute('e-bind', 'ops.method');
+        expect(() => {
+            excellent.bind();
+        }).toThrow('Module "ops" not found.');
+    });
+
+    it('must throw when module controller is missing', () => {
+        document.getElementById('last').setAttribute('e-bind', 'mod.nonExisting');
+        expect(() => {
+            excellent.bind();
+        }).toThrow('Controller "mod.nonExisting" not found.');
+    });
+
 });

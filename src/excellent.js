@@ -246,6 +246,8 @@
      */
     function DestroyObserver() {
         var mo;
+        // MutationObserver does not exist in JEST:
+        // istanbul ignore else
         if (typeof MutationObserver === 'undefined') {
             setInterval(manualCheck, 500); // This is a work-around for IE9 and IE10
         } else {
@@ -261,11 +263,15 @@
          * Element to be watched.
          */
         this.watch = function (e) {
+            // MutationObserver does not exist in JEST:
+            // istanbul ignore if
             if (mo) {
                 mo.observe(e, {childList: true});
             }
         };
 
+        // MutationObserver does not exist in JEST:
+        // istanbul ignore next
         function mutantCB(mutations) {
             mutations.forEach(function (m) {
                 for (var i = 0; i < m.removedNodes.length; i++) {
