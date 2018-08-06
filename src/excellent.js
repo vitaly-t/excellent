@@ -180,7 +180,8 @@
     }
 
     /**
-     * Smart asynchronous bindings management, to help executing only what's needed.
+     * Smart asynchronous bindings management, to help
+     * executing only the necessary minimum of bindings.
      *
      * @type {{nodes: Array, cb: Array}}
      */
