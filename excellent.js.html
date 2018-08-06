@@ -85,9 +85,6 @@
      */
     var binding;
 
-    // Abbreviations:
-    var jStr = JSON.stringify.bind(JSON);
-
     document.addEventListener('DOMContentLoaded', function () {
         bind();
         if (typeof root.onInit === 'function') {
@@ -138,6 +135,17 @@
         return m &amp;&amp; m[0] === name;
     }
 
+    function jStr(value) {
+        var t = typeof value;
+        if (t === 'undefined' || t === 'boolean' || t === 'number' || value === null) {
+            return '&lt;' + value + '>';
+        }
+        if (t === 'function') {
+            return '&lt;' + value.toString() + '>';
+        }
+        return JSON.stringify(value);
+    }
+
     /**
      * Searches for all elements that match selectors.
      *
@@ -154,22 +162,6 @@
             arr[l] = f[l];
         }
         return arr;
-    }
-
-    /**
-     * Searches for a single controller by its name.
-     *
-     * @param ctrlName
-     * Controller name to search by.
-     *
-     * @returns {EController}
-     */
-    function findOne(ctrlName) {
-        var a = this.find(ctrlName);
-        if (a.length !== 1) {
-            throw new Error('A single controller ' + jStr(ctrlName) + ' was expected, but found ' + a.length + '.');
-        }
-        return a[0];
     }
 
     /**
@@ -284,6 +276,8 @@
      */
     function DestroyObserver() {
         var mo;
+        // MutationObserver does not exist in JEST:
+        // istanbul ignore else
         if (typeof MutationObserver === 'undefined') {
             setInterval(manualCheck, 500); // This is a work-around for IE9 and IE10
         } else {
@@ -299,11 +293,15 @@
          * Element to be watched.
          */
         this.watch = function (e) {
+            // MutationObserver does not exist in JEST:
+            // istanbul ignore if
             if (mo) {
                 mo.observe(e, {childList: true});
             }
         };
 
+        // MutationObserver does not exist in JEST:
+        // istanbul ignore next
         function mutantCB(mutations) {
             mutations.forEach(function (m) {
                 for (var i = 0; i &lt; m.removedNodes.length; i++) {
@@ -327,10 +325,16 @@
          */
         function removeControllers(e) {
             for (var a in e.controllers) {
-                var i = ctrlLive[a].indexOf(e.controllers[a]);
-                ctrlLive[a].splice(i, 1);
-                if (!ctrlLive[a].length) {
-                    delete ctrlLive[a];
+                var c = ctrlLive[a];
+                if (c) {
+                    // This verification, for a NULL-array is a bit stupid,
+                    // as it is logically impossible, but during synthetic
+                    // tests in JEST it just keeps happening anyway.
+                    var i = c.indexOf(e.controllers[a]);
+                    ctrlLive[a].splice(i, 1);
+                    if (!ctrlLive[a].length) {
+                        delete ctrlLive[a];
+                    }
                 }
             }
         }
@@ -675,7 +679,11 @@
          * One controller matching the name.
          */
         this.findOne = function (ctrlName) {
-            return findOne.call(this, ctrlName);
+            var a = this.find(ctrlName);
+            if (a.length !== 1) {
+                throw new Error('Global findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
+            }
+            return a[0];
         };
 
     }
@@ -794,6 +802,7 @@
     EController.prototype.extend = function (ctrlName) {
         var t = typeof ctrlName, arr = Array.isArray(ctrlName);
         if (!t || (t !== 'string' &amp;&amp; !arr)) {
+            // TODO: Improve the error here?
             throw new TypeError('Parameter \'ctrlName\' is invalid.');
         }
         var ctrl = this.verifyInit('extend');
@@ -861,8 +870,11 @@
      * One controller matching the name.
      */
     EController.prototype.findOne = function (ctrlName) {
-        // TODO: Improve on the generic error, by including name of this controller.
-        return findOne.call(this, ctrlName);
+        var a = this.find(ctrlName);
+        if (a.length !== 1) {
+            throw new Error('Search ' + jStr(this.name) + '.findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
+        }
+        return a[0];
     };
 
     /**
@@ -885,7 +897,7 @@
     EController.prototype.find = function (ctrlName) {
         var cn = parseControllerName(ctrlName);
         var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
-        return this.find(s).filter(pick).map(pick);
+        return find(s, this.node).filter(pick).map(pick);
 
         function pick(e) {
             // This also caters for dynamically created controlled
