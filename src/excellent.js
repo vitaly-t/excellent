@@ -49,14 +49,14 @@
     var observer = new DestroyObserver();
 
     /**
-     * Indicates when the binding is in progress.
+     * Indicates the current state of binding.
      *
-     * @type {boolean}
+     * @type {number}
      */
-    var binding;
+    var bindingCount = 0;
 
     document.addEventListener('DOMContentLoaded', function () {
-        bind();
+        bindElement();
         if (typeof root.onInit === 'function') {
             root.onInit();
         }
@@ -187,6 +187,28 @@
     }
 
     /**
+     * General binding processor.
+     *
+     * It is here to avoid binding more times than necessary.
+     * TODO: This part is yet to be implemented.
+     *
+     * @param {Element} [node]
+     */
+    function bindElement(node) {
+        if (bindingCount) {
+            setTimeout(function () {
+                bindingCount = 1;
+                bind(node);
+                bindingCount = 0;
+            });
+        } else {
+            bindingCount = 1;
+            bind(node);
+            bindingCount = 0;
+        }
+    }
+
+    /**
      * Binds to controllers all elements that are not yet bound.
      *
      * @param {Element} [node]
@@ -194,7 +216,6 @@
      * the search is done for the entire document.
      */
     function bind(node) {
-        binding = true;
         var allCtrl = [], els = [];
         findAll('[data-e-bind],[e-bind]', node)
             .forEach(function (e) {
@@ -234,7 +255,6 @@
                 c.onInit();
             }
         });
-        binding = false;
     }
 
     /**
@@ -346,7 +366,7 @@
     }
 
     /**
-     * @class ControlledElement
+     * @interface ControlledElement
      * @extends Element
      * @description
      * Represents a standard DOM element, extended with read-only property `controllers`.
@@ -465,7 +485,7 @@
     }
 
     /**
-     * @class ERoot
+     * @interface ERoot
      * @description
      * Root interface of the library, available via global variable `excellent`.
      *
@@ -600,18 +620,9 @@
          * Normally, a controller creates new controlled elements within its children, and then
          * uses {@link EController#bind EController.bind} method. It is only if you create a new
          * controlled element that's not a child element that you would use this global binding.
-         *
-         * And if you call it while in the process of binding, the call will be delayed, which is
-         * the scenario best to be avoided.
          */
         this.bind = function () {
-            if (binding) {
-                // Called during construction or initialization, so need to delay the call, to avoid recursion.
-                // This usually doesn't happen, unless there is a flaw in how your app is implemented.
-                setTimeout(bind);
-            } else {
-                bind();
-            }
+            bindElement();
         };
 
         /**
@@ -666,14 +677,17 @@
      * @description
      * Called once in the beginning, after all controllers have been initialized.
      *
+     * It represents the state of the application when it is ready to find controllers
+     * and communicate with them.
+     *
      * @see {@link EController.event:onInit EController.onInit}
      */
 
     /**
-     * @class EController
+     * @interface EController
      * @description
-     * Controller class, automatically associated with a DOM element, internally by the library,
-     * for every controller name listed with either `e-bind` or `data-e-bind` attribute.
+     * Controller interface, attached to each controlled element in the DOM. Such elements
+     * adhere to type {@link ControlledElement}.
      *
      * @see
      * {@link EController#name name},
@@ -719,8 +733,9 @@
      * @description
      * Initialization event handler.
      *
-     * It is called after all controllers have finished their initialization,
-     * and now ready to communicate with each other.
+     * It represents the state of the controller when it is ready to do the following:
+     *  - find other controllers and communicate with them
+     *  - extend other controllers (via method {@link EController#extend extend})
      *
      * @see
      * {@link EController.event:onDestroy onDestroy},
@@ -754,7 +769,7 @@
      */
     EController.prototype.bind = function () {
         this.verifyInit('bind');
-        bind(this.node);
+        bindElement(this.node);
     };
 
     /**
