@@ -52,7 +52,7 @@ beforeEach(() => {
     excellent.addController('removable', () => {
     });
 
-    excellent.bind();
+    excellent.bind(true);
 });
 
 afterEach(() => {
@@ -114,7 +114,7 @@ describe('positive', () => {
             const removable = excellent.findOne('removable');
             //const e = document.getElementById('to-remove');
             removable.node.innerHTML = '<div e-bind="notify1"></div><div e-bind="notify2"></div><div e-bind="notify2"></div>';
-            removable.bind();
+            removable.bind(true);
             removable.node.innerHTML = '';
             const p = new Promise(resolve => setTimeout(() => resolve(destroyed), 1000));
             return expect(p).resolves.toEqual(['notify2', 'notify2', 'notify1']);
@@ -159,7 +159,7 @@ describe('negative', () => {
             ctrl.extend(['ops']);
         });
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Method "extend" cannot be used before initialization.');
     });
 
@@ -171,7 +171,7 @@ describe('negative', () => {
             };
         });
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Invalid controller name <undefined> specified.');
     });
 
@@ -183,28 +183,28 @@ describe('negative', () => {
             };
         });
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Invalid controller name "one two" specified.');
     });
 
     it('must throw when controller does not exist', () => {
         document.getElementById('dynamic').setAttribute('e-bind', 'nonExisting');
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Controller "nonExisting" not found.');
     });
 
     it('must throw on invalid controller name in the bindings', () => {
         document.getElementById('dynamic').setAttribute('e-bind', 'one two');
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Invalid controller name "one two".');
     });
 
     it('must throw on duplicate bindings', () => {
         document.getElementById('dynamic').setAttribute('e-bind', 'first, first');
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Duplicate controller name "first" not allowed.');
     });
 
@@ -216,7 +216,7 @@ describe('negative', () => {
                 ctrl.depends();
             });
             expect(() => {
-                excellent.bind();
+                excellent.bind(true);
             }).toThrow('Invalid list of controller names.');
         });
         it('must throw on invalid controller names', () => {
@@ -226,7 +226,7 @@ describe('negative', () => {
                 ctrl.depends(['one two']);
             });
             expect(() => {
-                excellent.bind();
+                excellent.bind(true);
             }).toThrow('Invalid controller name "one two" specified.');
         });
         it('must throw when controller not found', () => {
@@ -236,7 +236,7 @@ describe('negative', () => {
                 ctrl.depends(['nonExisting']);
             });
             expect(() => {
-                excellent.bind();
+                excellent.bind(true);
             }).toThrow('Controller "depends3" depends on "nonExisting", which was not found.');
         });
         it('must throw when module not found', () => {
@@ -246,7 +246,7 @@ describe('negative', () => {
                 ctrl.depends(['nonExisting.bla']);
             });
             expect(() => {
-                excellent.bind();
+                excellent.bind(true);
             }).toThrow('Controller "depends4" depends on "nonExisting.bla", which was not found.');
         });
 

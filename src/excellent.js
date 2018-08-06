@@ -48,15 +48,8 @@
      */
     var observer = new DestroyObserver();
 
-    /**
-     * Indicates the current state of binding.
-     *
-     * @type {number}
-     */
-    var bindingCount = 0;
-
     document.addEventListener('DOMContentLoaded', function () {
-        bindElement();
+        bindElement(null, true);
         if (typeof root.onInit === 'function') {
             root.onInit();
         }
@@ -188,23 +181,29 @@
 
     /**
      * General binding processor.
-     *
      * It is here to avoid binding more times than necessary.
-     * TODO: This part is yet to be implemented.
      *
      * @param {Element} [node]
+     * Element to start processing from.
+     *
+     * @param {boolean|function} [process=false]
+     * Determines how to process the binding:
+     * - _any falsy value (default):_ the binding will be done asynchronously;
+     * - _any truthy value, except a function type:_ binding is forced to be done synchronously;
+     * - _a function:_ binding is asynchronous, calling the function when finished.
      */
-    function bindElement(node) {
-        if (bindingCount) {
-            setTimeout(function () {
-                bindingCount = 1;
-                bind(node);
-                bindingCount = 0;
-            });
-        } else {
-            bindingCount = 1;
+    function bindElement(node, process) {
+        var cb = typeof process === 'function' && process;
+        if (process && !cb) {
             bind(node);
-            bindingCount = 0;
+        } else {
+            // asynchronous processing:
+            setTimeout(function () {
+                bind(node);
+                if (cb) {
+                    cb();
+                }
+            });
         }
     }
 
@@ -620,9 +619,15 @@
          * Normally, a controller creates new controlled elements within its children, and then
          * uses {@link EController#bind EController.bind} method. It is only if you create a new
          * controlled element that's not a child element that you would use this global binding.
+         *
+         * @param {boolean|function} [process=false]
+         * Determines how to process the binding:
+         * - _any falsy value (default):_ the binding will be done asynchronously;
+         * - _any truthy value, except a function type:_ binding is forced to be done synchronously;
+         * - _a function:_ binding is asynchronous, calling the function when finished.
          */
-        this.bind = function () {
-            bindElement();
+        this.bind = function (process) {
+            bindElement(null, process);
         };
 
         /**
@@ -766,10 +771,16 @@
      * and that it is time to bind those elements and initialize its controllers.
      *
      * This method requires that its controller has been initialized.
+     *
+     * @param {boolean|function} [process=false]
+     * Determines how to process the binding:
+     * - _any falsy value (default):_ the binding will be done asynchronously;
+     * - _any truthy value, except a function type:_ binding is forced to be done synchronously;
+     * - _a function:_ binding is asynchronous, calling the function when finished.
      */
-    EController.prototype.bind = function () {
+    EController.prototype.bind = function (process) {
         this.verifyInit('bind');
-        bindElement(this.node);
+        bindElement(this.node, process);
     };
 
     /**

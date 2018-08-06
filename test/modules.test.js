@@ -21,7 +21,7 @@ beforeEach(() => {
             }
         };
     });
-    excellent.bind();
+    excellent.bind(true);
 });
 
 afterEach(() => {
@@ -77,14 +77,14 @@ describe('negative', () => {
     it('must throw when module does not exist', () => {
         document.getElementById('last').setAttribute('e-bind', 'ops.method');
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Module "ops" not found.');
     });
 
     it('must throw when module controller is missing', () => {
         document.getElementById('last').setAttribute('e-bind', 'mod.nonExisting');
         expect(() => {
-            excellent.bind();
+            excellent.bind(true);
         }).toThrow('Controller "mod.nonExisting" not found.');
     });
 

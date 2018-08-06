@@ -35,7 +35,7 @@ beforeEach(() => {
     excellent.addController('last', () => {
     });
 
-    excellent.bind();
+    excellent.bind(true);
 });
 
 afterEach(() => {
