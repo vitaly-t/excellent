@@ -180,6 +180,16 @@
     }
 
     /**
+     * Smart asynchronous bindings management, to help executing only what's needed.
+     *
+     * @type {{nodes: Array, cb: Array}}
+     */
+    var bindings = {
+        nodes: [], // local elements
+        cb: [] // all callbacks
+    };
+
+    /**
      * General binding processor.
      * It is here to avoid binding more times than necessary.
      *
@@ -193,17 +203,39 @@
      * - _a function:_ binding is asynchronous, calling the function when finished.
      */
     function bindElement(node, process) {
+        // TODO: Need some good tests for this thing!
+
         var cb = typeof process === 'function' && process;
         if (process && !cb) {
             // synchronous processing:
             bind(node);
         } else {
-            // TODO: Add avoiding unnecessary pending bindings on asynchronous requests.
-            setTimeout(function () {
-                bind(node);
-                if (cb) {
-                    cb();
+            if (node) {
+                // local binding, append the request, if unique:
+                if (bindings.nodes.indexOf(node) === -1) {
+                    bindings.nodes.push(node);
                 }
+            } else {
+                // global binding, so local bindings are now irrelevant:
+                bindings.nodes.length = 0;
+            }
+            if (cb) {
+                bindings.cb.push(cb);
+            }
+            setTimeout(function () {
+                var glob = !bindings.nodes.length;
+                var cbs = bindings.cb.slice();
+                bindings.cb.length = 0;
+                if (glob) {
+                    bind();
+                } else {
+                    var nodes = bindings.nodes.slice();
+                    bindings.nodes.length = 0;
+                    nodes.forEach(bind);
+                }
+                cbs.forEach(function (f) {
+                    f();
+                });
             });
         }
     }
