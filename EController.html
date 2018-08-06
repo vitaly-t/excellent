@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">GitHub</a>
@@ -30,7 +30,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>EController<span class="signature">(name, node)</span><span class="type-signature"></span></h2>
+        <h2>EController</h2>
         
     
 </header>
@@ -39,104 +39,11 @@
     <div class="container-overview">
     
         
-
-    
-
-    
-    <h4 class="name" id="EController"><span class="type-signature"></span>new EController<span class="signature">(name, node)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Controller class, automatically associated with a DOM element, internally by the library,
-for every controller name listed with either <code>e-bind</code> or <code>data-e-bind</code> attribute.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
+            <div class="description"><p>Controller interface, attached to each controlled element in the DOM. Such elements
+adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
         
 
         
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Controller name.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>node</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ControlledElement.html">ControlledElement</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>DOM element, associated with the controller.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
 
 
 <dl class="details">
@@ -168,7 +75,7 @@ for every controller name listed with either <code>e-bind</code> or <code>data-e
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line672">line 672</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line686">line 686</a>
     </li></ul></dd>
     
 
@@ -187,22 +94,7 @@ for every controller name listed with either <code>e-bind</code> or <code>data-e
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     
     </div>
 
@@ -277,7 +169,7 @@ for every controller name listed with either <code>e-bind</code> or <code>data-e
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line697">line 697</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line711">line 711</a>
     </li></ul></dd>
     
 
@@ -349,7 +241,7 @@ for every controller name listed with either <code>e-bind</code> or <code>data-e
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line706">line 706</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line720">line 720</a>
     </li></ul></dd>
     
 
@@ -431,7 +323,7 @@ and that it is time to bind those elements and initialize its controllers.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line747">line 747</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line762">line 762</a>
     </li></ul></dd>
     
 
@@ -570,7 +462,7 @@ plus any others that your controller may generate dynamically.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line798">line 798</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line813">line 813</a>
     </li></ul></dd>
     
 
@@ -709,7 +601,7 @@ plus any others that your controller may generate dynamically.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line760">line 760</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line775">line 775</a>
     </li></ul></dd>
     
 
@@ -875,7 +767,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line848">line 848</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line863">line 863</a>
     </li></ul></dd>
     
 
@@ -1040,7 +932,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line827">line 827</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line842">line 842</a>
     </li></ul></dd>
     
 
@@ -1171,7 +1063,7 @@ that runs every 500ms.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line730">line 730</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line745">line 745</a>
     </li></ul></dd>
     
 
@@ -1221,8 +1113,11 @@ that runs every 500ms.</p>
 
 <div class="description">
     <p>Initialization event handler.</p>
-<p>It is called after all controllers have finished their initialization,
-and now ready to communicate with each other.</p>
+<p>It represents the state of the controller when it is ready to do the following:</p>
+<ul>
+<li>find other controllers and communicate with them</li>
+<li>extend other controllers (via method <a href="EController.html#extend">extend</a>)</li>
+</ul>
 </div>
 
 
@@ -1276,7 +1171,7 @@ and now ready to communicate with each other.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line716">line 716</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line730">line 730</a>
     </li></ul></dd>
     
 
