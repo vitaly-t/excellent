@@ -75,7 +75,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line731">line 731</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line734">line 734</a>
     </li></ul></dd>
     
 
@@ -169,7 +169,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line756">line 756</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line759">line 759</a>
     </li></ul></dd>
     
 
@@ -241,7 +241,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line765">line 765</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line768">line 768</a>
     </li></ul></dd>
     
 
@@ -277,9 +277,11 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
 
 
 <div class="description">
-    <p>Signals the framework that the element's content has been modified to contain new child controlled elements,
-and that it is time to bind those elements and initialize its controllers.</p>
+    <p>Signals the framework that the element's content has been modified to contain new child controlled
+elements, and that it is time to bind those elements and initialize its controllers.</p>
 <p>This method requires that its controller has been initialized.</p>
+<p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
+while affecting performance of the application.</p>
 </div>
 
 
@@ -357,8 +359,8 @@ and that it is time to bind those elements and initialize its controllers.</p>
             <td class="description last"><p>Determines how to process the binding:</p>
 <ul>
 <li><em>any falsy value (default):</em> the binding will be done asynchronously;</li>
-<li><em>any truthy value, except a function type:</em> binding is forced to be done synchronously;</li>
-<li><em>a function:</em> binding is asynchronous, calling the function when finished.</li>
+<li><em>a function:</em> binding is asynchronous, calling the function when finished;</li>
+<li><em>any truthy value, except a function type:</em> forces synchronous binding.</li>
 </ul></td>
         </tr>
 
@@ -400,7 +402,7 @@ and that it is time to bind those elements and initialize its controllers.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line807">line 807</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line810">line 810</a>
     </li></ul></dd>
     
 
@@ -539,7 +541,7 @@ plus any others that your controller may generate dynamically.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line864">line 864</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line870">line 870</a>
     </li></ul></dd>
     
 
@@ -678,7 +680,7 @@ plus any others that your controller may generate dynamically.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line826">line 826</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line832">line 832</a>
     </li></ul></dd>
     
 
@@ -844,7 +846,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line914">line 914</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line920">line 920</a>
     </li></ul></dd>
     
 
@@ -1009,7 +1011,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line893">line 893</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line899">line 899</a>
     </li></ul></dd>
     
 
@@ -1140,7 +1142,7 @@ that runs every 500ms.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line790">line 790</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line793">line 793</a>
     </li></ul></dd>
     
 
@@ -1248,7 +1250,7 @@ that runs every 500ms.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line775">line 775</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line778">line 778</a>
     </li></ul></dd>
     
 

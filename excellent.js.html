@@ -686,15 +686,18 @@
          * @description
          * Searches for all elements in the document not yet bound, and binds them to controllers.
          *
-         * Normally, a controller creates new controlled elements within its children, and then
-         * uses {@link EController#bind EController.bind} method. It is only if you create a new
-         * controlled element that's not a child element that you would use this global binding.
+         * Normally, a controller creates new controlled elements within its children, and then uses
+         * {@link EController#bind EController.bind} method. It is only if you create a new controlled
+         * element that's not a child element that you would use this global binding.
+         *
+         * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
+         * while affecting performance of the application.
          *
          * @param {boolean|function} [process=false]
          * Determines how to process the binding:
          * - _any falsy value (default):_ the binding will be done asynchronously;
-         * - _any truthy value, except a function type:_ binding is forced to be done synchronously;
-         * - _a function:_ binding is asynchronous, calling the function when finished.
+         * - _a function:_ binding is asynchronous, calling the function when finished;
+         * - _any truthy value, except a function type:_ forces synchronous binding.
          */
         this.bind = function (process) {
             bindElement(null, process);
@@ -837,16 +840,19 @@
     /**
      * @method EController#bind
      * @description
-     * Signals the framework that the element's content has been modified to contain new child controlled elements,
-     * and that it is time to bind those elements and initialize its controllers.
+     * Signals the framework that the element's content has been modified to contain new child controlled
+     * elements, and that it is time to bind those elements and initialize its controllers.
      *
      * This method requires that its controller has been initialized.
+     *
+     * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
+     * while affecting performance of the application.
      *
      * @param {boolean|function} [process=false]
      * Determines how to process the binding:
      * - _any falsy value (default):_ the binding will be done asynchronously;
-     * - _any truthy value, except a function type:_ binding is forced to be done synchronously;
-     * - _a function:_ binding is asynchronous, calling the function when finished.
+     * - _a function:_ binding is asynchronous, calling the function when finished;
+     * - _any truthy value, except a function type:_ forces synchronous binding.
      */
     EController.prototype.bind = function (process) {
         this.verifyInit('bind');

@@ -775,9 +775,11 @@ while services need to be fully reusable, even in dynamically loaded pages.</p>
 
 <div class="description">
     <p>Searches for all elements in the document not yet bound, and binds them to controllers.</p>
-<p>Normally, a controller creates new controlled elements within its children, and then
-uses <a href="EController.html#bind">EController.bind</a> method. It is only if you create a new
-controlled element that's not a child element that you would use this global binding.</p>
+<p>Normally, a controller creates new controlled elements within its children, and then uses
+<a href="EController.html#bind">EController.bind</a> method. It is only if you create a new controlled
+element that's not a child element that you would use this global binding.</p>
+<p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
+while affecting performance of the application.</p>
 </div>
 
 
@@ -855,8 +857,8 @@ controlled element that's not a child element that you would use this global bin
             <td class="description last"><p>Determines how to process the binding:</p>
 <ul>
 <li><em>any falsy value (default):</em> the binding will be done asynchronously;</li>
-<li><em>any truthy value, except a function type:</em> binding is forced to be done synchronously;</li>
-<li><em>a function:</em> binding is asynchronous, calling the function when finished.</li>
+<li><em>a function:</em> binding is asynchronous, calling the function when finished;</li>
+<li><em>any truthy value, except a function type:</em> forces synchronous binding.</li>
 </ul></td>
         </tr>
 
@@ -1036,7 +1038,7 @@ even though the latter searches for only child elements, but it searches through
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line673">line 673</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line676">line 676</a>
     </li></ul></dd>
     
 
@@ -1194,7 +1196,7 @@ even though the latter searches for only child elements, but it searches through
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line696">line 696</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line699">line 699</a>
     </li></ul></dd>
     
 
@@ -1322,7 +1324,7 @@ and communicate with them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line719">line 719</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line722">line 722</a>
     </li></ul></dd>
     
 
