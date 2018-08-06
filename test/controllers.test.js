@@ -172,8 +172,7 @@ describe('negative', () => {
         });
         expect(() => {
             excellent.bind();
-            // TODO: Need to improve the message here?
-        }).toThrow('Parameter \'ctrlName\' is invalid.');
+        }).toThrow('Invalid controller name <undefined> specified.');
     });
 
     it('must throw when extending with invalid extend controller names', () => {

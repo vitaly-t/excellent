@@ -117,15 +117,17 @@
     }
 
     /**
-     * Searches for all elements that match selectors.
+     * Searches for all elements that match selectors, and optionally - within a parent node.
      *
      * @param {string} selectors
+     * Standard selectors.
      *
      * @param {Element} [node]
+     * Parent node to search for children.
      *
      * @returns {Element[] | ControlledElement[]}
      */
-    function find(selectors, node) {
+    function findAll(selectors, node) {
         var f = (node || document).querySelectorAll(selectors);
         var l = f.length, arr = new Array(l);
         while (l--) {
@@ -194,7 +196,7 @@
     function bind(node) {
         binding = true;
         var allCtrl = [], els = [];
-        find('[data-e-bind],[e-bind]', node)
+        findAll('[data-e-bind],[e-bind]', node)
             .forEach(function (e) {
                 if (!e.controllers) {
                     var namesMap = {}, eCtrl;
@@ -315,7 +317,7 @@
         function manualCheck() {
             var i = elements.length;
             if (i) {
-                var ce = find('[data-e-bind],[e-bind]'); // all controlled elements;
+                var ce = findAll('[data-e-bind],[e-bind]'); // all controlled elements;
                 while (i--) {
                     var e = elements[i];
                     if (ce.indexOf(e) === -1) {
@@ -651,7 +653,7 @@
         this.findOne = function (ctrlName) {
             var a = this.find(ctrlName);
             if (a.length !== 1) {
-                throw new Error('Global findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
+                throw new Error('Expected a single controller from findOne(' + jStr(ctrlName) + '), but found ' + a.length + '.');
             }
             return a[0];
         };
@@ -770,11 +772,7 @@
      * - if you pass in an array of names, it returns an array of controllers.
      */
     EController.prototype.extend = function (ctrlName) {
-        var t = typeof ctrlName, arr = Array.isArray(ctrlName);
-        if (!t || (t !== 'string' && !arr)) {
-            // TODO: Improve the error here?
-            throw new TypeError('Parameter \'ctrlName\' is invalid.');
-        }
+        ctrlName = Array.isArray(ctrlName) ? ctrlName : [ctrlName];
         var ctrl = this.verifyInit('extend');
 
         function ext(name) {
@@ -794,7 +792,7 @@
             return c;
         }
 
-        return arr ? ctrlName.map(ext, this) : ext.call(this, ctrlName);
+        return ctrlName.map(ext, this);
     };
 
     /**
@@ -842,7 +840,7 @@
     EController.prototype.findOne = function (ctrlName) {
         var a = this.find(ctrlName);
         if (a.length !== 1) {
-            throw new Error('Search ' + jStr(this.name) + '.findOne(' + jStr(ctrlName) + ') expected a single controller, but found ' + a.length + '.');
+            throw new Error('Expected a single controller from ' + jStr(this.name) + '.findOne(' + jStr(ctrlName) + '), but found ' + a.length + '.');
         }
         return a[0];
     };
@@ -867,7 +865,7 @@
     EController.prototype.find = function (ctrlName) {
         var cn = parseControllerName(ctrlName);
         var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
-        return find(s, this.node).filter(pick).map(pick);
+        return findAll(s, this.node).filter(pick).map(pick);
 
         function pick(e) {
             // This also caters for dynamically created controlled
@@ -903,7 +901,7 @@
      */
     (function () {
         window.excellent = root; // default root name
-        var e = find('[data-e-root],[e-root]');
+        var e = findAll('[data-e-root],[e-root]');
         if (e.length) {
             if (e.length > 1) {
                 throw new Error('Multiple root elements are not allowed.');

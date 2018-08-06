@@ -117,10 +117,10 @@ describe('negative', () => {
     it('must throw when unexpected number of controllers found', () => {
         expect(() => {
             excellent.findOne('nested');
-        }).toThrow('Global findOne("nested") expected a single controller, but found 6.');
+        }).toThrow('Expected a single controller from findOne("nested"), but found 6.');
         expect(() => {
             excellent.findOne('first').findOne('nested');
-        }).toThrow('Search "first".findOne("nested") expected a single controller, but found 3.');
+        }).toThrow('Expected a single controller from "first".findOne("nested"), but found 3.');
     });
 
 });
