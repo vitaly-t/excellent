@@ -112,12 +112,28 @@ describe('positive', () => {
                 };
             });
             const removable = excellent.findOne('removable');
-            //const e = document.getElementById('to-remove');
             removable.node.innerHTML = '<div e-bind="notify1"></div><div e-bind="notify2"></div><div e-bind="notify2"></div>';
             removable.bind(true);
             removable.node.innerHTML = '';
             const p = new Promise(resolve => setTimeout(() => resolve(destroyed), 1000));
             return expect(p).resolves.toEqual(['notify2', 'notify2', 'notify1']);
+        });
+    });
+
+    describe('asynchronous binding', () => {
+        it('must pick up new elements correctly', () => {
+            const content = 'some dynamic content';
+            excellent.addController('dynamicController', ctrl => {
+                ctrl.node.innerHTML = content;
+            });
+            const removable = excellent.findOne('removable');
+            removable.node.innerHTML = '<div e-bind="dynamicController"></div>';
+            const p = new Promise(resolve => {
+                excellent.bind(() => {
+                    resolve(excellent.findOne('dynamicController').node.innerHTML);
+                });
+            });
+            return expect(p).resolves.toBe(content);
         });
     });
 });

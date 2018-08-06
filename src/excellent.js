@@ -195,9 +195,10 @@
     function bindElement(node, process) {
         var cb = typeof process === 'function' && process;
         if (process && !cb) {
+            // synchronous processing:
             bind(node);
         } else {
-            // asynchronous processing:
+            // TODO: Add avoiding unnecessary pending bindings on asynchronous requests.
             setTimeout(function () {
                 bind(node);
                 if (cb) {
