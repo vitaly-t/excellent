@@ -766,7 +766,7 @@ while services need to be fully reusable, even in dynamically loaded pages.</p>
     
 
     
-    <h4 class="name" id="bind"><span class="type-signature"></span>bind<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="bind"><span class="type-signature"></span>bind<span class="signature">(process<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -786,6 +786,83 @@ controlled element that's not a child element that you would use this global bin
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>process</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Determines how to process the binding:</p>
+<ul>
+<li><em>any falsy value (default):</em> the binding will be done asynchronously;</li>
+<li><em>any truthy value, except a function type:</em> binding is forced to be done synchronously;</li>
+<li><em>a function:</em> binding is asynchronous, calling the function when finished.</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -959,7 +1036,7 @@ even though the latter searches for only child elements, but it searches through
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line628">line 628</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line634">line 634</a>
     </li></ul></dd>
     
 
@@ -1117,7 +1194,7 @@ even though the latter searches for only child elements, but it searches through
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line651">line 651</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line657">line 657</a>
     </li></ul></dd>
     
 
@@ -1245,7 +1322,7 @@ and communicate with them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line674">line 674</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line680">line 680</a>
     </li></ul></dd>
     
 
