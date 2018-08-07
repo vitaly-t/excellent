@@ -1,8 +1,8 @@
-interface ControlledElement extends Element {
-    readonly controllers: EController[];
-}
-
 type BindingProcess = boolean | (() => void);
+
+interface ControlledElement extends Element {
+    readonly controllers: { [name: string]: EController };
+}
 
 interface EController {
     readonly name: string;
