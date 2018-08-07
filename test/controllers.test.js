@@ -121,20 +121,56 @@ describe('positive', () => {
     });
 
     describe('asynchronous binding', () => {
-        it('must pick up new elements correctly', () => {
-            const content = 'some dynamic content';
-            excellent.addController('dynamicController', ctrl => {
+        it('must find new elements when bound globally', () => {
+            const content = 'some dynamic content - 1';
+            excellent.addController('dynamicController_1', ctrl => {
                 ctrl.node.innerHTML = content;
             });
             const removable = excellent.findOne('removable');
-            removable.node.innerHTML = '<div e-bind="dynamicController"></div>';
+            removable.node.innerHTML = '<div e-bind="dynamicController_1"></div>';
             const p = new Promise(resolve => {
                 excellent.bind(() => {
-                    resolve(excellent.findOne('dynamicController').node.innerHTML);
+                    resolve(excellent.findOne('dynamicController_1').node.innerHTML);
                 });
             });
             return expect(p).resolves.toBe(content);
         });
+        it('must find new elements when bound locally', () => {
+            const content = 'some dynamic content - 2';
+            excellent.addController('dynamicController_2', ctrl => {
+                ctrl.node.innerHTML = content;
+            });
+            const removable = excellent.findOne('removable');
+            removable.node.innerHTML = '<div e-bind="dynamicController_2"></div>';
+            const p = new Promise(resolve => {
+                excellent.bind(true);
+                const ctrl = excellent.findOne('dynamicController_2');
+                ctrl.bind(); // just for coverage;
+                ctrl.bind(() => {
+                    resolve(ctrl.node.innerHTML);
+                });
+            });
+            return expect(p).resolves.toBe(content);
+        });
+        it('a synchronous global binding must cancel all other bindings', () => {
+            const content = 'some dynamic content - 3';
+            excellent.addController('dynamicController_3', ctrl => {
+                ctrl.node.innerHTML = content;
+            });
+            const removable = excellent.findOne('removable');
+            removable.node.innerHTML = '<div e-bind="dynamicController_3"></div>';
+            const p = new Promise(resolve => {
+                excellent.bind(true);
+                const ctrl = excellent.findOne('dynamicController_3');
+                ctrl.bind(); // to be cancelled
+                excellent.bind(true); // cancels the previous binding
+                ctrl.bind(() => {
+                    resolve(ctrl.node.innerHTML);
+                });
+            });
+            return expect(p).resolves.toBe(content);
+        });
+
     });
 });
 

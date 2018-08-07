@@ -205,11 +205,13 @@
      * - _a function:_ binding is asynchronous, calling the function when finished.
      */
     function bindElement(node, process) {
-        // TODO: Need some good tests for this thing!
-
         var cb = typeof process === 'function' && process;
         if (process && !cb) {
             // synchronous processing:
+            if (!node && bindings.busy) {
+                // A global synchronous binding cancels all local bindings:
+                bindings.busy = false;
+            }
             bind(node);
         } else {
             if (node) {
@@ -232,13 +234,15 @@
                 var glob = !bindings.nodes.length;
                 var cbs = bindings.cb.slice();
                 bindings.cb.length = 0;
-                bindings.busy = false;
-                if (glob) {
-                    bind();
-                } else {
-                    var nodes = bindings.nodes.slice();
-                    bindings.nodes.length = 0;
-                    nodes.forEach(bind);
+                if (bindings.busy) {
+                    bindings.busy = false;
+                    if (glob) {
+                        bind();
+                    } else {
+                        var nodes = bindings.nodes.slice();
+                        bindings.nodes.length = 0;
+                        nodes.forEach(bind);
+                    }
                 }
                 cbs.forEach(function (f) {
                     f();
