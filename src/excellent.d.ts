@@ -1,7 +1,13 @@
+///////////////////////////////////////////
+// Complete Excellent.js 0.5.3 declaration
+//
+// TODO: May need some export tweaking to make import-able for client-side.
+///////////////////////////////////////////
+
 type BindingProcess = boolean | (() => void);
 
 interface ControlledElement extends Element {
-    readonly controllers: { [name: string]: EController };
+    readonly controllers: { readonly [name: string]: EController };
 }
 
 interface EController {
