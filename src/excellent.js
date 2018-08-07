@@ -188,7 +188,8 @@
     var bindings = {
         nodes: [], // local elements
         cb: [], // all callbacks
-        busy: false
+        busy: false,
+        glob: false
     };
 
     /**
@@ -219,6 +220,8 @@
                 } else {
                     // A global synchronous binding cancels all local bindings:
                     bindings.busy = false;
+                    bindings.glob = false;
+                    bindings.nodes.length = 0;
                 }
             }
             bind(node);
@@ -231,6 +234,7 @@
                 }
             } else {
                 // global binding, cancels local bindings:
+                bindings.glob = true;
                 bindings.nodes.length = 0;
             }
             if (cb) {
@@ -242,16 +246,16 @@
             }
             bindings.busy = true;
             setTimeout(function () {
-                var glob = !bindings.nodes.length;
+                var nodes = bindings.nodes.slice();
                 var cbs = bindings.cb.slice();
+                bindings.nodes.length = 0;
                 bindings.cb.length = 0;
                 if (bindings.busy) {
                     bindings.busy = false;
-                    if (glob) {
+                    if (bindings.glob) {
+                        bindings.glob = false;
                         bind();
                     } else {
-                        var nodes = bindings.nodes.slice();
-                        bindings.nodes.length = 0;
                         nodes.forEach(bind);
                     }
                 }
@@ -623,7 +627,7 @@
          *
          * If the service with such name already exists, the method will do nothing,
          * because it cannot determine whether the actual service behind the name is the same,
-         * while services need to be fully reusable, even in dynamically loaded pages.
+         * while services need to be fully reusable, like in dynamically loaded pages.
          *
          * Every added service becomes accessible by its name, from property {@link ERoot#services services}.
          *
@@ -636,9 +640,9 @@
         this.addService = function (name, cb) {
             checkEntity(name, cb, 'service');
             if (!(name in root.services)) {
-                var s = {}; // service's scope
-                readOnlyProp(root.services, name, s);
-                cb.call(s, s);
+                var scope = {};
+                readOnlyProp(root.services, name, scope);
+                cb.call(scope, scope);
             }
         };
 
@@ -649,7 +653,7 @@
          *
          * If the module with such name already exists, the method will do nothing,
          * because it cannot determine whether the actual module behind the name is the same,
-         * while modules need to be fully reusable, even in dynamically loaded pages.
+         * while modules need to be fully reusable, like in dynamically loaded pages.
          *
          * @param {string} name
          * Module name.
@@ -660,9 +664,9 @@
         this.addModule = function (name, cb) {
             checkEntity(name, cb, 'module');
             if (!(name in modules)) {
-                var s = {}; // module's scope
-                modules[name] = s;
-                cb.call(s, s);
+                var scope = {};
+                modules[name] = scope;
+                cb.call(scope, scope);
             }
         };
 

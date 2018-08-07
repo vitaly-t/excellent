@@ -1,8 +1,8 @@
-///////////////////////////////////////////
-// Complete Excellent.js 0.5.4 declaration
+//////////////////////////////////////////////////////////////////////////////
+// Complete Excellent.js 0.5.5 declaration
 //
-// TODO: May need some export tweaking to make import-able for client-side.
-///////////////////////////////////////////
+// TODO: May need some export tweaking to make it import-able for client-side.
+//////////////////////////////////////////////////////////////////////////////
 
 type BindingProcess = boolean | (() => void);
 
@@ -29,15 +29,14 @@ interface EController {
 }
 
 interface ERoot {
-    version: string;
-
-    services: any;
+    readonly version: string;
+    readonly services: { readonly [name: string]: any };
 
     addController(name: string, cb: (ctrl: EController) => void)
 
-    addModule(name: string, cb: (self: any) => void)
+    addModule(name: string, cb: (scope: { [name: string]: any }) => void)
 
-    addService(name: string, cb: (self: any) => void)
+    addService(name: string, cb: (scope: { [name: string]: any }) => void)
 
     bind(process?: BindingProcess): void
 
