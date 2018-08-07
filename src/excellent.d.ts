@@ -1,5 +1,5 @@
 ///////////////////////////////////////////
-// Complete Excellent.js 0.5.3 declaration
+// Complete Excellent.js 0.5.4 declaration
 //
 // TODO: May need some export tweaking to make import-able for client-side.
 ///////////////////////////////////////////

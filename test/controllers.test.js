@@ -152,7 +152,7 @@ describe('positive', () => {
             });
             return expect(p).resolves.toBe(content);
         });
-        it('a synchronous global binding must cancel all other bindings', () => {
+        it('synchronous global binding must cancel all other bindings', () => {
             const content = 'some dynamic content - 3';
             excellent.addController('dynamicController_3', ctrl => {
                 ctrl.node.innerHTML = content;
@@ -164,6 +164,24 @@ describe('positive', () => {
                 const ctrl = excellent.findOne('dynamicController_3');
                 ctrl.bind(); // to be cancelled
                 excellent.bind(true); // cancels the previous binding
+                ctrl.bind(() => {
+                    resolve(ctrl.node.innerHTML);
+                });
+            });
+            return expect(p).resolves.toBe(content);
+        });
+        it('synchronous local binding must cancel asynchronous requests on the same node', () => {
+            const content = 'some dynamic content - 4';
+            excellent.addController('dynamicController_4', ctrl => {
+                ctrl.node.innerHTML = content;
+            });
+            const removable = excellent.findOne('removable');
+            removable.node.innerHTML = '<div e-bind="dynamicController_4"></div>';
+            const p = new Promise(resolve => {
+                excellent.bind(true);
+                const ctrl = excellent.findOne('dynamicController_4');
+                ctrl.bind(); // to be cancelled
+                ctrl.bind(true); // cancels the previous binding
                 ctrl.bind(() => {
                     resolve(ctrl.node.innerHTML);
                 });

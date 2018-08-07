@@ -193,37 +193,48 @@
 
     /**
      * General binding processor.
-     * It is here to avoid binding more times than necessary.
+     *
+     * It implements the logic of binding that's reduced to the absolute minimum of requests.
      *
      * @param {Element} [node]
      * Element to start processing from.
      *
-     * @param {boolean|function} [process=false]
+     * @param {boolean|function} process
      * Determines how to process the binding:
      * - _any falsy value (default):_ the binding will be done asynchronously;
-     * - _any truthy value, except a function type:_ binding is forced to be done synchronously;
-     * - _a function:_ binding is asynchronous, calling the function when finished.
+     * - _a function:_ binding is asynchronous, calling the function when finished;
+     * - _any truthy value, except a function type:_ forces synchronous binding.
      */
     function bindElement(node, process) {
         var cb = typeof process === 'function' && process;
         if (process && !cb) {
-            // synchronous processing:
-            if (!node && bindings.busy) {
-                // A global synchronous binding cancels all local bindings:
-                bindings.busy = false;
+            // synchronous binding;
+            if (bindings.busy) {
+                if (node) {
+                    // Cancel asynchronous binding on the same node:
+                    var idx = bindings.nodes.indexOf(node);
+                    if (idx >= 0) {
+                        bindings.nodes.splice(idx, 1);
+                    }
+                } else {
+                    // A global synchronous binding cancels all local bindings:
+                    bindings.busy = false;
+                }
             }
             bind(node);
         } else {
+            // asynchronous binding;
             if (node) {
                 // local binding, append the request, if unique:
                 if (bindings.nodes.indexOf(node) === -1) {
                     bindings.nodes.push(node);
                 }
             } else {
-                // global binding, so local bindings are now irrelevant:
+                // global binding, cancels local bindings:
                 bindings.nodes.length = 0;
             }
             if (cb) {
+                // callback notifications:
                 bindings.cb.push(cb);
             }
             if (bindings.busy) {
@@ -665,7 +676,8 @@
          * element that's not a child element that you would use this global binding.
          *
          * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
-         * while affecting performance of the application.
+         * while affecting performance of the application. The binding engine implements the logic
+         * of minimizing the number of checks against the DOM, but it works best when requests are asynchronous.
          *
          * @param {boolean|function} [process=false]
          * Determines how to process the binding:
@@ -819,8 +831,9 @@
      *
      * This method requires that its controller has been initialized.
      *
-     * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
-     * while affecting performance of the application.
+     * You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
+     * performance of the application. The binding engine implements the logic of minimizing the number of checks
+     * against the DOM, but it works best when requests are asynchronous.
      *
      * @param {boolean|function} [process=false]
      * Determines how to process the binding:
