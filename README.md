@@ -9,7 +9,7 @@
 [![Join Chat](https://badges.gitter.im/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent)
 
 If you like working with DOM directly, this tiny (2Kb compressed) library gives you the tools for organizing
-all your JavaScript code in such a way that's highly reusable, easy to maintain and distribute.
+all your JavaScript code in such a way that's highly reusable, [fast], easy to maintain and distribute.
 
 See [Wiki Pages] for all the details.
 
@@ -49,6 +49,7 @@ Then it gets out of your way, lets you work with DOM directly, while [Modules], 
 
 ### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 
+[fast]:https://github.com/vitaly-t/excellent/wiki/Performance
 [API]:https://vitaly-t.github.io/excellent/
 [Examples]:https://github.com/vitaly-t/excellent/wiki/Examples
 [Wiki Pages]:https://github.com/vitaly-t/excellent/wiki
