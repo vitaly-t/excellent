@@ -18,20 +18,20 @@ interface EController {
 
     findOne(ctrlName: string): EController
 
-    onInit: () => any
-    onDestroy: () => any
+    onInit: () => void
+    onDestroy: () => void
 }
 
 interface ERoot {
     version: string;
 
-    services: object;
+    services: any;
 
     addController(name: string, cb: (ctrl: EController) => void)
 
-    addModule(name: string, cb: (self: object) => void)
+    addModule(name: string, cb: (self: any) => void)
 
-    addService(name: string, cb: (self: object) => void)
+    addService(name: string, cb: (self: any) => void)
 
     bind(process?: BindingProcess): void
 
@@ -39,7 +39,7 @@ interface ERoot {
 
     findOne(ctrlName: string): EController
 
-    onInit: () => any
+    onInit: () => void
 }
 
-declare var excellent: ERoot;
+declare const excellent: ERoot;
