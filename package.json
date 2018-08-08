@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "DOM-Manipulation Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
