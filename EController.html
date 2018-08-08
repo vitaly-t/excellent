@@ -75,7 +75,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line766">line 766</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line780">line 780</a>
     </li></ul></dd>
     
 
@@ -121,7 +121,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
 
 
 <div class="description">
-    <p>Full controller name.</p>
+    <p>Full name of the controller.</p>
 </div>
 
 
@@ -169,7 +169,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line791">line 791</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line805">line 805</a>
     </li></ul></dd>
     
 
@@ -193,7 +193,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
 
 
 <div class="description">
-    <p>Source DOM element that uses this controller.</p>
+    <p>Source DOM element bound to this controller.</p>
 </div>
 
 
@@ -241,7 +241,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line800">line 800</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line814">line 814</a>
     </li></ul></dd>
     
 
@@ -278,8 +278,8 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
 
 <div class="description">
     <p>Signals the framework that the element's content has been modified to contain new child controlled
-elements, and that it is time to bind those elements and initialize its controllers.</p>
-<p>This method requires that its controller has been initialized.</p>
+elements, and that it is time to bind those elements with the corresponding controllers.</p>
+<p>This method requires that the calling controller has been initialized.</p>
 <p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
 performance of the application. The binding engine implements the logic of minimizing the number of checks
 against the DOM, but it works best when requests are asynchronous.</p>
@@ -403,7 +403,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line842">line 842</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line856">line 856</a>
     </li></ul></dd>
     
 
@@ -499,9 +499,8 @@ dynamically. Such explicit verification makes the code more robust.</p>
 
             
 
-            <td class="description last"><p>List of controller names.</p>
-<p>You would specify all controller names this controller may be extending via method <a href="EController.html#extend">extend</a>,
-plus any others that your controller may generate dynamically.</p></td>
+            <td class="description last"><p>List of controller names. It should include all controller names that are due to be derived,
+via method <a href="EController.html#extend">extend</a>, plus the ones that can be requested dynamically.</p></td>
         </tr>
 
     
@@ -542,7 +541,7 @@ plus any others that your controller may generate dynamically.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line903">line 903</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line921">line 921</a>
     </li></ul></dd>
     
 
@@ -585,7 +584,10 @@ plus any others that your controller may generate dynamically.</p></td>
 
 <div class="description">
     <p>Extends other controller(s) with new functionality, thus providing functional inheritance.</p>
-<p>This method requires that its controller has been initialized.</p>
+<p>It creates and returns a new controller(s), according to the parameters. But if you specify a controller
+name that's already bound to the element, that controller is returned instead, to be reused, because
+only a single controller type can be bound to any given element.</p>
+<p>This method requires that the calling controller has been initialized.</p>
 </div>
 
 
@@ -681,7 +683,7 @@ plus any others that your controller may generate dynamically.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line865">line 865</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line879">line 879</a>
     </li></ul></dd>
     
 
@@ -847,7 +849,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line953">line 953</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line970">line 970</a>
     </li></ul></dd>
     
 
@@ -1012,7 +1014,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line932">line 932</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line949">line 949</a>
     </li></ul></dd>
     
 
@@ -1039,7 +1041,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
 
         
 <div class="param-desc">
-    <p>One controller matching the name.</p>
+    <p>A single child controller with the matching name.</p>
 </div>
 
 
@@ -1089,7 +1091,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
 and it is time to release any pre-allocated resources, if necessary.</p>
 <p>For any modern browser, the event is triggered automatically, courtesy of <code>MutationObserver</code>,
 while for older browsers, such as IE9 and IE10 it falls back on a manual background check
-that runs every 500ms.</p>
+that runs once a second.</p>
 </div>
 
 
@@ -1143,7 +1145,7 @@ that runs every 500ms.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line825">line 825</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line839">line 839</a>
     </li></ul></dd>
     
 
@@ -1251,7 +1253,7 @@ that runs every 500ms.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line810">line 810</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line824">line 824</a>
     </li></ul></dd>
     
 

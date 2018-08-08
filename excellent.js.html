@@ -97,7 +97,7 @@
      * @returns {string|undefined}
      * Valid controller name, or nothing.
      */
-    function validCN(cn, t) {
+    function validateControllerName(cn, t) {
         if (typeof cn === 'string') {
             cn = t ? trim(cn) : cn;
             var m = cn.match(/^[a-z$_][$\w]*(\.[a-z$_][$\w]*)*$/i);
@@ -121,6 +121,8 @@
     /**
      * Validates an entity being registered.
      *
+     * The entity must use JavaScript open-name syntax.
+     *
      * @param {string} name
      * Name of the entity.
      *
@@ -140,6 +142,12 @@
         }
     }
 
+    /**
+     * Wraps a value to be friendly within error messages.
+     *
+     * @param {} value
+     * @returns {string}
+     */
     function jStr(value) {
         var t = typeof value;
         if (t === 'undefined' || t === 'boolean' || t === 'number' || value === null) {
@@ -175,13 +183,13 @@
      * Gets the primary attribute's value, if the attribute exists,
      * or else it gets the secondary attribute's value.
      *
-     * @param e
+     * @param {Element} e
      * Element to get the value from.
      *
-     * @param primary
+     * @param {string} primary
      * Primary attribute name.
      *
-     * @param secondary
+     * @param {string} secondary
      * Secondary attribute name.
      *
      * @returns {string}
@@ -198,8 +206,11 @@
      * Trims a string, by removing all trailing spaces, tabs and line breaks.
      *
      * @param {string} txt
+     * Input string.
      *
      * @returns {string}
+     * The resulting string.
+     *
      */
     function trim(txt) {
         return txt.replace(/^[\s]*|[\s]*$/g, '');
@@ -222,22 +233,24 @@
     }
 
     /**
-     * Smart asynchronous bindings management, to help
-     * executing only the necessary minimum of bindings.
+     * Binding Status.
      *
-     * @type {{nodes: Array, cb: Array, busy: boolean, glob: boolean}}
+     * It helps with smart asynchronous bindings management, to help executing only
+     * the necessary minimum of bindings, based on the current flow of requests.
+     *
+     * @type {{nodes: Array, cb: Array, waiting: boolean, glob: boolean}}
      */
-    var bindings = {
+    var bs = {
         nodes: [], // local elements
         cb: [], // all callbacks
-        busy: false, // awaits asynchronous processing
+        waiting: false, // timer is currently waiting
         glob: false // global async is being processed
     };
 
     /**
      * General binding processor.
      *
-     * It implements the logic of binding that's reduced to the absolute minimum of requests.
+     * It implements the logic of bindings reduced to the absolute minimum DOM usage.
      *
      * @param {Element} [node]
      * Element to start processing from.
@@ -252,19 +265,20 @@
         var cb = typeof process === 'function' &amp;&amp; process;
         if (process &amp;&amp; !cb) {
             // synchronous binding;
-            if (bindings.busy) {
+            if (bs.waiting) {
+                // timer is now waiting
                 if (node) {
                     // Cancel asynchronous binding on the same node:
-                    var idx = bindings.nodes.indexOf(node);
+                    var idx = bs.nodes.indexOf(node);
                     if (idx >= 0) {
-                        bindings.nodes.splice(idx, 1);
+                        bs.nodes.splice(idx, 1);
                     }
                 } else {
                     // A global synchronous binding cancels everything for
                     // asynchronous processing, except callback notifications:
-                    bindings.busy = false;
-                    bindings.glob = false;
-                    bindings.nodes.length = 0;
+                    bs.waiting = false;
+                    bs.glob = false;
+                    bs.nodes.length = 0;
                 }
             }
             bind(node);
@@ -272,31 +286,31 @@
             // asynchronous binding;
             if (node) {
                 // local binding, append the request, if unique:
-                if (bindings.nodes.indexOf(node) === -1) {
-                    bindings.nodes.push(node);
+                if (bs.nodes.indexOf(node) === -1) {
+                    bs.nodes.push(node);
                 }
             } else {
                 // global binding, cancels local bindings:
-                bindings.glob = true;
-                bindings.nodes.length = 0;
+                bs.glob = true;
+                bs.nodes.length = 0;
             }
             if (cb) {
                 // callback notifications:
-                bindings.cb.push(cb);
+                bs.cb.push(cb);
             }
-            if (bindings.busy) {
+            if (bs.waiting) {
                 return;
             }
-            bindings.busy = true;
+            bs.waiting = true;
             setTimeout(function () {
-                var nodes = bindings.nodes.slice();
-                var cbs = bindings.cb.slice();
-                bindings.nodes.length = 0;
-                bindings.cb.length = 0;
-                if (bindings.busy) {
-                    bindings.busy = false;
-                    if (bindings.glob) {
-                        bindings.glob = false;
+                var nodes = bs.nodes.slice();
+                var cbs = bs.cb.slice();
+                bs.nodes.length = 0;
+                bs.cb.length = 0;
+                if (bs.waiting) {
+                    bs.waiting = false;
+                    if (bs.glob) {
+                        bs.glob = false;
                         bind(null);
                     } else {
                         nodes.forEach(bind);
@@ -327,7 +341,7 @@
                         .forEach(function (name) {
                             name = trim(name);
                             if (name) {
-                                if (!validCN(name)) {
+                                if (!validateControllerName(name)) {
                                     throw new Error('Invalid controller name ' + jStr(name) + '.');
                                 }
                                 if (name in namesMap) {
@@ -365,14 +379,14 @@
      * Helps watching node elements removal from DOM, in order to provide {@link EController.event:onDestroy onDestroy}
      * notification for all corresponding controllers.
      *
-     * For IE9/10 that do not support `MutationObserver`, it executes manual check every 500ms.
+     * For IE9/10 that do not support `MutationObserver`, it executes a manual check once a second.
      */
     function DestroyObserver() {
         var mo;
         // MutationObserver does not exist in JEST:
         // istanbul ignore else
         if (typeof MutationObserver === 'undefined') {
-            setInterval(manualCheck, 500); // This is a work-around for IE9 and IE10
+            setInterval(manualCheck, 1000); // This is a work-around for IE9 and IE10
         } else {
             mo = new MutationObserver(mutantCB);
         }
@@ -450,7 +464,7 @@
         }
 
         /**
-         * Sends `onDestroy` notification into all controllers of an element.
+         * Sends onDestroy notification into all controllers of an element.
          *
          * @param {ControlledElement} e
          */
@@ -471,7 +485,7 @@
      * @description
      * Represents a standard DOM element, extended with read-only property `controllers`.
      *
-     * This type is provided by the library automatically, after binding the element to controllers.
+     * This type is provided by the library automatically, after binding elements to controllers.
      *
      * @see
      * {@link ERoot#bind ERoot.bind},
@@ -568,7 +582,7 @@
     }
 
     /**
-     * Parses a controller name, allowing for trailing spaces.
+     * Parses a controller name, while allowing for trailing spaces.
      *
      * @param {string} cn
      * Controller name.
@@ -577,7 +591,7 @@
      * Validated controller name (without trailing spaces).
      */
     function parseControllerName(cn) {
-        var name = validCN(cn, true);
+        var name = validateControllerName(cn, true);
         if (!name) {
             throw new TypeError('Invalid controller name ' + jStr(cn) + ' specified.');
         }
@@ -621,7 +635,7 @@
 
         /**
          * @member ERoot#services
-         * @type {object}
+         * @type {Object.&lt;string, {}>}
          * @readonly
          * @description
          * Namespace of all registered and initialized services.
@@ -644,7 +658,7 @@
          * In order to avoid naming conflicts, reusable controllers should reside inside modules.
          *
          * @param {string} name
-         * Controller name.
+         * Controller name. Must adhere to JavaScript open-name syntax.
          *
          * @param {function} cb
          * Controller function.
@@ -674,7 +688,7 @@
          * Every added service becomes accessible by its name, from property {@link ERoot#services services}.
          *
          * @param {string} name
-         * Service name.
+         * Service name. Must adhere to JavaScript open-name syntax.
          *
          * @param {function} cb
          * Service initialization function.
@@ -698,7 +712,7 @@
          * while modules need to be fully reusable, like in dynamically loaded pages.
          *
          * @param {string} name
-         * Module name.
+         * Module name. Must adhere to JavaScript open-name syntax.
          *
          * @param {function} cb
          * Module initialization function.
@@ -718,8 +732,8 @@
          * Searches for all elements in the document not yet bound, and binds them to controllers.
          *
          * Normally, a controller creates new controlled elements within its children, and then uses
-         * {@link EController#bind EController.bind} method. It is only if you create a new controlled
-         * element that's not a child element that you would use this global binding.
+         * {@link EController#bind EController.bind} method. It is only when you create a new controlled
+         * element that's not a child element, then you would use this global binding.
          *
          * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
          * while affecting performance of the application. The binding engine implements the logic
@@ -745,7 +759,7 @@
          * even though the latter searches for only child elements, but it searches through DOM.
          *
          * @param {string} ctrlName
-         * Controller name to search by.
+         * Controller name to search by. It must adhere to JavaScript open-name syntax.
          *
          * @returns {EController[]}
          * List of found initialized controllers.
@@ -766,10 +780,10 @@
          * It will throw an error, if multiple or no controllers found.
          *
          * @param {string} ctrlName
-         * Controller name to search by.
+         * Controller name to search by. It must adhere to JavaScript open-name syntax.
          *
          * @returns {EController}
-         * One controller matching the name.
+         * A single controller with the matching name.
          */
         this.findOne = function (ctrlName) {
             var a = this.find(ctrlName);
@@ -785,7 +799,7 @@
      * @event ERoot.onInit
      * @type {function}
      * @description
-     * Called once in the beginning, after all controllers have been initialized.
+     * Called once in the beginning, after all controllers in the app have been initialized.
      *
      * It represents the state of the application when it is ready to find controllers
      * and communicate with them.
@@ -823,7 +837,7 @@
          * @type {string}
          * @readonly
          * @description
-         * Full controller name.
+         * Full name of the controller.
          */
         readOnlyProp(this, 'name', name);
 
@@ -832,7 +846,7 @@
          * @type {ControlledElement}
          * @readonly
          * @description
-         * Source DOM element that uses this controller.
+         * Source DOM element bound to this controller.
          */
         readOnlyProp(this, 'node', node);
     }
@@ -863,7 +877,7 @@
      *
      * For any modern browser, the event is triggered automatically, courtesy of `MutationObserver`,
      * while for older browsers, such as IE9 and IE10 it falls back on a manual background check
-     * that runs every 500ms.
+     * that runs once a second.
      *
      * @see
      * {@link ERoot.event:onInit ERoot.onInit}
@@ -873,9 +887,9 @@
      * @method EController#bind
      * @description
      * Signals the framework that the element's content has been modified to contain new child controlled
-     * elements, and that it is time to bind those elements and initialize its controllers.
+     * elements, and that it is time to bind those elements with the corresponding controllers.
      *
-     * This method requires that its controller has been initialized.
+     * This method requires that the calling controller has been initialized.
      *
      * You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
      * performance of the application. The binding engine implements the logic of minimizing the number of checks
@@ -897,7 +911,11 @@
      * @description
      * Extends other controller(s) with new functionality, thus providing functional inheritance.
      *
-     * This method requires that its controller has been initialized.
+     * It creates and returns a new controller(s), according to the parameters. But if you specify a controller
+     * name that's already bound to the element, that controller is returned instead, to be reused, because
+     * only a single controller type can be bound to any given element.
+     *
+     * This method requires that the calling controller has been initialized.
      *
      * @param {string|string[]} ctrlName
      * Either a single controller name, or an array of names.
@@ -911,7 +929,7 @@
         var ctrl = this.verifyInit('extend');
 
         function ext(name) {
-            var cn = validCN(name, true);
+            var cn = validateControllerName(name, true);
             if (!cn) {
                 throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
             }
@@ -939,17 +957,16 @@
      * dynamically. Such explicit verification makes the code more robust.
      *
      * @param {string[]} ctrlNames
-     * List of controller names.
+     * List of controller names. It should include all controller names that are due to be derived,
+     * via method {@link EController#extend extend}, plus the ones that can be requested dynamically.
      *
-     * You would specify all controller names this controller may be extending via method {@link EController#extend extend},
-     * plus any others that your controller may generate dynamically.
      */
     EController.prototype.depends = function (ctrlNames) {
         if (!Array.isArray(ctrlNames)) {
             throw new TypeError('Invalid list of controller names.');
         }
         ctrlNames.forEach(function (name) {
-            var cn = validCN(name, true);
+            var cn = validateControllerName(name, true);
             if (!cn) {
                 throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
             }
@@ -970,7 +987,7 @@
      * Controller name to search by.
      *
      * @returns {EController}
-     * One controller matching the name.
+     * A single child controller with the matching name.
      */
     EController.prototype.findOne = function (ctrlName) {
         var a = this.find(ctrlName);
@@ -1015,7 +1032,7 @@
      * @description
      * Verifies that this controller has been initialized, or else throws an error.
      *
-     * This method is for internal use only.
+     * This method is for internal use.
      *
      * @param {string} m
      * Name of the method that requires verification.
@@ -1032,30 +1049,41 @@
     };
 
     /**
-     * Standard document-ready event handler.
+     * Standard document-loaded event handler.
      */
     document.addEventListener('DOMContentLoaded', function () {
-        bindElement(null, true);
+        bindElement(null, true); // binding all elements synchronously
         if (typeof root.onInit === 'function') {
             root.onInit();
         }
     });
 
     /**
-     * Sets the default root name, plus the alternative root name, if it is specified.
+     * Global initialization.
+     *
+     * It excludes else statements from test coverage, because only
+     * under JEST we have 'module' and 'window' at the same time.
      */
     (function () {
-        window.excellent = root; // default root name
-        var e = findAll('[data-e-root],[e-root]');
-        if (e.length) {
-            if (e.length > 1) {
-                throw new Error('Multiple root elements are not allowed.');
+        /* istanbul ignore else */
+        if (typeof module === 'object' &amp;&amp; module &amp;&amp; typeof module.exports === 'object') {
+            module.exports.excellent = root; // UMD support
+        }
+        /* istanbul ignore else */
+        if (typeof window &amp;&amp; window) {
+            window.excellent = root; // default root name
+            var e = findAll('[data-e-root],[e-root]');
+            if (e.length) {
+                if (e.length > 1) {
+                    throw new Error('Multiple root elements are not allowed.');
+                }
+                var name = getAttribute(e[0], 'data-e-root', 'e-root');
+                if (!validJsVariable(name)) {
+                    // The name must adhere to JavaScript open-name syntax!
+                    throw new Error('Invalid ' + jStr(name) + ' root name specified.');
+                }
+                window[name] = root; // adding alternative root name
             }
-            var name = getAttribute(e[0], 'data-e-root', 'e-root');
-            if (!validJsVariable(name)) {
-                throw new Error('Invalid ' + jStr(name) + ' root name specified.');
-            }
-            window[name] = root; // alternative root name
         }
     })();
 

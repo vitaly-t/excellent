@@ -77,7 +77,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line557">line 557</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line571">line 571</a>
     </li></ul></dd>
     
 
@@ -117,7 +117,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
 
         
             
-<h4 class="name" id="services"><span class="type-signature">(readonly) </span>services<span class="type-signature"> :object</span></h4>
+<h4 class="name" id="services"><span class="type-signature">(readonly) </span>services<span class="type-signature"> :Object.&lt;string, {}></span></h4>
 
 
 
@@ -132,7 +132,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     <ul>
         <li>
             
-<span class="param-type">object</span>
+<span class="param-type">Object.&lt;string, {}></span>
 
 
         </li>
@@ -171,7 +171,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line592">line 592</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line606">line 606</a>
     </li></ul></dd>
     
 
@@ -251,7 +251,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line582">line 582</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line596">line 596</a>
     </li></ul></dd>
     
 
@@ -345,7 +345,7 @@ and so available only with the compressed version of the library.</p>
 
             
 
-            <td class="description last"><p>Controller name.</p></td>
+            <td class="description last"><p>Controller name. Must adhere to JavaScript open-name syntax.</p></td>
         </tr>
 
     
@@ -409,7 +409,7 @@ and so available only with the compressed version of the library.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line604">line 604</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line618">line 618</a>
     </li></ul></dd>
     
 
@@ -506,7 +506,7 @@ while modules need to be fully reusable, like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Module name.</p></td>
+            <td class="description last"><p>Module name. Must adhere to JavaScript open-name syntax.</p></td>
         </tr>
 
     
@@ -570,7 +570,7 @@ while modules need to be fully reusable, like in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line661">line 661</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line675">line 675</a>
     </li></ul></dd>
     
 
@@ -668,7 +668,7 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Service name.</p></td>
+            <td class="description last"><p>Service name. Must adhere to JavaScript open-name syntax.</p></td>
         </tr>
 
     
@@ -732,7 +732,7 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line635">line 635</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line649">line 649</a>
     </li></ul></dd>
     
 
@@ -776,8 +776,8 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
 <div class="description">
     <p>Searches for all elements in the document not yet bound, and binds them to controllers.</p>
 <p>Normally, a controller creates new controlled elements within its children, and then uses
-<a href="EController.html#bind">EController.bind</a> method. It is only if you create a new controlled
-element that's not a child element that you would use this global binding.</p>
+<a href="EController.html#bind">EController.bind</a> method. It is only when you create a new controlled
+element that's not a child element, then you would use this global binding.</p>
 <p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
 while affecting performance of the application. The binding engine implements the logic
 of minimizing the number of checks against the DOM, but it works best when requests are asynchronous.</p>
@@ -901,7 +901,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line685">line 685</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line699">line 699</a>
     </li></ul></dd>
     
 
@@ -998,7 +998,7 @@ even though the latter searches for only child elements, but it searches through
 
             
 
-            <td class="description last"><p>Controller name to search by.</p></td>
+            <td class="description last"><p>Controller name to search by. It must adhere to JavaScript open-name syntax.</p></td>
         </tr>
 
     
@@ -1039,7 +1039,7 @@ even though the latter searches for only child elements, but it searches through
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line708">line 708</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line722">line 722</a>
     </li></ul></dd>
     
 
@@ -1156,7 +1156,7 @@ even though the latter searches for only child elements, but it searches through
 
             
 
-            <td class="description last"><p>Controller name to search by.</p></td>
+            <td class="description last"><p>Controller name to search by. It must adhere to JavaScript open-name syntax.</p></td>
         </tr>
 
     
@@ -1197,7 +1197,7 @@ even though the latter searches for only child elements, but it searches through
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line731">line 731</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line745">line 745</a>
     </li></ul></dd>
     
 
@@ -1224,7 +1224,7 @@ even though the latter searches for only child elements, but it searches through
 
         
 <div class="param-desc">
-    <p>One controller matching the name.</p>
+    <p>A single controller with the matching name.</p>
 </div>
 
 
@@ -1269,7 +1269,7 @@ even though the latter searches for only child elements, but it searches through
 
 
 <div class="description">
-    <p>Called once in the beginning, after all controllers have been initialized.</p>
+    <p>Called once in the beginning, after all controllers in the app have been initialized.</p>
 <p>It represents the state of the application when it is ready to find controllers
 and communicate with them.</p>
 </div>
@@ -1325,7 +1325,7 @@ and communicate with them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line754">line 754</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line768">line 768</a>
     </li></ul></dd>
     
 
