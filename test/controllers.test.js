@@ -115,7 +115,7 @@ describe('positive', () => {
             removable.node.innerHTML = '<div e-bind="notify1"></div><div e-bind="notify2"></div><div e-bind="notify2"></div>';
             removable.bind(true);
             removable.node.innerHTML = '';
-            const p = new Promise(resolve => setTimeout(() => resolve(destroyed), 1000));
+            const p = new Promise(resolve => setTimeout(() => resolve(destroyed), 2000));
             return expect(p).resolves.toEqual(['notify2', 'notify2', 'notify1']);
         });
     });
