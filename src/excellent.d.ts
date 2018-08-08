@@ -6,10 +6,14 @@
 
 type BindingProcess = boolean | (() => void);
 
+// Type API:
+// https://vitaly-t.github.io/excellent/ControlledElement.html
 interface ControlledElement extends Element {
     readonly controllers: { readonly [name: string]: EController };
 }
 
+// Type API:
+// https://vitaly-t.github.io/excellent/EController.html
 interface EController {
     readonly name: string;
     readonly node: ControlledElement;
@@ -28,6 +32,8 @@ interface EController {
     onDestroy: () => void
 }
 
+// Type API:
+// https://vitaly-t.github.io/excellent/ERoot.html
 interface ERoot {
     readonly version: string;
     readonly services: { readonly [name: string]: any };

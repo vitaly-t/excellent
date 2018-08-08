@@ -1,6 +1,12 @@
-/**
- * @author Vitaly Tomilov
+/*
+ * Copyright (c) 2018-present, Vitaly Tomilov
+ *
+ * See the LICENSE file at the top-level directory of this distribution
+ * for licensing information.
+ *
+ * Removal or modification of this copyright notice is prohibited.
  */
+
 (function () {
     'use strict';
 
@@ -48,22 +54,6 @@
      */
     var observer = new DestroyObserver();
 
-    document.addEventListener('DOMContentLoaded', function () {
-        bindElement(null, true);
-        if (typeof root.onInit === 'function') {
-            root.onInit();
-        }
-    });
-
-    function checkEntity(name, cb, entity) {
-        name = typeof name === 'string' ? name : '';
-        if (!validJsVariable(name)) {
-            throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
-        }
-        if (typeof cb !== 'function') {
-            throw new TypeError('Initialization function for ' + entity + ' ' + jStr(name) + ' is missing.');
-        }
-    }
 
     /**
      * Validates controller name, optionally trimmed.
@@ -96,6 +86,28 @@
     function validJsVariable(name) {
         var m = name.match(/[a-z$_][a-z$_0-9]*/i);
         return m && m[0] === name;
+    }
+
+    /**
+     * Validates an entity being registered.
+     *
+     * @param {string} name
+     * Name of the entity.
+     *
+     * @param {function} cb
+     * Callback function.
+     *
+     * @param {string} entity
+     * Entity name.
+     */
+    function validateEntity(name, cb, entity) {
+        name = typeof name === 'string' ? name : '';
+        if (!validJsVariable(name)) {
+            throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
+        }
+        if (typeof cb !== 'function') {
+            throw new TypeError('Initialization function for ' + entity + ' ' + jStr(name) + ' is missing.');
+        }
     }
 
     function jStr(value) {
@@ -183,13 +195,13 @@
      * Smart asynchronous bindings management, to help
      * executing only the necessary minimum of bindings.
      *
-     * @type {{nodes: Array, cb: Array}}
+     * @type {{nodes: Array, cb: Array, busy: boolean, glob: boolean}}
      */
     var bindings = {
         nodes: [], // local elements
         cb: [], // all callbacks
-        busy: false,
-        glob: false
+        busy: false, // awaits asynchronous processing
+        glob: false // global async is being processed
     };
 
     /**
@@ -218,7 +230,8 @@
                         bindings.nodes.splice(idx, 1);
                     }
                 } else {
-                    // A global synchronous binding cancels all local bindings:
+                    // A global synchronous binding cancels everything for
+                    // asynchronous processing, except callback notifications:
                     bindings.busy = false;
                     bindings.glob = false;
                     bindings.nodes.length = 0;
@@ -254,7 +267,7 @@
                     bindings.busy = false;
                     if (bindings.glob) {
                         bindings.glob = false;
-                        bind();
+                        bind(null);
                     } else {
                         nodes.forEach(bind);
                     }
@@ -377,9 +390,8 @@
             for (var a in e.controllers) {
                 var c = ctrlLive[a];
                 if (c) {
-                    // This verification, for a NULL-array is a bit stupid,
-                    // as it is logically impossible, but during synthetic
-                    // tests in JEST it just keeps happening anyway.
+                    // This verification is a bit stupid, as it is logically impossible,
+                    // but it does happen nonetheless during synthetic JEST tests.
                     var i = c.indexOf(e.controllers[a]);
                     ctrlLive[a].splice(i, 1);
                     if (!ctrlLive[a].length) {
@@ -608,7 +620,7 @@
          * Controller function.
          */
         this.addController = function (name, cb) {
-            checkEntity(name, cb, 'controller');
+            validateEntity(name, cb, 'controller');
             if (name in ctrlRegistered) {
                 // controller name has been registered before
                 if (ctrlRegistered[name] === cb) {
@@ -638,7 +650,7 @@
          * Service initialization function.
          */
         this.addService = function (name, cb) {
-            checkEntity(name, cb, 'service');
+            validateEntity(name, cb, 'service');
             if (!(name in root.services)) {
                 var scope = {};
                 readOnlyProp(root.services, name, scope);
@@ -662,7 +674,7 @@
          * Module initialization function.
          */
         this.addModule = function (name, cb) {
-            checkEntity(name, cb, 'module');
+            validateEntity(name, cb, 'module');
             if (!(name in modules)) {
                 var scope = {};
                 modules[name] = scope;
@@ -988,6 +1000,16 @@
         }
         return c;
     };
+
+    /**
+     * Standard document-ready event handler.
+     */
+    document.addEventListener('DOMContentLoaded', function () {
+        bindElement(null, true);
+        if (typeof root.onInit === 'function') {
+            root.onInit();
+        }
+    });
 
     /**
      * Sets the default root name, plus the alternative root name, if it is specified.
