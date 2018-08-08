@@ -3,6 +3,9 @@
     "browser": true,
     "node": false
   },
+  "globals": {
+    "module": true
+  },
   "extends": "eslint:recommended",
   "rules": {
     "no-else-return": "error",

@@ -1029,21 +1029,31 @@
     });
 
     /**
-     * Sets the default root name, plus the alternative root name, if specified.
+     * Global initialization.
+     *
+     * It excludes else statements from test coverage, because only
+     * under JEST we have 'module' and 'window' at the same time.
      */
     (function () {
-        window.excellent = root; // default root name
-        var e = findAll('[data-e-root],[e-root]');
-        if (e.length) {
-            if (e.length > 1) {
-                throw new Error('Multiple root elements are not allowed.');
+        /* istanbul ignore else */
+        if (typeof module === 'object' && module && typeof module.exports === 'object') {
+            module.exports.excellent = root; // UMD support
+        }
+        /* istanbul ignore else */
+        if (typeof window && window) {
+            window.excellent = root; // default root name
+            var e = findAll('[data-e-root],[e-root]');
+            if (e.length) {
+                if (e.length > 1) {
+                    throw new Error('Multiple root elements are not allowed.');
+                }
+                var name = getAttribute(e[0], 'data-e-root', 'e-root');
+                if (!validJsVariable(name)) {
+                    // The name must adhere to JavaScript open-name syntax!
+                    throw new Error('Invalid ' + jStr(name) + ' root name specified.');
+                }
+                window[name] = root; // adding alternative root name
             }
-            var name = getAttribute(e[0], 'data-e-root', 'e-root');
-            if (!validJsVariable(name)) {
-                // The name must adhere to JavaScript open-name syntax!
-                throw new Error('Invalid ' + jStr(name) + ' root name specified.');
-            }
-            window[name] = root; // adding alternative root name
         }
     })();
 
