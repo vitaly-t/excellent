@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "0.5.8",
+  "version": "0.6.0",
   "description": "DOM-Manipulation Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "coveralls": "3.0.2",
-    "eslint-plugin-jest": "21.18.0",
+    "eslint-plugin-jest": "21.20.0",
     "gulp": "3.9.1",
     "gulp-eslint": "5.0.0",
     "gulp-insert": "0.5.0",
