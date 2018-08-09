@@ -895,7 +895,6 @@
      * - if you pass in an array of names, it returns an array of controllers.
      */
     EController.prototype.extend = function (ctrlName) {
-        ctrlName = Array.isArray(ctrlName) ? ctrlName : [ctrlName];
         var ctrl = this.verifyInit('extend');
 
         function ext(name) {
@@ -915,7 +914,7 @@
             return c;
         }
 
-        return ctrlName.map(ext, this);
+        return Array.isArray(ctrlName) ? ctrlName.map(ext, this) : ext.call(this, ctrlName);
     };
 
     /**
