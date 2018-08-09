@@ -1,10 +1,11 @@
 ///////////////////////////////////////////
-// Complete Excellent.js 0.5.6 declaration
+// Complete Excellent.js 0.5.8 declaration
 ///////////////////////////////////////////
 
 declare namespace ERoot {
 
     type BindingProcess = boolean | (() => void);
+    type ServicesNamespace = { readonly [name: string]: any };
 
     // Type API:
     // https://vitaly-t.github.io/excellent/ControlledElement.html
@@ -34,9 +35,9 @@ declare namespace ERoot {
 
     // Type API:
     // https://vitaly-t.github.io/excellent/ERoot.html
-    interface ERoot {
+    interface ERoot<SN = ServicesNamespace> {
         readonly version: string;
-        readonly services: { readonly [name: string]: any };
+        readonly services: SN;
 
         addController(name: string, cb: (ctrl: EController) => void)
 
