@@ -926,6 +926,7 @@
      */
     EController.prototype.extend = function (ctrlName) {
         var ctrl = this.verifyInit('extend');
+        var created = [];
 
         function ext(name) {
             var cn = validateControllerName(name, true);
@@ -937,14 +938,20 @@
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
                 readOnlyProp(ctrl, cn, c);
-                if (typeof c.onInit === 'function') {
-                    c.onInit();
-                }
+                created.push(c);
             }
             return c;
         }
 
-        return Array.isArray(ctrlName) ? ctrlName.map(ext, this) : ext.call(this, ctrlName);
+        var result = Array.isArray(ctrlName) ? ctrlName.map(ext, this) : ext.call(this, ctrlName);
+
+        created.forEach(function (c) {
+            if (typeof c.onInit === 'function') {
+                c.onInit();
+            }
+        });
+
+        return result;
     };
 
     /**
