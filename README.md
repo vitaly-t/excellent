@@ -40,8 +40,8 @@ app.addController('twinkling', function() {
 });
 ```
 
-Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance]
-enable you to build whole libraries of components that can seamlessly work with any UI framework, or on their own.
+And then you work with DOM directly, while [Modules], [Services] and [Inheritance] let you build whole libraries
+of highly reusable components that can seamlessly work with any UI framework, or on their own.
 
 #### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 
