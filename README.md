@@ -1,6 +1,6 @@
 # Excellent.js
 
-<img align="left" width="160" height="160" src="./.github/images/burns.gif">
+<img align="left" width="150" height="150" src="./.github/images/burns.gif">
 
 ## DOM-fiddling library :)
 
@@ -40,7 +40,7 @@ app.addController('twinkling', function() {
 ```
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance] enable you to build large-scale apps and reusable component libraries.
 
-### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
+#### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 
 [API]:https://vitaly-t.github.io/excellent/
 [Examples]:https://github.com/vitaly-t/excellent/wiki/Examples
