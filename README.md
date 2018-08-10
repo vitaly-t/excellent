@@ -1,6 +1,6 @@
 # Excellent.js
 
-<img align="left" width="220" height="220" src="./.github/images/burns.gif">
+<img align="left" width="160" height="160" src="./.github/images/burns.gif">
 
 ## DOM-fiddling library :)
 
@@ -10,11 +10,6 @@
 
 If you like working with DOM directly, this tiny (2Kb pkzip) library makes it productive, giving you the tools
 for writing reusable DOM components. See [WiKi] for details.
-
-<br/>
-<br/>
-<br/>
-<br/>
 
 You get the essential element-to-controller bindings:
 
