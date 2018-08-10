@@ -21,7 +21,7 @@ You get the essential element-to-controller bindings:
 <div e-bind="awesome, twinkling, message"></div>
 ```
 
-That gives your code isolation and reusability:
+That gives your code isolation and reusability (see [the plunker](http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview)):
 
 ```js
 app.addController('message', function() {
@@ -40,8 +40,6 @@ app.addController('twinkling', function() {
   }, 40);
 });
 ```
-See [the plunker](http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview).
-<br/>
 <br/>
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance] enable you to build large-scale apps and reusable component libraries.
 
