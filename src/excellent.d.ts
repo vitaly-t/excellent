@@ -61,18 +61,18 @@ declare namespace ERoot {
     // https://vitaly-t.github.io/excellent/EStatistics.html
     interface EStatistics {
         binding: {
-            locals: number,
-            callbacks: number,
-            waiting: boolean,
+            locals: number
+            callbacks: number
+            waiting: boolean
             global: boolean
-        },
+        };
         controllers: {
             live: { [name: string]: number }
-            registered: string[],
-        },
-        elements: ControlledElement[],
-        modules: string[],
-        services: string[]
+            registered: string[]
+        };
+        elements: ControlledElement[];
+        modules: string[];
+        services: string[];
     }
 }
 

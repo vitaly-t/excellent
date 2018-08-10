@@ -7,7 +7,7 @@ const rename = require('gulp-rename');
 const insert = require('gulp-insert');
 
 const SOURCE = './src/excellent.js';
-const SOURCE_LINT = ['./src/excellent.js', './test/*.test.js'];
+const SOURCE_LINT = ['./src/excellent.js', './test/*.test.js', './gulpfile.js'];
 const DEST = 'excellent.min.js';
 
 const version = require('./package.json').version;
@@ -27,9 +27,6 @@ gulp.task('lint', () => {
         .pipe(eslint.failAfterError());
 });
 
-gulp.task('test', ['lint'], () => {
-});
-
 function patch(content) {
     return copyright + content.replace(/<version>/, version);
 }
@@ -42,4 +39,4 @@ gulp.task('build', () => {
         .pipe(gulp.dest('./src'));
 });
 
-gulp.task('default', ['lint', 'test', 'build']);
+gulp.task('default', gulp.series(['lint', 'build']));
