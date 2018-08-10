@@ -8,10 +8,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/vitaly-t/excellent/badge.svg?branch=master)](https://coveralls.io/github/vitaly-t/excellent?branch=master)
 [![Join Chat](https://badges.gitter.im/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent)
 
-If you like working with DOM directly, this tiny (2Kb compressed) library gives you the tools for organizing
-all your JavaScript code in such a way that's highly reusable, [very fast], easy to maintain and distribute.
-
-See [Wiki Pages] for all the details.
+If you like working with DOM directly, this tiny (2Kb pkzip) library makes it productive, giving you the tools
+for writing reusable DOM components. See [WiKi] for details.
 
 ---
 
@@ -44,10 +42,8 @@ Then it gets out of your way, lets you work with DOM directly, while [Modules], 
 
 ### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 
-[very fast]:https://github.com/vitaly-t/excellent/wiki/Performance
 [API]:https://vitaly-t.github.io/excellent/
 [Examples]:https://github.com/vitaly-t/excellent/wiki/Examples
-[Wiki Pages]:https://github.com/vitaly-t/excellent/wiki
 [WiKi]:https://github.com/vitaly-t/excellent/wiki
 [Modules]:https://github.com/vitaly-t/excellent/wiki/Modules
 [Services]:https://github.com/vitaly-t/excellent/wiki/Services
