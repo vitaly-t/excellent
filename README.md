@@ -1,6 +1,6 @@
 # Excellent.js
 
-<img align="left" width="150" height="150" src="./.github/images/burns.gif">
+<img align="left" width="155" height="155" src="./.github/images/burns.gif">
 
 ## DOM-fiddling library :)
 
@@ -23,11 +23,12 @@ That gives your code isolation and reusability (see [the plunker](http://plnkr.c
 
 ```js
 app.addController('message', function() {
-    this.node.innerHTML = 'Awesome twinkling message :)'; // this.node = your DOM element
+    // this.node = your DOM element, to work with directly;
+    this.node.innerHTML = 'Awesome twinkling message :)';
 });
 
 app.addController('awesome', function() {
-    this.node.className = 'green-box'; // css class for a green box
+    this.node.className = 'green-box';
 });
 
 app.addController('twinkling', function() {
@@ -40,7 +41,7 @@ app.addController('twinkling', function() {
 ```
 
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance]
-enable you to build whole libraries of components that can seamlessly work with any UI framework, or on their own,
+enable you to build whole libraries of components that can seamlessly work with any UI framework, or on their own.
 
 #### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 
