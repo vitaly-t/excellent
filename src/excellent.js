@@ -594,6 +594,7 @@
      * ```
      *
      * @see
+     * {@link ERoot#analyze analyze},
      * {@link ERoot#services services},
      * {@link ERoot#version version},
      * {@link ERoot#addController addController},
