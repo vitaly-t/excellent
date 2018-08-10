@@ -1,5 +1,5 @@
 ///////////////////////////////////////////
-// Complete Excellent.js 0.7.2 declaration
+// Complete Excellent.js 0.7.3 declaration
 ///////////////////////////////////////////
 
 declare namespace ERoot {
@@ -9,7 +9,7 @@ declare namespace ERoot {
 
     // Type API:
     // https://vitaly-t.github.io/excellent/ControlledElement.html
-    interface ControlledElement extends Element {
+    interface ControlledElement extends HTMLElement {
         readonly controllers: { readonly [name: string]: EController };
     }
 

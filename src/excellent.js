@@ -134,10 +134,10 @@
      * @param {string} selectors
      * Standard selectors.
      *
-     * @param {Element} [node]
+     * @param {external:HTMLElement} [node]
      * Parent node to search for children.
      *
-     * @returns {Element[] | ControlledElement[]}
+     * @returns {external:HTMLElement[] | ControlledElement[]}
      */
     function findAll(selectors, node) {
         var f = (node || document).querySelectorAll(selectors);
@@ -152,7 +152,7 @@
      * Gets the primary attribute's value, if the attribute exists,
      * or else it gets the secondary attribute's value.
      *
-     * @param {Element} e
+     * @param {external:HTMLElement} e
      * Element to get the value from.
      *
      * @param {string} primary
@@ -221,7 +221,7 @@
      *
      * It implements the logic of bindings reduced to the absolute minimum DOM usage.
      *
-     * @param {Element} [node]
+     * @param {external:HTMLElement} [node]
      * Element to start processing from.
      *
      * @param {boolean|function} process
@@ -309,7 +309,7 @@
     /**
      * Binds to controllers all elements that are not yet bound.
      *
-     * @param {Element} [node]
+     * @param {external:HTMLElement} [node]
      * Top-level node element to start searching from. When not specified,
      * the search is done for the entire document.
      */
@@ -383,7 +383,7 @@
          * @description
          * Initiates watching the element.
          *
-         * @param {Element} e
+         * @param {external:HTMLElement} e
          * Element to be watched.
          */
         this.watch = function (e) {
@@ -464,7 +464,7 @@
 
     /**
      * @interface ControlledElement
-     * @extends Element
+     * @extends external:HTMLElement
      * @description
      * Represents a standard DOM element, extended with read-only property `controllers`.
      *
@@ -842,7 +842,7 @@
      * A global asynchronous request is being processed.
      *
      * @property {} controllers
-     * Details about about controllers.
+     * Details about controllers.
      *
      * @property {Object.<string, number>} controllers.live
      * All live controllers. Each name is set to a number - total count of such controllers.
@@ -850,7 +850,7 @@
      * @property {string[]} controllers.registered
      * Names of all registered controllers.
      *
-     * @property {Element} elements
+     * @property {ControlledElement[]} elements
      * List of all controlled elements currently in the DOM.
      *
      * @property {string[]} modules
@@ -1213,3 +1213,8 @@
     })();
 
 })();
+
+/**
+ * @external HTMLElement
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
+ */
