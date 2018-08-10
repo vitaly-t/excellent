@@ -13,7 +13,7 @@ for writing reusable DOM components. See [WiKi] for details.
 
 <br/>
 
-You get the essential element-to-controller bindings:
+You get the essential _element-to-controllers_ bindings:
 
 ```html
 <div e-bind="awesome, twinkling, message"></div>
