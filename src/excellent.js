@@ -810,6 +810,7 @@
      * {@link EController#find find},
      * {@link EController#findOne findOne},
      * {@link EController.event:onInit onInit},
+     * {@link EController.event:onPostInit onPostInit},
      * {@link EController.event:onDestroy onDestroy}
      *
      * @param {string} name
@@ -976,14 +977,19 @@
      * @method EController#depends
      * @description
      * Verifies that each controller in the list of dependencies exists, or else throws an error.
+     * It is normally used during the controller's construction.
      *
-     * This optional level of verification is useful when sub-controllers are rarely used, or loaded
-     * dynamically. Such explicit verification makes the code more robust.
+     * This optional level of verification is mainly useful when using dynamically injected controllers
+     * (not just the ones through method {@link EController#extend extend}), as it is best to verify such
+     * dependencies before trying to use them.
+     *
+     * Note however, that this method may not see controllers registered dynamically.
      *
      * @param {string[]} ctrlNames
-     * List of controller names. It should include all controller names that are due to be derived,
-     * via method {@link EController#extend extend}, plus the ones that can be requested dynamically.
+     * List of controller names. It should include all controller names that are due to be extended
+     * (via method {@link EController#extend extend}), plus the ones that can be requested dynamically.
      *
+     * @see {@link EController#extend extend}
      */
     EController.prototype.depends = function (ctrlNames) {
         if (!Array.isArray(ctrlNames)) {
