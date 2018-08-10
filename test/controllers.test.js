@@ -100,6 +100,31 @@ describe('positive', () => {
             expect(c.bottom_2 === c.base.node.controllers.bottom_2).toBe(true);
             expect(c.bottom_2 === c.last.node.controllers.bottom_2).toBe(true);
         });
+        it('must find extended controllers only during onPostInit', () => {
+            let ctrl1, ctrl2, ctrl3;
+            excellent.addController('uniqueController', ctrl => {
+                ctrl.onPostInit = function () {
+                    ctrl3 = excellent.findOne('derivedController');
+                };
+            });
+            excellent.addController('derivedController', ctrl => {
+                ctrl.onInit = function () {
+                    const a = excellent.find('uniqueController');
+                    if (a.length) {
+                        ctrl1 = a[0];
+                    }
+                    ctrl.extend('uniqueController');
+                };
+                ctrl.onPostInit = function () {
+                    ctrl2 = excellent.findOne('uniqueController');
+                };
+            });
+            excellent.findOne('removable').node.innerHTML = '<div e-bind="derivedController"></div>';
+            excellent.bind(true);
+            expect(ctrl1).toBeUndefined();
+            expect(ctrl2).toBeTruthy();
+            expect(ctrl3).toBeTruthy();
+        });
     });
 
     describe('lifespan', () => {
