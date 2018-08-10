@@ -743,6 +743,11 @@
          * Because of this, it will always significantly outperform method {@link EController#find EController.find},
          * even though the latter searches only among child elements, but it uses DOM.
          *
+         * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit EController.onInit},
+         * and implicitly created controllers (extended via method {@link EController#extend EController.extend}), if called during or after event
+         * {@link EController.event:onPostInit EController.onPostInit}. And it will find everything, if called during or after global event
+         * {@link ERoot.event:onInit ERoot.onInit}.
+         *
          * @param {string} ctrlName
          * Controller name to search by. It must adhere to JavaScript open-name syntax.
          *
@@ -762,7 +767,12 @@
          * @description
          * Searches for a single initialized controller, in the entire application, based on the controller name.
          *
-         * It will throw an error, if multiple or no controllers found.
+         * The method will throw an error, if multiple or no controllers found.
+         *
+         * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit EController.onInit},
+         * and implicitly created controllers (extended via method {@link EController#extend EController.extend}), if called during or after event
+         * {@link EController.event:onPostInit EController.onPostInit}. And it will find everything, if called during or after global event
+         * {@link ERoot.event:onInit ERoot.onInit}.
          *
          * @param {string} ctrlName
          * Controller name to search by. It must adhere to JavaScript open-name syntax.
@@ -941,7 +951,7 @@
      *
      * Controllers can only be extended during initialization (see method {@link EController#extend extend}),
      * and so the controllers being extended are initialized right after. If you need to locate and communicate
-     * with such extended controllers, it is only possible at or after this post-initialization stage.
+     * with such extended controllers, it is only possible during or after this post-initialization event.
      *
      * @see
      * {@link EController.event:onInit onInit},
@@ -1000,8 +1010,14 @@
      *
      * This method can only be called during event {@link EController.event:onInit onInit}.
      *
+     * Note that while the calling controller has immediate access to extended controllers, as they are returned
+     * by the method, other controllers can communicate with them only during or after event
+     * {@link EController.event:onPostInit onPostInit}.
+     *
      * @param {string|string[]} ctrlName
      * Either a single controller name, or an array of names.
+     *
+     * Names must adhere to JavaScript open-name syntax.
      *
      * @returns {EController|EController[]}
      * - if you pass in a single controller name, it returns a single controller.
@@ -1060,6 +1076,8 @@
      * List of controller names. It should include all controller names that are due to be extended
      * (via method {@link EController#extend extend}), plus the ones that can be requested dynamically.
      *
+     * Controller names must adhere to JavaScript open-name syntax.
+     *
      * @see {@link EController#extend extend}
      */
     EController.prototype.depends = function (ctrlNames) {
@@ -1082,10 +1100,14 @@
      * @description
      * Searches for a single initialized child controller by a given controller name.
      *
-     * It will throw an error, if multiple or no controllers found.
+     * The method will throw an error, if multiple or no controllers found.
+     *
+     * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit onInit},
+     * and implicitly created controllers (extended via method {@link EController#extend extend}), if called during or after event
+     * {@link EController.event:onPostInit onPostInit}.
      *
      * @param {string} ctrlName
-     * Controller name to search by.
+     * Controller name to search by. It must adhere to JavaScript open-name syntax.
      *
      * @returns {EController}
      * A single child controller with the matching name.
@@ -1101,15 +1123,17 @@
     /**
      * @method EController#find
      * @description
-     * Searches for all initialized child controllers, by a given controller name,
-     * including the extended controllers.
+     * Searches for all initialized child controllers, by a given controller name, including the extended controllers.
      *
-     * This method searches through DOM, as it needs to iterate over child elements.
-     * And because of that, even though it searches just through a sub-set of elements,
-     * it is always slower than the global {@link ERoot#find ERoot.find} method.
+     * This method searches through DOM, as it needs to iterate over child elements. And because of that, even though
+     * it searches just through a sub-set of elements, it is always slower than the global {@link ERoot#find ERoot.find} method.
+     *
+     * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit onInit},
+     * and implicitly created controllers (extended via method {@link EController#extend extend}), if called during or after event
+     * {@link EController.event:onPostInit onPostInit}.
      *
      * @param {string} ctrlName
-     * Controller name to search by.
+     * Controller name to search by. It must adhere to JavaScript open-name syntax.
      *
      * @returns {EController[]}
      * List of initialized child controllers.
@@ -1135,16 +1159,16 @@
      *
      * This method is for internal use.
      *
-     * @param {string} m
+     * @param {string} method
      * Name of the method that requires verification.
      *
      * @returns {EController[]}
      * Controllers linked to the element.
      */
-    EController.prototype.verifyInit = function (m) {
+    EController.prototype.verifyInit = function (method) {
         var c = this.node.controllers;
         if (!c) {
-            throw new Error('Method "' + m + '" cannot be used before initialization.');
+            throw new Error('Method "' + method + '" cannot be used before initialization.');
         }
         return c;
     };
