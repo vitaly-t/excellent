@@ -819,7 +819,7 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line781">line 781</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line791">line 791</a>
     </li></ul></dd>
     
 
@@ -1057,6 +1057,10 @@ including the extended controllers.</p>
 <p>The search is based solely on the internal map of controllers, without involving DOM, and provides instant results.
 Because of this, it will always significantly outperform method <a href="EController.html#find">EController.find</a>,
 even though the latter searches only among child elements, but it uses DOM.</p>
+<p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">EController.onInit</a>,
+and implicitly created controllers (extended via method <a href="EController.html#extend">EController.extend</a>), if called during or after event
+<a href="EController.html#.event:onPostInit">EController.onPostInit</a>. And it will find everything, if called during or after global event
+<a href="ERoot.html#.event:onInit">ERoot.onInit</a>.</p>
 </div>
 
 
@@ -1214,7 +1218,11 @@ even though the latter searches only among child elements, but it uses DOM.</p>
 
 <div class="description">
     <p>Searches for a single initialized controller, in the entire application, based on the controller name.</p>
-<p>It will throw an error, if multiple or no controllers found.</p>
+<p>The method will throw an error, if multiple or no controllers found.</p>
+<p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">EController.onInit</a>,
+and implicitly created controllers (extended via method <a href="EController.html#extend">EController.extend</a>), if called during or after event
+<a href="EController.html#.event:onPostInit">EController.onPostInit</a>. And it will find everything, if called during or after global event
+<a href="ERoot.html#.event:onInit">ERoot.onInit</a>.</p>
 </div>
 
 
@@ -1307,7 +1315,7 @@ even though the latter searches only among child elements, but it uses DOM.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line760">line 760</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line765">line 765</a>
     </li></ul></dd>
     
 
@@ -1436,7 +1444,7 @@ all controllers have finished processing <a href="EController.html#.event:onPost
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line854">line 854</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line864">line 864</a>
     </li></ul></dd>
     
 
