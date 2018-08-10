@@ -40,9 +40,7 @@ app.addController('twinkling', function() {
   }, 40);
 });
 ```
-<a href="http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview" target="_blank"><img align="left" width="375" height="47" src="./.github/images/message.gif" alt="Awesome twinkling message :)"></a>
-<br/>
-&lt;- click it to see the demo
+See [the plunker](http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview).
 <br/>
 <br/>
 Then it gets out of your way, lets you work with DOM directly, while [Modules], [Services] and [Inheritance] enable you to build large-scale apps and reusable component libraries.
