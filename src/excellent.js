@@ -294,6 +294,20 @@
     }
 
     /**
+     * Registers the live controller in the global list, so it can be found globally.
+     *
+     * @param {string} name
+     * Controller name.
+     *
+     * @param {EController} c
+     * Controller object.
+     */
+    function addLiveCtrl(name, c) {
+        ctrlLive[name] = ctrlLive[name] || [];
+        ctrlLive[name].push(c);
+    }
+
+    /**
      * Binds to controllers all elements that are not yet bound.
      *
      * @param {Element} [node]
@@ -323,8 +337,7 @@
                                 eCtrl = eCtrl || {};
                                 readOnlyProp(eCtrl, name, c);
                                 allCtrl.push(c);
-                                ctrlLive[name] = ctrlLive[name] || [];
-                                ctrlLive[name].push(c);
+                                addLiveCtrl(name, c);
                             }
                         });
                     if (eCtrl) {
@@ -338,6 +351,11 @@
         allCtrl.forEach(function (c) {
             if (typeof c.onInit === 'function') {
                 c.onInit();
+            }
+        });
+        allCtrl.forEach(function (c) {
+            if (typeof c.onPostInit === 'function') {
+                c.onPostInit();
             }
         });
     }
@@ -403,14 +421,10 @@
         function removeControllers(e) {
             for (var a in e.controllers) {
                 var c = ctrlLive[a];
-                if (c) {
-                    // This verification is a bit stupid, as it is logically impossible,
-                    // but it does happen nonetheless during synthetic JEST tests.
-                    var i = c.indexOf(e.controllers[a]);
-                    ctrlLive[a].splice(i, 1);
-                    if (!ctrlLive[a].length) {
-                        delete ctrlLive[a];
-                    }
+                var i = c.indexOf(e.controllers[a]);
+                ctrlLive[a].splice(i, 1);
+                if (!ctrlLive[a].length) {
+                    delete ctrlLive[a];
                 }
             }
         }
@@ -722,11 +736,12 @@
         /**
          * @method ERoot#find
          * @description
-         * Searches for all initialized controllers, in the entire application, based on the controller name.
+         * Searches for all initialized controllers in the entire application, based on the controller name,
+         * including the extended controllers.
          *
          * The search is based solely on the internal map of controllers, without involving DOM, and provides instant results.
-         * It will always significantly outperform method {@link EController#find EController.find},
-         * even though the latter searches for only child elements, but it searches through DOM.
+         * Because of this, it will always significantly outperform method {@link EController#find EController.find},
+         * even though the latter searches only among child elements, but it uses DOM.
          *
          * @param {string} ctrlName
          * Controller name to search by. It must adhere to JavaScript open-name syntax.
@@ -769,12 +784,15 @@
      * @event ERoot.onInit
      * @type {function}
      * @description
-     * Called once in the beginning, after all controllers in the app have been initialized.
+     * Called once in the beginning, after all controllers in the app have been fully initialized.
      *
-     * It represents the state of the application when it is ready to find controllers
-     * and communicate with them.
+     * It represents the state of the application when it is ready to find all controllers
+     * and communicate with them. This includes controllers created through extension, i.e.
+     * all controllers have finished processing {@link EController.event:onPostInit onPostInit} event.
      *
-     * @see {@link EController.event:onInit EController.onInit}
+     * @see
+     * {@link EController.event:onInit EController.onInit},
+     * {@link EController.event:onPostInit EController.onPostInit}
      */
 
     /**
@@ -828,10 +846,33 @@
      * Initialization event handler.
      *
      * It represents the state of the controller when it is ready to do the following:
-     *  - find other controllers and communicate with them
+     *  - find explicitly bound controllers and communicate with them
      *  - extend other controllers (via method {@link EController#extend extend})
      *
+     * At this point you cannot locate or communicate with controllers that are being extended
+     * (via method {@link EController#extend extend}). For that you need to use {@link EController.event:onPostInit onPostInit} event.
+     *
      * @see
+     * {@link EController.event:onPostInit onPostInit},
+     * {@link EController.event:onDestroy onDestroy},
+     * {@link ERoot.event:onInit ERoot.onInit}
+     */
+
+    /**
+     * @event EController.onPostInit
+     * @type {function}
+     * @description
+     * Post-initialization event handler.
+     *
+     * It represents the state of the controller when it is able to find and communicate
+     * with controllers that were created during initialization through extension (via method {@link EController#extend extend}).
+     *
+     * Controllers can only be extended during initialization (see method {@link EController#extend extend}),
+     * and so the controllers being extended are initialized right after. If you need to locate and communicate
+     * with such extended controllers, it is only possible at or after this post-initialization stage.
+     *
+     * @see
+     * {@link EController.event:onInit onInit},
      * {@link EController.event:onDestroy onDestroy},
      * {@link ERoot.event:onInit ERoot.onInit}
      */
@@ -885,7 +926,7 @@
      * name that's already bound to the element, that controller is returned instead, to be reused, because
      * only a single controller type can be bound to any given element.
      *
-     * This method requires that the calling controller has been initialized.
+     * This method can only be called during event {@link EController.event:onInit onInit}.
      *
      * @param {string|string[]} ctrlName
      * Either a single controller name, or an array of names.
@@ -908,6 +949,7 @@
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
                 readOnlyProp(ctrl, cn, c);
+                addLiveCtrl(cn, c);
                 created.push(c);
             }
             return c;
@@ -918,6 +960,12 @@
         created.forEach(function (c) {
             if (typeof c.onInit === 'function') {
                 c.onInit();
+            }
+        });
+
+        created.forEach(function (c) {
+            if (typeof c.onPostInit === 'function') {
+                c.onPostInit();
             }
         });
 
@@ -976,7 +1024,8 @@
     /**
      * @method EController#find
      * @description
-     * Searches for all initialized child controllers by a given controller name.
+     * Searches for all initialized child controllers, by a given controller name,
+     * including the extended controllers.
      *
      * This method searches through DOM, as it needs to iterate over child elements.
      * And because of that, even though it searches just through a sub-set of elements,
@@ -992,14 +1041,13 @@
      */
     EController.prototype.find = function (ctrlName) {
         var cn = parseControllerName(ctrlName);
-        var s = '[data-e-bind*="' + cn + '"],[e-bind*="' + cn + '"]'; // selectors
-        return findAll(s, this.node).filter(pick).map(pick);
-
-        function pick(e) {
-            // This also caters for dynamically created controlled
-            // elements that haven't been initialized yet:
-            return e.controllers && e.controllers[cn];
-        }
+        return findAll('[data-e-bind],[e-bind]', this.node)
+            .filter(function (e) {
+                return e.controllers && e.controllers[cn];
+            })
+            .map(function (e) {
+                return e.controllers[cn];
+            });
     };
 
     /**

@@ -80,7 +80,11 @@ describe('positive', () => {
 
     describe('inheritance', () => {
         it('must allow single derivation', () => {
-            expect(excellent.findOne('last').node.innerHTML).toBe('base-last');
+            const a = excellent.find('last');
+            expect(a.length).toBe(3);
+            expect(a[0].node.innerHTML).toBe('base-last');
+            expect(a[1].node.innerHTML).toBe('base-last-bottom1');
+            expect(a[2].node.innerHTML).toBe('base-last-bottom2');
             expect(excellent.findOne('bottom_1').node.innerHTML).toBe('base-last-bottom1');
         });
         it('must reuse types when not repeated', () => {
