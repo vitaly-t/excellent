@@ -17,6 +17,7 @@ describe('positive', () => {
         expect(typeof e.bind).toBe('function');
         expect(typeof e.find).toBe('function');
         expect(typeof e.findOne).toBe('function');
+        expect(typeof e.analyze).toBe('function');
         expect(e.onInit).toBeUndefined();
     });
 
@@ -56,6 +57,21 @@ describe('positive', () => {
         expect(excellent.onInit).toBeCalled();
     });
 
+    it('should generate statistics with the library state', () => {
+        const stat = excellent.analyze();
+        expect(stat && typeof stat).toBe('object');
+        expect(stat.binding && typeof stat.binding).toBe('object');
+        expect(typeof stat.binding.locals).toBe('number');
+        expect(typeof stat.binding.callbacks).toBe('number');
+        expect(typeof stat.binding.waiting).toBe('boolean');
+        expect(typeof stat.binding.global).toBe('boolean');
+        expect(stat.controllers && typeof stat.controllers).toBe('object');
+        expect(stat.controllers.live && typeof stat.controllers.live).toBe('object');
+        expect(Array.isArray(stat.controllers.registered)).toBe(true);
+        expect(Array.isArray(stat.elements)).toBe(true);
+        expect(Array.isArray(stat.modules)).toBe(true);
+        expect(Array.isArray(stat.services)).toBe(true);
+    });
 });
 
 describe('negative', () => {

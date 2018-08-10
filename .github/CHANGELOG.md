@@ -1,3 +1,10 @@
+<a name="0.7.1"></a>
+# [0.7.1](https://github.com/vitaly-t/excellent/releases/tag/0.7.1) (2018-08-10)
+
+### New Features
+
+Added new method [ERoot.analyze], to help with debugging applications.
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/vitaly-t/excellent/releases/tag/0.7.0) (2018-08-10)
 
@@ -17,3 +24,4 @@ This resulted in major code rework, and introduction of event [onPostInit].
 [#11]:https://github.com/vitaly-t/excellent/issues/11
 [#12]:https://github.com/vitaly-t/excellent/issues/12
 [onPostInit]:https://vitaly-t.github.io/excellent/EController.html#.event:onPostInit
+[ERoot.analyze]:https://vitaly-t.github.io/excellent/ERoot.html#analyze

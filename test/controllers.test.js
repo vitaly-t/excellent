@@ -127,6 +127,14 @@ describe('positive', () => {
         });
     });
 
+    it('should generate proper live statistics', () => {
+        const stat = excellent.analyze();
+        expect(stat && typeof stat).toBe('object');
+        expect(Object.keys(stat.controllers.live).length).toBe(8);
+        expect(stat.controllers.registered).toEqual(['first', 'second', 'combined', 'base', 'last', 'bottom_1', 'bottom_2', 'removable']);
+        expect(stat.elements.length).toBe(8);
+    });
+
     describe('lifespan', () => {
         it('must trigger onDestroy event for all elements', () => {
             const destroyed = [];

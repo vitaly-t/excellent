@@ -1,5 +1,5 @@
 ///////////////////////////////////////////
-// Complete Excellent.js 0.7.0 declaration
+// Complete Excellent.js 0.7.1 declaration
 ///////////////////////////////////////////
 
 declare namespace ERoot {
@@ -52,7 +52,27 @@ declare namespace ERoot {
 
         findOne(ctrlName: string): EController
 
+        analyze(): EStatistics
+
         onInit: () => void
+    }
+
+    // Type API:
+    // https://vitaly-t.github.io/excellent/EStatistics.html
+    interface EStatistics {
+        binding: {
+            locals: number,
+            callbacks: number,
+            waiting: boolean,
+            global: boolean
+        },
+        controllers: {
+            live: { [name: string]: number }
+            registered: string[],
+        },
+        elements: ControlledElement[],
+        modules: string[],
+        services: string[]
     }
 }
 

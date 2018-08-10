@@ -54,7 +54,6 @@
      */
     var observer = new DestroyObserver();
 
-
     /**
      * Validates controller name, optionally trimmed.
      *
@@ -778,7 +777,78 @@
             return a[0];
         };
 
+        /**
+         * @method ERoot#analyze
+         * @description
+         * Pulls together and returns statistics / snapshot of the current state of the library.
+         *
+         * This method is to help with debugging your application, and for automatic tests.
+         *
+         * @returns {EStatistics}
+         * Statistics Data.
+         */
+        this.analyze = function () {
+            var res = {
+                binding: {
+                    locals: bs.nodes.length,
+                    callbacks: bs.cb.length,
+                    waiting: bs.waiting,
+                    global: bs.glob
+                },
+                controllers: {
+                    live: {},
+                    registered: Object.keys(ctrlRegistered)
+                },
+                elements: elements.slice(),
+                modules: Object.keys(modules),
+                services: Object.keys(root.services)
+            };
+            for (var a in ctrlLive) {
+                res.controllers.live[a] = ctrlLive[a].length;
+            }
+            return res;
+        };
     }
+
+    /**
+     * @interface EStatistics
+     * @description
+     * Statistics / Diagnostics data, as returned by method {@link ERoot#analyze ERoot.analyze}.
+     *
+     * @property {} binding
+     * Element-to-controller binding status.
+     *
+     * @property {number} binding.locals
+     * Number of pending child-binding requests, from {@link EController#bind EController.bind}.
+     *
+     * @property {number} binding.callbacks
+     * Number of pending recipients awaiting a notification when the requested binding is finished.
+     *
+     * @property {boolean} binding.waiting
+     * Binding engine has triggered a timer for the next asynchronous update, and is now waiting for it.
+     *
+     * @property {boolean} binding.global
+     * A global asynchronous request is being processed.
+     *
+     * @property {} controllers
+     * Details about about controllers.
+     *
+     * @property {Object.<string, number>} controllers.live
+     * All live controllers. Each name is set to a number - total count of such controllers.
+     *
+     * @property {string[]} controllers.registered
+     * Names of all registered controllers.
+     *
+     * @property {Element} elements
+     * List of all controlled elements currently in the DOM.
+     *
+     * @property {string[]} modules
+     * List of registered module names.
+     *
+     * @property {string[]} services
+     * List of registered service names.
+     *
+     * */
 
     /**
      * @event ERoot.onInit
