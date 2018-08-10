@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onPostInit">onPostInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">GitHub</a>
@@ -75,7 +75,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line780">line 780</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line798">line 798</a>
     </li></ul></dd>
     
 
@@ -85,7 +85,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="EController.html#name">name</a>,<a href="EController.html#node">node</a>,<a href="EController.html#bind">bind</a>,<a href="EController.html#depends">depends</a>,<a href="EController.html#extend">extend</a>,<a href="EController.html#find">find</a>,<a href="EController.html#findOne">findOne</a>,<a href="EController.html#.event:onInit">onInit</a>,<a href="EController.html#.event:onDestroy">onDestroy</a></li>
+            <li><a href="EController.html#name">name</a>,<a href="EController.html#node">node</a>,<a href="EController.html#bind">bind</a>,<a href="EController.html#depends">depends</a>,<a href="EController.html#extend">extend</a>,<a href="EController.html#find">find</a>,<a href="EController.html#findOne">findOne</a>,<a href="EController.html#.event:onInit">onInit</a>,<a href="EController.html#.event:onPostInit">onPostInit</a>,<a href="EController.html#.event:onDestroy">onDestroy</a></li>
         </ul>
     </dd>
     
@@ -169,7 +169,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line805">line 805</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line824">line 824</a>
     </li></ul></dd>
     
 
@@ -241,7 +241,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line814">line 814</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line833">line 833</a>
     </li></ul></dd>
     
 
@@ -403,7 +403,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line856">line 856</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line898">line 898</a>
     </li></ul></dd>
     
 
@@ -445,9 +445,12 @@ against the DOM, but it works best when requests are asynchronous.</p>
 
 
 <div class="description">
-    <p>Verifies that each controller in the list of dependencies exists, or else throws an error.</p>
-<p>This optional level of verification is useful when sub-controllers are rarely used, or loaded
-dynamically. Such explicit verification makes the code more robust.</p>
+    <p>Verifies that each controller in the list of dependencies exists, or else throws an error.
+It is normally used during the controller's construction.</p>
+<p>This optional level of verification is mainly useful when using dynamically injected controllers
+(not just the ones through method <a href="EController.html#extend">extend</a>), as it is best to verify such
+dependencies before trying to use them.</p>
+<p>Note however, that this method may not see controllers registered dynamically.</p>
 </div>
 
 
@@ -499,8 +502,8 @@ dynamically. Such explicit verification makes the code more robust.</p>
 
             
 
-            <td class="description last"><p>List of controller names. It should include all controller names that are due to be derived,
-via method <a href="EController.html#extend">extend</a>, plus the ones that can be requested dynamically.</p></td>
+            <td class="description last"><p>List of controller names. It should include all controller names that are due to be extended
+(via method <a href="EController.html#extend">extend</a>), plus the ones that can be requested dynamically.</p></td>
         </tr>
 
     
@@ -541,12 +544,19 @@ via method <a href="EController.html#extend">extend</a>, plus the ones that can 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line927">line 927</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line976">line 976</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="EController.html#extend">extend</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -587,7 +597,7 @@ via method <a href="EController.html#extend">extend</a>, plus the ones that can 
 <p>It creates and returns a new controller(s), according to the parameters. But if you specify a controller
 name that's already bound to the element, that controller is returned instead, to be reused, because
 only a single controller type can be bound to any given element.</p>
-<p>This method requires that the calling controller has been initialized.</p>
+<p>This method can only be called during event <a href="EController.html#.event:onInit">onInit</a>.</p>
 </div>
 
 
@@ -683,7 +693,7 @@ only a single controller type can be bound to any given element.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line879">line 879</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line921">line 921</a>
     </li></ul></dd>
     
 
@@ -753,7 +763,8 @@ only a single controller type can be bound to any given element.</p>
 
 
 <div class="description">
-    <p>Searches for all initialized child controllers by a given controller name.</p>
+    <p>Searches for all initialized child controllers, by a given controller name,
+including the extended controllers.</p>
 <p>This method searches through DOM, as it needs to iterate over child elements.
 And because of that, even though it searches just through a sub-set of elements,
 it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> method.</p>
@@ -849,7 +860,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line976">line 976</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1030">line 1030</a>
     </li></ul></dd>
     
 
@@ -1014,7 +1025,7 @@ it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> met
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line955">line 955</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1009">line 1009</a>
     </li></ul></dd>
     
 
@@ -1145,7 +1156,7 @@ that runs once a second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line839">line 839</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line881">line 881</a>
     </li></ul></dd>
     
 
@@ -1197,9 +1208,11 @@ that runs once a second.</p>
     <p>Initialization event handler.</p>
 <p>It represents the state of the controller when it is ready to do the following:</p>
 <ul>
-<li>find other controllers and communicate with them</li>
+<li>find explicitly bound controllers and communicate with them</li>
 <li>extend other controllers (via method <a href="EController.html#extend">extend</a>)</li>
 </ul>
+<p>At this point you cannot locate or communicate with controllers that are being extended
+(via method <a href="EController.html#extend">extend</a>). For that you need to use <a href="EController.html#.event:onPostInit">onPostInit</a> event.</p>
 </div>
 
 
@@ -1253,7 +1266,7 @@ that runs once a second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line824">line 824</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line843">line 843</a>
     </li></ul></dd>
     
 
@@ -1263,7 +1276,115 @@ that runs once a second.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="EController.html#.event:onDestroy">onDestroy</a>,<a href="ERoot.html#.event:onInit">ERoot.onInit</a></li>
+            <li><a href="EController.html#.event:onPostInit">onPostInit</a>,<a href="EController.html#.event:onDestroy">onDestroy</a>,<a href="ERoot.html#.event:onInit">ERoot.onInit</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".event:onPostInit">onPostInit</h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Post-initialization event handler.</p>
+<p>It represents the state of the controller when it is able to find and communicate
+with controllers that were created during initialization through extension (via method <a href="EController.html#extend">extend</a>).</p>
+<p>Controllers can only be extended during initialization (see method <a href="EController.html#extend">extend</a>),
+and so the controllers being extended are initialized right after. If you need to locate and communicate
+with such extended controllers, it is only possible at or after this post-initialization stage.</p>
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">function</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line862">line 862</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="EController.html#.event:onInit">onInit</a>,<a href="EController.html#.event:onDestroy">onDestroy</a>,<a href="ERoot.html#.event:onInit">ERoot.onInit</a></li>
         </ul>
     </dd>
     
