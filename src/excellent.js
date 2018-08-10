@@ -869,11 +869,21 @@
      *
      * It represents the state of the application when it is ready to find all controllers
      * and communicate with them. This includes controllers created through extension, i.e.
-     * all controllers have finished processing {@link EController.event:onPostInit onPostInit} event.
+     * all controllers have finished processing {@link EController.event:onPostInit onPostInit}
+     * event at this point.
      *
      * @see
      * {@link EController.event:onInit EController.onInit},
      * {@link EController.event:onPostInit EController.onPostInit}
+     *
+     * @example
+     *
+     * app.onInit = function() {
+     *   // All explicit and extended controllers now can be located;
+     *
+     *   // Let's find our main app controller, and ask it do something:
+     *   app.findOne('appCtrl').doSomething();
+     * };
      */
 
     /**
