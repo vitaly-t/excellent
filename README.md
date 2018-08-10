@@ -11,6 +11,8 @@
 If you like working with DOM directly, this tiny (2Kb pkzip) library makes it productive, giving you the tools
 for writing reusable DOM components. See [WiKi] for details.
 
+<br/>
+
 You get the essential element-to-controller bindings:
 
 ```html
