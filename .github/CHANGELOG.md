@@ -1,3 +1,11 @@
+<a name="0.7.8"></a>
+# [0.7.8](https://github.com/vitaly-t/excellent/releases/tag/0.7.8) (2018-08-11)
+
+### New Features
+
+All errors that refer to an HTML element now include the starting tag details,
+to make it easier to locate the faulty tag in your HTML.
+
 <a name="0.7.5"></a>
 # [0.7.5](https://github.com/vitaly-t/excellent/releases/tag/0.7.5) (2018-08-11)
 

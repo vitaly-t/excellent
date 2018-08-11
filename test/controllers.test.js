@@ -312,14 +312,14 @@ describe('negative', () => {
         document.getElementById('dynamic').setAttribute('e-bind', 'one two');
         expect(() => {
             excellent.bind(true);
-        }).toThrow('Invalid controller name "one two". <div id="dynamic" e-bind="one two">');
+        }).toThrow('Invalid controller name "one two": <div id="dynamic" e-bind="one two">');
     });
 
     it('must throw on duplicate bindings', () => {
         document.getElementById('dynamic').setAttribute('e-bind', 'first, first');
         expect(() => {
             excellent.bind(true);
-        }).toThrow('Duplicate controller name "first" not allowed. <div id="dynamic" e-bind="first, first">');
+        }).toThrow('Duplicate controller name "first" not allowed: <div id="dynamic" e-bind="first, first">');
     });
 
     describe('Method "depends"', () => {

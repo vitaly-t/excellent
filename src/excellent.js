@@ -350,10 +350,10 @@
                             name = trim(name);
                             if (name) {
                                 if (!validateControllerName(name)) {
-                                    throw new Error('Invalid controller name ' + jStr(name) + '. ' + startTag(e));
+                                    throw new Error('Invalid controller name ' + jStr(name) + ': ' + startTag(e));
                                 }
                                 if (name in namesMap) {
-                                    throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed. ' + startTag(e));
+                                    throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed: ' + startTag(e));
                                 }
                                 namesMap[name] = true;
                                 var c = new EController(name, e);
@@ -1279,7 +1279,7 @@
                 var name = getAttribute(e[0], 'data-e-root', 'e-root');
                 if (!validJsVariable(name)) {
                     // The name must adhere to JavaScript open-name syntax!
-                    throw new Error('Invalid ' + jStr(name) + ' root name specified. ' + startTag(e[0]));
+                    throw new Error('Invalid ' + jStr(name) + ' root name specified: ' + startTag(e[0]));
                 }
                 window[name] = root; // adding alternative root name
             }
