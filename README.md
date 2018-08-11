@@ -1,6 +1,6 @@
 # Excellent.js
 
-<img align="left" width="160" height="160" src="./.github/images/burns.gif">
+<img align="left" width="170" height="170" src="./.github/images/burns.gif" alt="Excellent!">
 
 ## DOM-fiddling library :)
 
@@ -36,12 +36,12 @@ app.addController('twinkling', function() {
   setInterval(function() {
     a = (s.opacity < 0 || s.opacity > 1) ? -a : a;
     s.opacity = +s.opacity + a;
-  }, 40);
+  }, 20);
 });
 ```
 
-And then you work with DOM directly, while [Modules], [Services] and [Inheritance] let you build whole libraries
-of highly reusable components that can seamlessly work with any UI framework, or on their own.
+You also get powerful [Modules], [Services] and [Inheritance] to build whole libraries
+of reusable components that can work seamlessly with any UI framework, or on their own.
 
 #### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 

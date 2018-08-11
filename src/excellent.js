@@ -646,7 +646,7 @@
          * @readonly
          * @description
          * Library version, automatically injected during the build/compression process, and so available
-         * only with the compressed version of the library. But you should be using `excellent.min.js` anyway,
+         * only with the compressed version of the library. But you should be using `excellent.min.js` always,
          * because the library is distributed with the source maps.
          */
         readOnlyProp(this, 'version', '<version>');
@@ -1078,7 +1078,7 @@
      * would not find them. This offers a level of encapsulation / privacy, in case access to such
      * extended controllers by an outside controller is undesirable.
      *
-     * Note that if a controller already exists, it is reused, and flag `local` is then ignored.
+     * Note that if the element already has the controller, it is reused, and flag `local` is then ignored.
      *
      * @returns {EController|EController[]}
      * - if you pass in a single controller name, it returns a single controller.
