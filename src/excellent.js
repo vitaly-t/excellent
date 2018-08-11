@@ -137,15 +137,28 @@
     }
 
     /**
+     * Retrieves full start tag from a DOM element.
+     *
+     * @param {HTMLElement} element
+     *
+     * @returns {string}
+     * Full start tag string.
+     */
+    function startTag(element) {
+        var h = element.outerHTML;
+        return h.substring(0, h.indexOf('>') + 1);
+    }
+
+    /**
      * Searches for all elements that match selectors, and optionally - within a parent node.
      *
      * @param {string} selectors
      * Standard selectors.
      *
-     * @param {external:HTMLElement} [node]
+     * @param {HTMLElement} [node]
      * Parent node to search for children.
      *
-     * @returns {external:HTMLElement[] | ControlledElement[]}
+     * @returns {HTMLElement[] | ControlledElement[]}
      */
     function findAll(selectors, node) {
         var f = (node || document).querySelectorAll(selectors);
@@ -160,7 +173,7 @@
      * Gets the primary attribute's value, if the attribute exists,
      * or else it gets the secondary attribute's value.
      *
-     * @param {external:HTMLElement} e
+     * @param {HTMLElement} e
      * Element to get the value from.
      *
      * @param {string} primary
@@ -229,7 +242,7 @@
      *
      * It implements the logic of bindings reduced to the absolute minimum DOM usage.
      *
-     * @param {external:HTMLElement} [node]
+     * @param {HTMLElement} [node]
      * Element to start processing from.
      *
      * @param {boolean|function} process
@@ -321,7 +334,7 @@
     /**
      * Binds to controllers all elements that are not yet bound.
      *
-     * @param {external:HTMLElement} [node]
+     * @param {HTMLElement} [node]
      * Top-level node element to start searching from. When not specified,
      * the search is done for the entire document.
      */
@@ -337,10 +350,10 @@
                             name = trim(name);
                             if (name) {
                                 if (!validateControllerName(name)) {
-                                    throw new Error('Invalid controller name ' + jStr(name) + '.');
+                                    throw new Error('Invalid controller name ' + jStr(name) + '. ' + startTag(e));
                                 }
                                 if (name in namesMap) {
-                                    throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed.');
+                                    throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed. ' + startTag(e));
                                 }
                                 namesMap[name] = true;
                                 var c = new EController(name, e);
@@ -395,7 +408,7 @@
          * @description
          * Initiates watching the element.
          *
-         * @param {external:HTMLElement} e
+         * @param {HTMLElement} e
          * Element to be watched.
          */
         this.watch = function (e) {
@@ -1064,7 +1077,7 @@
      * would not find them. This offers a level of encapsulation / privacy, in case access to such
      * extended controllers by an outside controller is undesirable.
      *
-     * Not that if a controller already exists, it is reused, and flag `local` is then ignored.
+     * Note that if a controller already exists, it is reused, and flag `local` is then ignored.
      *
      * @returns {EController|EController[]}
      * - if you pass in a single controller name, it returns a single controller.
@@ -1266,7 +1279,7 @@
                 var name = getAttribute(e[0], 'data-e-root', 'e-root');
                 if (!validJsVariable(name)) {
                     // The name must adhere to JavaScript open-name syntax!
-                    throw new Error('Invalid ' + jStr(name) + ' root name specified.');
+                    throw new Error('Invalid ' + jStr(name) + ' root name specified. ' + startTag(e[0]));
                 }
                 window[name] = root; // adding alternative root name
             }

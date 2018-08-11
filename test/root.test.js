@@ -88,7 +88,7 @@ describe('negative', () => {
     });
     it('should fail on an invalid alternate name', () => {
         document.body.innerHTML = '<div e-root="123"></div>';
-        expect(() => require('../src/excellent')).toThrow('Invalid "123" root name specified.');
+        expect(() => require('../src/excellent')).toThrow('Invalid "123" root name specified. <div e-root="123">');
     });
 
 });
