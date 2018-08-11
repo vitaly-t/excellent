@@ -300,10 +300,15 @@
      *
      * @param {EController} c
      * Controller object.
+     *
+     * @param {boolean} [local=false]
+     * Local-controller flag.
      */
-    function addLiveCtrl(name, c) {
-        ctrlLive[name] = ctrlLive[name] || [];
-        ctrlLive[name].push(c);
+    function addLiveCtrl(name, c, local) {
+        if (!local) {
+            ctrlLive[name] = ctrlLive[name] || [];
+            ctrlLive[name].push(c);
+        }
     }
 
     /**
@@ -848,7 +853,8 @@
      * Details about controllers.
      *
      * @property {Object.<string, number>} controllers.live
-     * All live controllers. Each name is set to a number - total count of such controllers.
+     * All live controllers, except local ones (created via {@link EController#extend EController.extend} with `local` = `true`).
+     * Each name is set to a number - total count of such controllers.
      *
      * @property {string[]} controllers.registered
      * Names of all registered controllers.
@@ -1069,9 +1075,7 @@
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
                 readOnlyProp(ctrl, cn, c);
-                if (!local) {
-                    addLiveCtrl(cn, c);
-                }
+                addLiveCtrl(cn, c, local);
                 created.push(c);
             }
             return c;
