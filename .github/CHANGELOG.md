@@ -1,3 +1,10 @@
+<a name="0.7.5"></a>
+# [0.7.5](https://github.com/vitaly-t/excellent/releases/tag/0.7.5) (2018-08-11)
+
+### New Features
+
+Method [EController.extend] now supports parameter `local`.
+
 <a name="0.7.1"></a>
 # [0.7.1](https://github.com/vitaly-t/excellent/releases/tag/0.7.1) (2018-08-10)
 
@@ -25,3 +32,4 @@ This resulted in major code rework, and introduction of event [onPostInit].
 [#12]:https://github.com/vitaly-t/excellent/issues/12
 [onPostInit]:https://vitaly-t.github.io/excellent/EController.html#.event:onPostInit
 [ERoot.analyze]:https://vitaly-t.github.io/excellent/ERoot.html#analyze
+[EController.extend]:https://vitaly-t.github.io/excellent/EController.html#extend

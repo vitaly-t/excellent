@@ -1,6 +1,6 @@
 # Excellent.js
 
-<img align="left" width="155" height="155" src="./.github/images/burns.gif">
+<img align="left" width="160" height="160" src="./.github/images/burns.gif">
 
 ## DOM-fiddling library :)
 

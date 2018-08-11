@@ -101,11 +101,13 @@ describe('positive', () => {
             expect(c.bottom_2 === c.last.node.controllers.bottom_2).toBe(true);
         });
         it('must find extended controllers only during onPostInit', () => {
-            let ctrl1, ctrl2, ctrl3;
+            let ctrl1, ctrl2, ctrl3, ctrl4;
             excellent.addController('uniqueController', ctrl => {
                 ctrl.onPostInit = function () {
                     ctrl3 = excellent.findOne('derivedController');
                 };
+            });
+            excellent.addController('privateController', () => {
             });
             excellent.addController('derivedController', ctrl => {
                 ctrl.onInit = function () {
@@ -114,9 +116,11 @@ describe('positive', () => {
                         ctrl1 = a[0];
                     }
                     ctrl.extend('uniqueController');
+                    ctrl.extend('privateController', true);
                 };
                 ctrl.onPostInit = function () {
                     ctrl2 = excellent.findOne('uniqueController');
+                    ctrl4 = excellent.find('privateController');
                 };
             });
             excellent.findOne('removable').node.innerHTML = '<div e-bind="derivedController"></div>';
@@ -124,6 +128,7 @@ describe('positive', () => {
             expect(ctrl1).toBeUndefined();
             expect(ctrl2).toBeTruthy();
             expect(ctrl3).toBeTruthy();
+            expect(ctrl4).toEqual([]);
         });
     });
 
