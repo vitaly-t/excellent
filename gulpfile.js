@@ -1,10 +1,15 @@
 'use strict';
 
 const gulp = require('gulp');
-const uglify = require('gulp-uglify');
-const eslint = require('gulp-eslint');
-const rename = require('gulp-rename');
-const insert = require('gulp-insert');
+
+const npm = {
+    uglify: require('gulp-uglify'),
+    sourcemaps: require('gulp-sourcemaps'),
+    eslint: require('gulp-eslint'),
+    rename: require('gulp-rename'),
+    header: require('gulp-header'),
+    replace: require('gulp-replace')
+};
 
 const SOURCE = './src/excellent.js';
 const SOURCE_LINT = ['./src/excellent.js', './test/*.test.js', './gulpfile.js'];
@@ -22,20 +27,19 @@ const copyright = `/**
 
 gulp.task('lint', () => {
     return gulp.src(SOURCE_LINT)
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
+        .pipe(npm.eslint())
+        .pipe(npm.eslint.format())
+        .pipe(npm.eslint.failAfterError());
 });
-
-function patch(content) {
-    return copyright + content.replace(/<version>/, version);
-}
 
 gulp.task('build', () => {
     return gulp.src(SOURCE)
-        .pipe(uglify())
-        .pipe(rename(DEST))
-        .pipe(insert.transform(patch))
+        .pipe(npm.sourcemaps.init())
+        .pipe(npm.replace(/<version>/, version))
+        .pipe(npm.uglify())
+        .pipe(npm.header(copyright))
+        .pipe(npm.rename(DEST))
+        .pipe(npm.sourcemaps.write('.'))
         .pipe(gulp.dest('./src'));
 });
 

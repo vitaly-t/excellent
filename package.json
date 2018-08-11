@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "DOM-Manipulation Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
@@ -15,7 +15,8 @@
   "files": [
     "src/excellent.js",
     "src/excellent.d.ts",
-    "src/excellent.min.js"
+    "src/excellent.min.js",
+    "src/excellent.min.js.map"
   ],
   "homepage": "https://github.com/vitaly-t/excellent",
   "repository": {
@@ -45,8 +46,10 @@
     "eslint-plugin-jest": "21.21.0",
     "gulp": "4.0.0",
     "gulp-eslint": "5.0.0",
-    "gulp-insert": "0.5.0",
+    "gulp-header": "2.0.5",
     "gulp-rename": "1.4.0",
+    "gulp-replace": "1.0.0",
+    "gulp-sourcemaps": "2.6.4",
     "gulp-uglify": "3.0.1",
     "jest": "23.5.0",
     "jsdoc": "3.5.5"
