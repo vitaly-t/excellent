@@ -450,10 +450,13 @@
         function removeControllers(e) {
             for (var a in e.controllers) {
                 var c = ctrlLive[a];
-                var i = c.indexOf(e.controllers[a]);
-                ctrlLive[a].splice(i, 1);
-                if (!ctrlLive[a].length) {
-                    delete ctrlLive[a];
+                if (c) {
+                    // local extended controllers are not registered in the global map
+                    var i = c.indexOf(e.controllers[a]);
+                    ctrlLive[a].splice(i, 1);
+                    if (!ctrlLive[a].length) {
+                        delete ctrlLive[a];
+                    }
                 }
             }
         }
@@ -1056,14 +1059,33 @@
      *
      * @param {string|string[]} ctrlName
      * Either a single controller name, or an array of names.
-     *
      * Names must adhere to JavaScript open-name syntax.
+     *
+     * @param {boolean} [local=false]
+     * When `true`, the controllers being extended are not registered in the global map,
+     * so global search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}
+     * would not find them. This offers a level of encapsulation / privacy, in case access to such
+     * extended controllers by an outside controller is undesirable.
      *
      * @returns {EController|EController[]}
      * - if you pass in a single controller name, it returns a single controller.
      * - if you pass in an array of names, it returns an array of controllers.
+     *
+     * @example
+     *
+     * app.addController('myController', function(ctrl) {
+     *     // Optional early dependency diagnostics:
+     *     ctrl.depends(['dragDrop', 'removable']);
+     *
+     *     ctrl.onInit = function() {
+     *         var c = ctrl.extend(['dragDrop', 'removable']);
+     *
+     *         // c[0] = ctrl.node.controllers.dragDrop
+     *         // c[1] = ctrl.node.controllers.removable
+     *     };
+     * });
      */
-    EController.prototype.extend = function (ctrlName) {
+    EController.prototype.extend = function (ctrlName, local) {
         var ctrl = this.verifyInit('extend');
         var created = [];
 
@@ -1077,7 +1099,9 @@
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
                 readOnlyProp(ctrl, cn, c);
-                addLiveCtrl(cn, c);
+                if (!local) {
+                    addLiveCtrl(cn, c);
+                }
                 created.push(c);
             }
             return c;
