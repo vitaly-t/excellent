@@ -431,11 +431,18 @@
          */
         function removeControllers(e) {
             for (var a in e.controllers) {
-                var dest = ctrlGlobal[a] ? ctrlGlobal : ctrlLocal;
-                var i = dest[a].indexOf(e.controllers[a]);
-                dest[a].splice(i, 1);
-                if (!dest[a].length) {
-                    delete dest[a];
+                remove(a, ctrlGlobal);
+                remove(a, ctrlLocal);
+            }
+
+            function remove(name, dest) {
+                var c = dest[name];
+                if (c) {
+                    var i = dest[name].indexOf(e.controllers[name]);
+                    dest[name].splice(i, 1);
+                    if (!dest[name].length) {
+                        delete dest[name];
+                    }
                 }
             }
         }
@@ -1052,10 +1059,12 @@
      * Names must adhere to JavaScript open-name syntax.
      *
      * @param {boolean} [local=false]
-     * When `true`, the controllers being extended are not registered in the global map,
+     * When `true`, newly created controllers are not registered in the global map,
      * so global search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}
      * would not find them. This offers a level of encapsulation / privacy, in case access to such
      * extended controllers by an outside controller is undesirable.
+     *
+     * Not that if a controller already exists, it is reused, and flag `local` is then ignored.
      *
      * @returns {EController|EController[]}
      * - if you pass in a single controller name, it returns a single controller.
