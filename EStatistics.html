@@ -242,7 +242,7 @@
 
         <tr>
             
-                <td class="name"><code>live</code></td>
+                <td class="name"><code>global</code></td>
             
 
             <td class="type">
@@ -258,8 +258,33 @@
 
             
 
-            <td class="description last"><p>All live controllers, except local ones (created via <a href="EController.html#extend">EController.extend</a> with <code>local</code> = <code>true</code>).
-Each name is set to a number - total count of such controllers.</p></td>
+            <td class="description last"><p>All global live controllers, visible to global search methods <a href="ERoot.html#find">ERoot.find</a> and <a href="ERoot.html#findOne">ERoot.findOne</a>.
+Each name is set to a total number of such controllers.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>local</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>All local live controllers (created via <a href="EController.html#extend">EController.extend</a> with <code>local</code> = <code>true</code>),
+and thus not visible to global search methods <a href="ERoot.html#find">ERoot.find</a> and <a href="ERoot.html#findOne">ERoot.findOne</a>.
+Each name is set to a total number of such controllers.</p></td>
         </tr>
 
     
@@ -335,7 +360,7 @@ Each name is set to a number - total count of such controllers.</p></td>
 
             
 
-            <td class="description last"><p>List of registered module names.</p></td>
+            <td class="description last"><p>List of all registered module names.</p></td>
         </tr>
 
     
@@ -358,7 +383,7 @@ Each name is set to a number - total count of such controllers.</p></td>
 
             
 
-            <td class="description last"><p>List of registered service names.</p></td>
+            <td class="description last"><p>List of all registered service names.</p></td>
         </tr>
 
     
@@ -397,7 +422,7 @@ Each name is set to a number - total count of such controllers.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line832">line 832</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line841">line 841</a>
     </li></ul></dd>
     
 
