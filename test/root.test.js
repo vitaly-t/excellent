@@ -66,7 +66,8 @@ describe('positive', () => {
         expect(typeof stat.binding.waiting).toBe('boolean');
         expect(typeof stat.binding.global).toBe('boolean');
         expect(stat.controllers && typeof stat.controllers).toBe('object');
-        expect(stat.controllers.live && typeof stat.controllers.live).toBe('object');
+        expect(stat.controllers.global && typeof stat.controllers.global).toBe('object');
+        expect(stat.controllers.local && typeof stat.controllers.local).toBe('object');
         expect(Array.isArray(stat.controllers.registered)).toBe(true);
         expect(Array.isArray(stat.elements)).toBe(true);
         expect(Array.isArray(stat.modules)).toBe(true);

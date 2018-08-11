@@ -18,12 +18,20 @@
     var ctrlRegistered = {};
 
     /**
-     * All live controllers (initialized, but not destroyed), with each property -
+     * Live global controllers (initialized, but not destroyed), with each property -
      * controller name set to an array of controller objects.
      *
      * @type {Object.<string, EController[]>}
      */
-    var ctrlLive = {};
+    var ctrlGlobal = {};
+
+    /**
+     * Live local controllers (initialized, but not destroyed), with each property -
+     * controller name set to an array of controller objects.
+     *
+     * @type {Object.<string, EController[]>}
+     */
+    var ctrlLocal = {};
 
     /**
      * Global name-to-function cache for all controllers.
@@ -305,10 +313,9 @@
      * Local-controller flag.
      */
     function addLiveCtrl(name, c, local) {
-        if (!local) {
-            ctrlLive[name] = ctrlLive[name] || [];
-            ctrlLive[name].push(c);
-        }
+        var dest = local ? ctrlLocal : ctrlGlobal;
+        dest[name] = dest[name] || [];
+        dest[name].push(c);
     }
 
     /**
@@ -418,23 +425,21 @@
         }
 
         /**
-         * Removes all controllers from ctrlLive, as per the element.
+         * Removes all controllers from ctrlGlobal, as per the element.
          *
          * @param {ControlledElement} e
          */
         function removeControllers(e) {
             for (var a in e.controllers) {
-                var c = ctrlLive[a];
-                if (c) {
-                    // local extended controllers are not registered in the global map
-                    var i = c.indexOf(e.controllers[a]);
-                    ctrlLive[a].splice(i, 1);
-                    if (!ctrlLive[a].length) {
-                        delete ctrlLive[a];
-                    }
+                var dest = ctrlGlobal[a] ? ctrlGlobal : ctrlLocal;
+                var i = dest[a].indexOf(e.controllers[a]);
+                dest[a].splice(i, 1);
+                if (!dest[a].length) {
+                    delete dest[a];
                 }
             }
         }
+
 
         /**
          * Manual check for controlled elements that have been deleted from DOM.
@@ -764,8 +769,8 @@
          */
         this.find = function (ctrlName) {
             var cn = parseControllerName(ctrlName);
-            if (cn in ctrlLive) {
-                return ctrlLive[cn].slice();
+            if (cn in ctrlGlobal) {
+                return ctrlGlobal[cn].slice();
             }
             return [];
         };
@@ -815,15 +820,19 @@
                     global: bs.glob
                 },
                 controllers: {
-                    live: {},
+                    global: {},
+                    local: {},
                     registered: Object.keys(ctrlRegistered)
                 },
                 elements: elements.slice(),
                 modules: Object.keys(modules),
                 services: Object.keys(root.services)
             };
-            for (var a in ctrlLive) {
-                res.controllers.live[a] = ctrlLive[a].length;
+            for (var a in ctrlGlobal) {
+                res.controllers.global[a] = ctrlGlobal[a].length;
+            }
+            for (var b in ctrlLocal) {
+                res.controllers.local[b] = ctrlLocal[b].length;
             }
             return res;
         };
@@ -852,9 +861,14 @@
      * @property {} controllers
      * Details about controllers.
      *
-     * @property {Object.<string, number>} controllers.live
-     * All live controllers, except local ones (created via {@link EController#extend EController.extend} with `local` = `true`).
-     * Each name is set to a number - total count of such controllers.
+     * @property {Object.<string, number>} controllers.global
+     * All global live controllers, visible to global search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
+     * Each name is set to a total number of such controllers.
+     *
+     * @property {Object.<string, number>} controllers.local
+     * All local live controllers (created via {@link EController#extend EController.extend} with `local` = `true`),
+     * and thus not visible to global search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
+     * Each name is set to a total number of such controllers.
      *
      * @property {string[]} controllers.registered
      * Names of all registered controllers.
@@ -863,10 +877,10 @@
      * List of all controlled elements currently in the DOM.
      *
      * @property {string[]} modules
-     * List of registered module names.
+     * List of all registered module names.
      *
      * @property {string[]} services
-     * List of registered service names.
+     * List of all registered service names.
      *
      * */
 

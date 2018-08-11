@@ -129,13 +129,15 @@ describe('positive', () => {
             expect(ctrl2).toBeTruthy();
             expect(ctrl3).toBeTruthy();
             expect(ctrl4).toEqual([]);
+            expect(excellent.analyze().controllers.local.privateController).toBe(1);
         });
     });
 
     it('should generate proper live statistics', () => {
         const stat = excellent.analyze();
         expect(stat && typeof stat).toBe('object');
-        expect(Object.keys(stat.controllers.live).length).toBe(8);
+        expect(Object.keys(stat.controllers.global).length).toBe(8);
+        expect(Object.keys(stat.controllers.local).length).toBe(0);
         expect(stat.controllers.registered).toEqual(['first', 'second', 'combined', 'base', 'last', 'bottom_1', 'bottom_2', 'removable']);
         expect(stat.elements.length).toBe(8);
     });
