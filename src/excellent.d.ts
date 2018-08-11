@@ -1,5 +1,5 @@
 ///////////////////////////////////////////
-// Complete Excellent.js 0.8.0 declaration
+// Complete Excellent.js 0.8.1 declaration
 ///////////////////////////////////////////
 
 declare namespace ERoot {

@@ -78,14 +78,14 @@ describe('negative', () => {
         document.getElementById('last').setAttribute('e-bind', 'ops.method');
         expect(() => {
             excellent.bind(true);
-        }).toThrow('Module "ops" not found.');
+        }).toThrow('Module "ops" not found: <div id="last" e-bind="ops.method">');
     });
 
     it('must throw when module controller is missing', () => {
         document.getElementById('last').setAttribute('e-bind', 'mod.nonExisting');
         expect(() => {
             excellent.bind(true);
-        }).toThrow('Controller "mod.nonExisting" not found.');
+        }).toThrow('Controller "mod.nonExisting" not found: <div id="last" e-bind="mod.nonExisting">');
     });
 
 });

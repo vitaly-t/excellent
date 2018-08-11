@@ -302,10 +302,33 @@ describe('negative', () => {
     });
 
     it('must throw when controller does not exist', () => {
-        document.getElementById('dynamic').setAttribute('e-bind', 'nonExisting');
+        const dyn = document.getElementById('dynamic');
+        dyn.innerHTML = '<div e-bind="nonExisting"></div>';
         expect(() => {
             excellent.bind(true);
-        }).toThrow('Controller "nonExisting" not found.');
+        }).toThrow('Controller "nonExisting" not found: <div e-bind="nonExisting">');
+
+        excellent.addController('nonExistExtend1', ctrl => {
+            ctrl.onInit = () => {
+                ctrl.extend('doesNotExist');
+            };
+        });
+        excellent.addController('nonExistExtend2', ctrl => {
+            ctrl.onInit = () => {
+                ctrl.extend('ops.doesNotExist');
+            };
+        });
+
+        dyn.innerHTML = '<div e-bind="nonExistExtend1"></div>';
+        expect(() => {
+            excellent.bind(true);
+        }).toThrow('Controller "doesNotExist" not found.');
+
+        dyn.innerHTML = '<div e-bind="nonExistExtend2"></div>';
+        expect(() => {
+            excellent.bind(true);
+        }).toThrow('Module "ops" not found.');
+
     });
 
     it('must throw on invalid controller name in the bindings', () => {

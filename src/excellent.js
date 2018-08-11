@@ -357,7 +357,7 @@
                                 }
                                 namesMap[name] = true;
                                 var c = new EController(name, e);
-                                getCtrlFunc(name).call(c, c);
+                                getCtrlFunc(name, e).call(c, c);
                                 eCtrl = eCtrl || {};
                                 readOnlyProp(eCtrl, name, c);
                                 allCtrl.push(c);
@@ -546,6 +546,10 @@
      * For that it uses the cache of names, plus modules.
      *
      * @param {string} name
+     * Controller name to be resolved.
+     *
+     * @param {HTMLElement} [e]
+     * Element available as the context.
      *
      * @param {boolean} [noError=false]
      * Tells it not to throw on errors, and rather return null.
@@ -555,7 +559,7 @@
      * and no controller found, it returns `undefined`.
      *
      */
-    function getCtrlFunc(name, noError) {
+    function getCtrlFunc(name, e, noError) {
         if (name in ctrlCache) {
             return ctrlCache[name]; // use the cache
         }
@@ -574,7 +578,7 @@
                 if (noError) {
                     return;
                 }
-                throw new Error('Module ' + jStr(moduleName) + ' not found.');
+                throw new Error('Module ' + jStr(moduleName) + ' not found' + (e ? ': ' + startTag(e) : '.'));
             }
             var obj = modules[moduleName];
             for (var i = 1; i < names.length; i++) {
@@ -593,7 +597,7 @@
         }
 
         if (!noError) {
-            throw new Error('Controller ' + jStr(name) + ' not found.');
+            throw new Error('Controller ' + jStr(name) + ' not found' + (e ? ': ' + startTag(e) : '.'));
         }
     }
 
@@ -1164,7 +1168,7 @@
             if (!cn) {
                 throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
             }
-            if (!getCtrlFunc(cn, true)) {
+            if (!getCtrlFunc(cn, null, true)) {
                 throw new Error('Controller ' + jStr(this.name) + ' depends on ' + jStr(cn) + ', which was not found.');
             }
         }, this);
