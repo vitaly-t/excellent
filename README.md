@@ -2,7 +2,7 @@
 
 <img align="left" width="170" height="170" src="./.github/images/burns.gif" alt="Excellent!">
 
-## DOM-fiddling library :)
+## DOM-Component Framework
 
 [![Build Status](https://travis-ci.org/vitaly-t/excellent.svg?branch=master)](https://travis-ci.org/vitaly-t/excellent)
 [![Coverage Status](https://coveralls.io/repos/github/vitaly-t/excellent/badge.svg?branch=master)](https://coveralls.io/github/vitaly-t/excellent?branch=master)

@@ -1,7 +1,7 @@
 {
   "name": "excellent.js",
-  "version": "0.8.2",
-  "description": "DOM-Manipulation Framework",
+  "version": "0.8.3",
+  "description": "DOM-Component Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
   "scripts": {
@@ -29,7 +29,7 @@
   },
   "keywords": [
     "DOM",
-    "manipulation",
+    "component",
     "framework"
   ],
   "author": {
