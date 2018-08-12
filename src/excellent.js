@@ -398,7 +398,11 @@
         // MutationObserver does not exist in JEST:
         // istanbul ignore else
         if (typeof MutationObserver === 'undefined') {
-            setInterval(manualCheck, 1000); // This is a work-around for IE9 and IE10
+            // istanbul ignore else
+            if (typeof window !== 'undefined' && window) {
+                // We do not create any timer when inside Node.js
+                setInterval(manualCheck, 1000); // This is a work-around for IE9 and IE10
+            }
         } else {
             mo = new MutationObserver(mutantCB);
         }
@@ -1253,16 +1257,6 @@
     };
 
     /**
-     * Standard document-loaded event handler.
-     */
-    document.addEventListener('DOMContentLoaded', function () {
-        bindElement(null, true); // binding all elements synchronously
-        if (typeof root.onInit === 'function') {
-            root.onInit();
-        }
-    });
-
-    /**
      * Global initialization.
      *
      * It excludes else statements from test coverage, because only
@@ -1271,10 +1265,10 @@
     (function () {
         /* istanbul ignore else */
         if (typeof module === 'object' && module && typeof module.exports === 'object') {
-            module.exports.excellent = root; // UMD support
+            module.exports = root; // UMD support
         }
         /* istanbul ignore else */
-        if (typeof window && window) {
+        if (typeof window !== 'undefined' && window) {
             window.excellent = root; // default root name
             var e = findAll('[data-e-root],[e-root]');
             if (e.length) {
@@ -1288,6 +1282,12 @@
                 }
                 window[name] = root; // adding alternative root name
             }
+            document.addEventListener('DOMContentLoaded', function () {
+                bindElement(null, true); // binding all elements synchronously
+                if (typeof root.onInit === 'function') {
+                    root.onInit();
+                }
+            });
         }
     })();
 
