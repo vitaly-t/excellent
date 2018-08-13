@@ -350,7 +350,7 @@ Each name is set to a total number of such controllers.</p></td>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Object.&lt;string, {}></span>
 
 
             
@@ -360,7 +360,8 @@ Each name is set to a total number of such controllers.</p></td>
 
             
 
-            <td class="description last"><p>List of all registered module names.</p></td>
+            <td class="description last"><p>All registered modules, with each name set to the value of property <code>$about</code> on the module's scope,
+if the value is an object, or <code>null</code> otherwise.</p></td>
         </tr>
 
     
@@ -373,7 +374,7 @@ Each name is set to a total number of such controllers.</p></td>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Object.&lt;string, {}></span>
 
 
             
@@ -383,7 +384,8 @@ Each name is set to a total number of such controllers.</p></td>
 
             
 
-            <td class="description last"><p>List of all registered service names.</p></td>
+            <td class="description last"><p>All registered services, with each name set to the value of property <code>$about</code> on the service's scope,
+if the value is an object, or <code>null</code> otherwise.</p></td>
         </tr>
 
     
@@ -422,7 +424,7 @@ Each name is set to a total number of such controllers.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line870">line 870</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line893">line 893</a>
     </li></ul></dd>
     
 

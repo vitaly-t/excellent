@@ -77,7 +77,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line625">line 625</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line633">line 633</a>
     </li></ul></dd>
     
 
@@ -171,7 +171,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line662">line 662</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line670">line 670</a>
     </li></ul></dd>
     
 
@@ -252,7 +252,7 @@ because the library is distributed with the source maps.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line651">line 651</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line659">line 659</a>
     </li></ul></dd>
     
 
@@ -410,7 +410,7 @@ because the library is distributed with the source maps.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line674">line 674</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line682">line 682</a>
     </li></ul></dd>
     
 
@@ -453,9 +453,9 @@ because the library is distributed with the source maps.</p>
 
 <div class="description">
     <p>Adds and initializes a new module.</p>
-<p>If the module with such name already exists, the method will do nothing,
-because it cannot determine whether the actual module behind the name is the same,
-while modules need to be fully reusable, like in dynamically loaded pages.</p>
+<p>If the module with such name already exists, the method will do nothing, because it cannot determine
+whether the actual module behind the name is the same, while modules need to be fully reusable,
+like in dynamically loaded pages.</p>
 </div>
 
 
@@ -530,7 +530,10 @@ while modules need to be fully reusable, like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Module initialization function.</p></td>
+            <td class="description last"><p>Module initialization function. The function will be passed the module's scope as a single parameter
+and as <code>this</code> context, and it is expected to initialize the module as required.</p>
+<p>If the module creates property-object <code>$about</code> on its scope, the value will be reported by method
+<a href="ERoot.html#analyze">analyze</a>.</p></td>
         </tr>
 
     
@@ -571,7 +574,7 @@ while modules need to be fully reusable, like in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line731">line 731</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line741">line 741</a>
     </li></ul></dd>
     
 
@@ -614,10 +617,9 @@ while modules need to be fully reusable, like in dynamically loaded pages.</p>
 
 <div class="description">
     <p>Adds and initializes a new service.</p>
-<p>If the service with such name already exists, the method will do nothing,
-because it cannot determine whether the actual service behind the name is the same,
-while services need to be fully reusable, like in dynamically loaded pages.</p>
-<p>Every added service becomes accessible by its name, from property <a href="ERoot.html#services">services</a>.</p>
+<p>If the service with such name already exists, the method will do nothing, because it cannot determine
+whether the actual service behind the name is the same, while services need to be fully reusable,
+like in dynamically loaded pages.</p>
 </div>
 
 
@@ -692,7 +694,10 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Service initialization function.</p></td>
+            <td class="description last"><p>Service initialization function. The function will be passed the service's scope as a single parameter
+and as <code>this</code> context, and it is expected to initialize the service as required.</p>
+<p>If the service creates property-object <code>$about</code> on its scope, the value will be reported by method
+<a href="ERoot.html#analyze">analyze</a>.</p></td>
         </tr>
 
     
@@ -733,7 +738,7 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line705">line 705</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line713">line 713</a>
     </li></ul></dd>
     
 
@@ -775,7 +780,8 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
 
 
 <div class="description">
-    <p>Pulls together and returns statistics / snapshot of the current state of the library.</p>
+    <p>Pulls together and returns a snapshot of the current state of the library,
+as <a href="EStatistics.html">EStatistics</a> object.</p>
 <p>This method is to help with debugging your application, and for automatic tests.</p>
 </div>
 
@@ -820,7 +826,7 @@ while services need to be fully reusable, like in dynamically loaded pages.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line833">line 833</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line847">line 847</a>
     </li></ul></dd>
     
 
@@ -1011,7 +1017,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line755">line 755</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line769">line 769</a>
     </li></ul></dd>
     
 
@@ -1154,7 +1160,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line778">line 778</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line792">line 792</a>
     </li></ul></dd>
     
 
@@ -1316,7 +1322,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line807">line 807</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line821">line 821</a>
     </li></ul></dd>
     
 
@@ -1446,7 +1452,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line916">line 916</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line941">line 941</a>
     </li></ul></dd>
     
 

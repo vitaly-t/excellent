@@ -44,6 +44,8 @@
      * Registered app controllers.
      *
      * It is a controller name-to-function map for the app's local controllers.
+     *
+     * @type {Object.&lt;string, Function>}
      */
     var ctrlRegistered = {};
 
@@ -65,16 +67,22 @@
 
     /**
      * Global name-to-function cache for all controllers.
+     *
+     * @type {Object.&lt;string, Function>}
      */
     var ctrlCache = {};
 
     /**
      * All registered modules.
+     *
+     * @type {Object.&lt;string, {}>}
      */
     var modules = {};
 
     /**
      * All elements with controllers, currently in the DOM.
+     *
+     * @type {HTMLElement[]}
      */
     var elements = [];
 
@@ -737,17 +745,19 @@
          * @description
          * Adds and initializes a new service.
          *
-         * If the service with such name already exists, the method will do nothing,
-         * because it cannot determine whether the actual service behind the name is the same,
-         * while services need to be fully reusable, like in dynamically loaded pages.
-         *
-         * Every added service becomes accessible by its name, from property {@link ERoot#services services}.
+         * If the service with such name already exists, the method will do nothing, because it cannot determine
+         * whether the actual service behind the name is the same, while services need to be fully reusable,
+         * like in dynamically loaded pages.
          *
          * @param {string} name
          * Service name. Must adhere to JavaScript open-name syntax.
          *
          * @param {function} cb
-         * Service initialization function.
+         * Service initialization function. The function will be passed the service's scope as a single parameter
+         * and as `this` context, and it is expected to initialize the service as required.
+         *
+         * If the service creates property-object `$about` on its scope, the value will be reported by method
+         * {@link ERoot#analyze analyze}.
          */
         this.addService = function (name, cb) {
             validateEntity(name, cb, 'service');
@@ -763,15 +773,19 @@
          * @description
          * Adds and initializes a new module.
          *
-         * If the module with such name already exists, the method will do nothing,
-         * because it cannot determine whether the actual module behind the name is the same,
-         * while modules need to be fully reusable, like in dynamically loaded pages.
+         * If the module with such name already exists, the method will do nothing, because it cannot determine
+         * whether the actual module behind the name is the same, while modules need to be fully reusable,
+         * like in dynamically loaded pages.
          *
          * @param {string} name
          * Module name. Must adhere to JavaScript open-name syntax.
          *
          * @param {function} cb
-         * Module initialization function.
+         * Module initialization function. The function will be passed the module's scope as a single parameter
+         * and as `this` context, and it is expected to initialize the module as required.
+         *
+         * If the module creates property-object `$about` on its scope, the value will be reported by method
+         * {@link ERoot#analyze analyze}.
          */
         this.addModule = function (name, cb) {
             validateEntity(name, cb, 'module');
@@ -863,7 +877,8 @@
         /**
          * @method ERoot#analyze
          * @description
-         * Pulls together and returns statistics / snapshot of the current state of the library.
+         * Pulls together and returns a snapshot of the current state of the library,
+         * as {@link EStatistics} object.
          *
          * This method is to help with debugging your application, and for automatic tests.
          *
@@ -884,14 +899,22 @@
                     registered: Object.keys(ctrlRegistered)
                 },
                 elements: elements.slice(),
-                modules: Object.keys(modules),
-                services: Object.keys(root.services)
+                modules: {},
+                services: {}
             };
             for (var a in ctrlGlobal) {
                 res.controllers.global[a] = ctrlGlobal[a].length;
             }
             for (var b in ctrlLocal) {
                 res.controllers.local[b] = ctrlLocal[b].length;
+            }
+            for (var m in modules) {
+                var ma = modules[m].$about;
+                res.modules[m] = (ma &amp;&amp; typeof ma === 'object') ? ma : null;
+            }
+            for (var s in root.services) {
+                var sa = root.services[s].$about;
+                res.services[s] = (sa &amp;&amp; typeof sa === 'object') ? sa : null;
             }
             return res;
         };
@@ -935,11 +958,13 @@
      * @property {ControlledElement[]} elements
      * List of all controlled elements currently in the DOM.
      *
-     * @property {string[]} modules
-     * List of all registered module names.
+     * @property {Object.&lt;string, {}>} modules
+     * All registered modules, with each name set to the value of property `$about` on the module's scope,
+     * if the value is an object, or `null` otherwise.
      *
-     * @property {string[]} services
-     * List of all registered service names.
+     * @property {Object.&lt;string, {}>} services
+     * All registered services, with each name set to the value of property `$about` on the service's scope,
+     * if the value is an object, or `null` otherwise.
      *
      * */
 
