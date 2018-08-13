@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 0.8.4 declarations
+// Complete Excellent.js 0.8.5 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -71,9 +71,9 @@ declare namespace ERoot {
             local: { [name: string]: number }
             registered: string[]
         };
-        elements: ControlledElement[];
-        modules: string[];
-        services: string[];
+        elements: ControlledElement[]
+        modules: { [name: string]: any }
+        services: { [name: string]: any }
     }
 }
 
