@@ -847,8 +847,7 @@
         /**
          * @method ERoot#analyze
          * @description
-         * Pulls together and returns a snapshot of the current state of the library,
-         * as {@link EStatistics} object.
+         * Pulls together and returns a snapshot of the current state of the library, as {@link EStatistics} object.
          *
          * This method is to help with debugging your application, and for automatic tests.
          *
@@ -856,7 +855,7 @@
          * Statistics Data.
          */
         this.analyze = function () {
-            var res = {
+            return {
                 binding: {
                     locals: bs.nodes.length,
                     callbacks: bs.cb.length,
@@ -864,29 +863,14 @@
                     global: bs.glob
                 },
                 controllers: {
-                    global: {},
-                    local: {},
+                    global: ctrlGlobal,
+                    local: ctrlLocal,
                     registered: Object.keys(ctrlRegistered)
                 },
-                elements: elements.slice(),
-                modules: {},
-                services: {}
+                elements: elements,
+                modules: modules,
+                services: root.services
             };
-            for (var a in ctrlGlobal) {
-                res.controllers.global[a] = ctrlGlobal[a].length;
-            }
-            for (var b in ctrlLocal) {
-                res.controllers.local[b] = ctrlLocal[b].length;
-            }
-            for (var m in modules) {
-                var ma = modules[m].$about;
-                res.modules[m] = (ma && typeof ma === 'object') ? ma : null;
-            }
-            for (var s in root.services) {
-                var sa = root.services[s].$about;
-                res.services[s] = (sa && typeof sa === 'object') ? sa : null;
-            }
-            return res;
         };
     }
 
@@ -894,6 +878,8 @@
      * @interface EStatistics
      * @description
      * Statistics / Diagnostics data, as returned by method {@link ERoot#analyze ERoot.analyze}.
+     *
+     * **IMPORTANT:** Most of the information is the live state, and must not be modified!
      *
      * @property {} binding
      * Element-to-controller binding status.
@@ -913,14 +899,12 @@
      * @property {} controllers
      * Details about controllers.
      *
-     * @property {Object.<string, number>} controllers.global
-     * All global live controllers, visible to global search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
-     * Each name is set to a total number of such controllers.
+     * @property {Object.<string, EController[]>} controllers.global
+     * All global live controllers, visible to search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
      *
-     * @property {Object.<string, number>} controllers.local
+     * @property {Object.<string, EController[]>} controllers.local
      * All local live controllers (created via {@link EController#extend EController.extend} with `local` = `true`),
-     * and thus not visible to global search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
-     * Each name is set to a total number of such controllers.
+     * and thus not visible to search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
      *
      * @property {string[]} controllers.registered
      * Names of all registered controllers.
@@ -929,12 +913,10 @@
      * List of all controlled elements currently in the DOM.
      *
      * @property {Object.<string, {}>} modules
-     * All registered modules, with each name set to the value of property `$about` on the module's scope,
-     * if the value is an object, or `null` otherwise.
+     * All registered and initialized modules.
      *
      * @property {Object.<string, {}>} services
-     * All registered services, with each name set to the value of property `$about` on the service's scope,
-     * if the value is an object, or `null` otherwise.
+     * All registered and initialized services.
      *
      * */
 

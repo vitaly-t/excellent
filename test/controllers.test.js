@@ -129,7 +129,7 @@ describe('positive', () => {
             expect(ctrl2).toBeTruthy();
             expect(ctrl3).toBeTruthy();
             expect(ctrl4).toEqual([]);
-            expect(excellent.analyze().controllers.local.privateController).toBe(1);
+            expect(excellent.analyze().controllers.local.privateController.length).toBe(1);
         });
     });
 

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 0.8.5 declarations
+// Complete Excellent.js 0.8.6 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -67,8 +67,8 @@ declare namespace ERoot {
             global: boolean
         };
         controllers: {
-            global: { [name: string]: number }
-            local: { [name: string]: number }
+            global: { [name: string]: EController[] }
+            local: { [name: string]: EController[] }
             registered: string[]
         };
         elements: ControlledElement[]
