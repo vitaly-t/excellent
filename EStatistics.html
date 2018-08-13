@@ -39,7 +39,8 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Statistics / Diagnostics data, as returned by method <a href="ERoot.html#analyze">ERoot.analyze</a>.</p></div>
+            <div class="description"><p>Statistics / Diagnostics data, as returned by method <a href="ERoot.html#analyze">ERoot.analyze</a>.</p>
+<p><strong>IMPORTANT:</strong> Most of the information is the live state, and must not be modified!</p></div>
         
 
         
@@ -248,7 +249,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, number></span>
+<span class="param-type">Object.&lt;string, Array.&lt;<a href="EController.html">EController</a>>></span>
 
 
             
@@ -258,8 +259,7 @@
 
             
 
-            <td class="description last"><p>All global live controllers, visible to global search methods <a href="ERoot.html#find">ERoot.find</a> and <a href="ERoot.html#findOne">ERoot.findOne</a>.
-Each name is set to a total number of such controllers.</p></td>
+            <td class="description last"><p>All global live controllers, visible to search methods <a href="ERoot.html#find">ERoot.find</a> and <a href="ERoot.html#findOne">ERoot.findOne</a>.</p></td>
         </tr>
 
     
@@ -272,7 +272,7 @@ Each name is set to a total number of such controllers.</p></td>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, number></span>
+<span class="param-type">Object.&lt;string, Array.&lt;<a href="EController.html">EController</a>>></span>
 
 
             
@@ -283,8 +283,7 @@ Each name is set to a total number of such controllers.</p></td>
             
 
             <td class="description last"><p>All local live controllers (created via <a href="EController.html#extend">EController.extend</a> with <code>local</code> = <code>true</code>),
-and thus not visible to global search methods <a href="ERoot.html#find">ERoot.find</a> and <a href="ERoot.html#findOne">ERoot.findOne</a>.
-Each name is set to a total number of such controllers.</p></td>
+and thus not visible to search methods <a href="ERoot.html#find">ERoot.find</a> and <a href="ERoot.html#findOne">ERoot.findOne</a>.</p></td>
         </tr>
 
     
@@ -360,8 +359,7 @@ Each name is set to a total number of such controllers.</p></td>
 
             
 
-            <td class="description last"><p>All registered modules, with each name set to the value of property <code>$about</code> on the module's scope,
-if the value is an object, or <code>null</code> otherwise.</p></td>
+            <td class="description last"><p>All registered and initialized modules.</p></td>
         </tr>
 
     
@@ -384,8 +382,7 @@ if the value is an object, or <code>null</code> otherwise.</p></td>
 
             
 
-            <td class="description last"><p>All registered services, with each name set to the value of property <code>$about</code> on the service's scope,
-if the value is an object, or <code>null</code> otherwise.</p></td>
+            <td class="description last"><p>All registered and initialized services.</p></td>
         </tr>
 
     
@@ -424,7 +421,7 @@ if the value is an object, or <code>null</code> otherwise.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line893">line 893</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line871">line 871</a>
     </li></ul></dd>
     
 
