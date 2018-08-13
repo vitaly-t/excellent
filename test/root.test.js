@@ -57,7 +57,21 @@ describe('positive', () => {
         expect(excellent.onInit).toBeCalled();
     });
 
-    it('should generate statistics with the library state', () => {
+    it('should generate correct statistics with the library state', () => {
+        excellent.addModule('mod1', () => {
+        });
+        excellent.addModule('mod2', scope => {
+            scope.$about = {
+                info: 123
+            };
+        });
+        excellent.addService('srv1', () => {
+        });
+        excellent.addService('srv2', scope => {
+            scope.$about = {
+                info: 456
+            };
+        });
         const stat = excellent.analyze();
         expect(stat && typeof stat).toBe('object');
         expect(stat.binding && typeof stat.binding).toBe('object');
@@ -70,8 +84,8 @@ describe('positive', () => {
         expect(stat.controllers.local && typeof stat.controllers.local).toBe('object');
         expect(Array.isArray(stat.controllers.registered)).toBe(true);
         expect(Array.isArray(stat.elements)).toBe(true);
-        expect(Array.isArray(stat.modules)).toBe(true);
-        expect(Array.isArray(stat.services)).toBe(true);
+        expect(stat.modules).toEqual({mod1: null, mod2: {info: 123}});
+        expect(stat.services).toEqual({srv1: null, srv2: {info: 456}});
     });
 });
 
