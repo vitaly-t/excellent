@@ -45,7 +45,7 @@
     /**
      * All registered modules.
      *
-     * @type {Object.<string, {$about}>}
+     * @type {Object.<string, {}>}
      */
     var modules = {};
 
@@ -669,7 +669,7 @@
 
         /**
          * @member ERoot#services
-         * @type {Object.<string, {$about}>}
+         * @type {Object.<string, {}>}
          * @readonly
          * @description
          * Namespace of all registered and initialized services.
@@ -847,7 +847,8 @@
         /**
          * @method ERoot#analyze
          * @description
-         * Pulls together and returns statistics / snapshot of the current state of the library.
+         * Pulls together and returns a snapshot of the current state of the library,
+         * as {@link EStatistics} object.
          *
          * This method is to help with debugging your application, and for automatic tests.
          *
