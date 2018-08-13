@@ -725,9 +725,6 @@
          * @param {function} cb
          * Service initialization function. The function will be passed the service's scope as a single parameter
          * and as `this` context, and it is expected to initialize the service as required.
-         *
-         * If the service creates property-object `$about` on its scope, the value will be reported by method
-         * {@link ERoot#analyze analyze}.
          */
         this.addService = function (name, cb) {
             validateEntity(name, cb, 'service');
@@ -753,9 +750,6 @@
          * @param {function} cb
          * Module initialization function. The function will be passed the module's scope as a single parameter
          * and as `this` context, and it is expected to initialize the module as required.
-         *
-         * If the module creates property-object `$about` on its scope, the value will be reported by method
-         * {@link ERoot#analyze analyze}.
          */
         this.addModule = function (name, cb) {
             validateEntity(name, cb, 'module');
