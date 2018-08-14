@@ -849,7 +849,7 @@
          * Statistics Data.
          */
         this.analyze = function () {
-            return {
+            var res = {
                 bindings: {
                     locals: bs.nodes.length,
                     callbacks: bs.cb.length,
@@ -857,14 +857,24 @@
                     global: bs.glob
                 },
                 controllers: {
-                    global: ctrlGlobal,
-                    local: ctrlLocal,
+                    global: {},
+                    local: {},
                     registered: Object.keys(ctrlRegistered)
                 },
-                elements: elements,
-                modules: modules,
+                elements: elements.slice(),
+                modules: {},
                 services: root.services
             };
+            for (var g in ctrlGlobal) {
+                res.controllers.global[g] = ctrlGlobal[g].slice();
+            }
+            for (var l in ctrlLocal) {
+                res.controllers.local[l] = ctrlLocal[l].slice();
+            }
+            for (var m in modules) {
+                res.modules[m] = modules[m];
+            }
+            return res;
         };
     }
 
@@ -872,8 +882,6 @@
      * @interface EStatistics
      * @description
      * Statistics / Diagnostics data, as returned by method {@link ERoot#analyze ERoot.analyze}.
-     *
-     * **IMPORTANT:** Most of the information is the live state, and must not be modified!
      *
      * @property {} bindings
      * Element-to-controller binding status.
