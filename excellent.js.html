@@ -879,22 +879,35 @@
          * Statistics Data.
          */
         this.analyze = function () {
-            return {
-                binding: {
+            var res = {
+                bindings: {
                     locals: bs.nodes.length,
                     callbacks: bs.cb.length,
                     waiting: bs.waiting,
                     global: bs.glob
                 },
                 controllers: {
-                    global: ctrlGlobal,
-                    local: ctrlLocal,
-                    registered: Object.keys(ctrlRegistered)
+                    global: {},
+                    local: {},
+                    registered: Object.keys(ctrlRegistered),
+                    total: 0
                 },
-                elements: elements,
-                modules: modules,
+                elements: elements.slice(),
+                modules: {},
                 services: root.services
             };
+            for (var g in ctrlGlobal) {
+                res.controllers.total += ctrlGlobal[g].length;
+                res.controllers.global[g] = ctrlGlobal[g].slice();
+            }
+            for (var l in ctrlLocal) {
+                res.controllers.total += ctrlLocal[l].length;
+                res.controllers.local[l] = ctrlLocal[l].slice();
+            }
+            for (var m in modules) {
+                res.modules[m] = modules[m];
+            }
+            return res;
         };
     }
 
@@ -903,21 +916,19 @@
      * @description
      * Statistics / Diagnostics data, as returned by method {@link ERoot#analyze ERoot.analyze}.
      *
-     * **IMPORTANT:** Most of the information is the live state, and must not be modified!
-     *
-     * @property {} binding
+     * @property {} bindings
      * Element-to-controller binding status.
      *
-     * @property {number} binding.locals
+     * @property {number} bindings.locals
      * Number of pending child-binding requests, from {@link EController#bind EController.bind}.
      *
-     * @property {number} binding.callbacks
+     * @property {number} bindings.callbacks
      * Number of pending recipients awaiting a notification when the requested binding is finished.
      *
-     * @property {boolean} binding.waiting
+     * @property {boolean} bindings.waiting
      * Binding engine has triggered a timer for the next asynchronous update, and is now waiting for it.
      *
-     * @property {boolean} binding.global
+     * @property {boolean} bindings.global
      * A global asynchronous request is being processed.
      *
      * @property {} controllers
@@ -932,6 +943,9 @@
      *
      * @property {string[]} controllers.registered
      * Names of all registered controllers.
+     *
+     * @property {number} controllers.total
+     * Total number of all live controllers.
      *
      * @property {ControlledElement[]} elements
      * List of all controlled elements currently in the DOM.
