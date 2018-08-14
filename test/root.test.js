@@ -75,6 +75,7 @@ describe('positive', () => {
         expect(stat.controllers.global && typeof stat.controllers.global).toBe('object');
         expect(stat.controllers.local && typeof stat.controllers.local).toBe('object');
         expect(Array.isArray(stat.controllers.registered)).toBe(true);
+        expect(typeof stat.controllers.total).toBe('number');
         expect(Array.isArray(stat.elements)).toBe(true);
         expect(stat.modules).toEqual({mod1: {one: 1}});
         expect(stat.services).toEqual({srv1: {two: 2}});

@@ -859,16 +859,19 @@
                 controllers: {
                     global: {},
                     local: {},
-                    registered: Object.keys(ctrlRegistered)
+                    registered: Object.keys(ctrlRegistered),
+                    total: 0
                 },
                 elements: elements.slice(),
                 modules: {},
                 services: root.services
             };
             for (var g in ctrlGlobal) {
+                res.controllers.total += ctrlGlobal[g].length;
                 res.controllers.global[g] = ctrlGlobal[g].slice();
             }
             for (var l in ctrlLocal) {
+                res.controllers.total += ctrlLocal[l].length;
                 res.controllers.local[l] = ctrlLocal[l].slice();
             }
             for (var m in modules) {
@@ -910,6 +913,9 @@
      *
      * @property {string[]} controllers.registered
      * Names of all registered controllers.
+     *
+     * @property {number} controllers.total
+     * Total number of all live controllers.
      *
      * @property {ControlledElement[]} elements
      * List of all controlled elements currently in the DOM.

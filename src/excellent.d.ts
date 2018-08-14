@@ -69,7 +69,8 @@ declare namespace ERoot {
         controllers: {
             global: { [name: string]: EController[] }
             local: { [name: string]: EController[] }
-            registered: string[]
+            registered: string[],
+            total: number
         };
         elements: ControlledElement[]
         modules: { [name: string]: any }
