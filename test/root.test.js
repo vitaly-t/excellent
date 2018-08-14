@@ -66,11 +66,11 @@ describe('positive', () => {
         });
         const stat = excellent.analyze();
         expect(stat && typeof stat).toBe('object');
-        expect(stat.binding && typeof stat.binding).toBe('object');
-        expect(typeof stat.binding.locals).toBe('number');
-        expect(typeof stat.binding.callbacks).toBe('number');
-        expect(typeof stat.binding.waiting).toBe('boolean');
-        expect(typeof stat.binding.global).toBe('boolean');
+        expect(stat.bindings && typeof stat.bindings).toBe('object');
+        expect(typeof stat.bindings.locals).toBe('number');
+        expect(typeof stat.bindings.callbacks).toBe('number');
+        expect(typeof stat.bindings.waiting).toBe('boolean');
+        expect(typeof stat.bindings.global).toBe('boolean');
         expect(stat.controllers && typeof stat.controllers).toBe('object');
         expect(stat.controllers.global && typeof stat.controllers.global).toBe('object');
         expect(stat.controllers.local && typeof stat.controllers.local).toBe('object');
