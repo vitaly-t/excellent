@@ -850,7 +850,7 @@
          */
         this.analyze = function () {
             return {
-                binding: {
+                bindings: {
                     locals: bs.nodes.length,
                     callbacks: bs.cb.length,
                     waiting: bs.waiting,
@@ -875,19 +875,19 @@
      *
      * **IMPORTANT:** Most of the information is the live state, and must not be modified!
      *
-     * @property {} binding
+     * @property {} bindings
      * Element-to-controller binding status.
      *
-     * @property {number} binding.locals
+     * @property {number} bindings.locals
      * Number of pending child-binding requests, from {@link EController#bind EController.bind}.
      *
-     * @property {number} binding.callbacks
+     * @property {number} bindings.callbacks
      * Number of pending recipients awaiting a notification when the requested binding is finished.
      *
-     * @property {boolean} binding.waiting
+     * @property {boolean} bindings.waiting
      * Binding engine has triggered a timer for the next asynchronous update, and is now waiting for it.
      *
-     * @property {boolean} binding.global
+     * @property {boolean} bindings.global
      * A global asynchronous request is being processed.
      *
      * @property {} controllers

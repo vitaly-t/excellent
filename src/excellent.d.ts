@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 0.8.6 declarations
+// Complete Excellent.js 0.8.7 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -60,7 +60,7 @@ declare namespace ERoot {
     // Type API:
     // https://vitaly-t.github.io/excellent/EStatistics.html
     interface EStatistics {
-        binding: {
+        bindings: {
             locals: number
             callbacks: number
             waiting: boolean
