@@ -8,7 +8,8 @@ const npm = {
     eslint: require('gulp-eslint'),
     rename: require('gulp-rename'),
     header: require('gulp-header'),
-    replace: require('gulp-replace')
+    replace: require('gulp-replace'),
+    gzip: require('gulp-gzip')
 };
 
 const SOURCE = './src/excellent.js';
@@ -32,7 +33,7 @@ gulp.task('lint', () => {
         .pipe(npm.eslint.failAfterError());
 });
 
-gulp.task('build', () => {
+gulp.task('minify', () => {
     return gulp.src(SOURCE)
         .pipe(npm.sourcemaps.init())
         .pipe(npm.replace(/<version>/, version))
@@ -43,4 +44,10 @@ gulp.task('build', () => {
         .pipe(gulp.dest('./src'));
 });
 
-gulp.task('default', gulp.series(['lint', 'build']));
+gulp.task('zip', () => {
+    return gulp.src('./src/excellent.min.js')
+        .pipe(npm.gzip({extension: 'gzip'}))
+        .pipe(gulp.dest('./src'));
+});
+
+gulp.task('default', gulp.series(['lint', 'minify', 'zip']));

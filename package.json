@@ -1,13 +1,12 @@
 {
   "name": "excellent.js",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "description": "DOM Component Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
   "scripts": {
     "gulp": "./node_modules/.bin/gulp",
     "lint": "gulp lint",
-    "build": "gulp build",
     "test": "gulp lint && jest",
     "travis": "gulp lint && jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js ./jsdoc/README.md"
@@ -16,6 +15,7 @@
     "src/excellent.js",
     "src/excellent.d.ts",
     "src/excellent.min.js",
+    "src/excellent.min.js.gzip",
     "src/excellent.min.js.map"
   ],
   "homepage": "https://github.com/vitaly-t/excellent",
@@ -46,6 +46,7 @@
     "eslint-plugin-jest": "21.21.0",
     "gulp": "4.0.0",
     "gulp-eslint": "5.0.0",
+    "gulp-gzip": "1.4.2",
     "gulp-header": "2.0.5",
     "gulp-rename": "1.4.0",
     "gulp-replace": "1.0.0",
