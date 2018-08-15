@@ -13,10 +13,10 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onPostInit">onPostInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onPostInit">onPostInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
     <br>
     <div class="home-link">
-        <a href="https://github.com/vitaly-t/excellent">GitHub</a>
+        <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
     </div>
 </nav>
 
@@ -600,7 +600,7 @@ name that's already bound to the element, that controller is returned instead, t
 only a single controller type can be bound to any given element.</p>
 <p>This method can only be called during event <a href="EController.html#.event:onInit">onInit</a>.</p>
 <p>Note that while the calling controller has immediate access to extended controllers, as they are returned
-by the method, other controllers can communicate with them only during or after event
+by the method, other/global controllers can communicate with them only during or after event
 <a href="EController.html#.event:onPostInit">onPostInit</a>.</p>
 </div>
 
@@ -1171,11 +1171,11 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
 <div class="description">
     <p>De-initialization event handler.</p>
-<p>It signals the controller that its element has been removed from the DOM,
+<p>It signals the controller that its element has been removed from DOM,
 and it is time to release any pre-allocated resources, if necessary.</p>
-<p>For any modern browser, the event is triggered automatically, courtesy of <code>MutationObserver</code>,
-while for older browsers, such as IE9 and IE10 it falls back on a manual background check
-that runs once a second.</p>
+<p>In any modern browser, the event is triggered immediately, courtesy of <a href="external-MutationObserver.html">MutationObserver</a>,
+while in older browsers, such as IE9 and IE10, it falls back on a manual background check
+that runs every second.</p>
 </div>
 
 
@@ -1279,10 +1279,10 @@ that runs once a second.</p>
 
 <div class="description">
     <p>Initialization event handler.</p>
-<p>It represents the state of the controller when it is ready to do the following:</p>
+<p>It represents the state of the controller when it is ready to do any of the following:</p>
 <ul>
 <li>find explicitly bound controllers and communicate with them</li>
-<li>extend other controllers (via method <a href="EController.html#extend">extend</a>)</li>
+<li>extend the element with other controllers (via method <a href="EController.html#extend">extend</a>)</li>
 </ul>
 <p>At this point you cannot locate or communicate with controllers that are being extended
 (via method <a href="EController.html#extend">extend</a>). For that you need to use <a href="EController.html#.event:onPostInit">onPostInit</a> event.</p>
@@ -1389,8 +1389,8 @@ that runs once a second.</p>
 
 <div class="description">
     <p>Post-initialization event handler.</p>
-<p>It represents the state of the controller when it is able to find and communicate
-with controllers that were created during initialization through extension (via method <a href="EController.html#extend">extend</a>).</p>
+<p>It represents the state of the controller when it is able to find and communicate with controllers
+that were created during initialization implicitly, through extension (via method <a href="EController.html#extend">extend</a>).</p>
 <p>Controllers can only be extended during initialization (see method <a href="EController.html#extend">extend</a>),
 and so the controllers being extended are initialized right after. If you need to locate and communicate
 with such extended controllers, it is only possible during or after this post-initialization event.</p>
