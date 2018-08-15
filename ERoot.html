@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
@@ -87,7 +87,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="ERoot.html#analyze">analyze</a>,<a href="ERoot.html#services">services</a>,<a href="ERoot.html#version">version</a>,<a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addModule">addModule</a>,<a href="ERoot.html#addService">addService</a>,<a href="ERoot.html#bind">bind</a>,<a href="ERoot.html#find">find</a>,<a href="ERoot.html#findOne">findOne</a>,<a href="ERoot.html#.event:onInit">onInit</a></li>
+            <li><a href="ERoot.html#analyze">analyze</a>,<a href="ERoot.html#services">services</a>,<a href="ERoot.html#version">version</a>,<a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addModule">addModule</a>,<a href="ERoot.html#addService">addService</a>,<a href="ERoot.html#bind">bind</a>,<a href="ERoot.html#find">find</a>,<a href="ERoot.html#findOne">findOne</a>,<a href="ERoot.html#.event:onReady">onReady</a></li>
         </ul>
     </dd>
     
@@ -1062,7 +1062,7 @@ even though the latter searches only among child elements, but it uses DOM.</p>
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">EController.onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">EController.extend</a>), if called during or after event
 <a href="EController.html#.event:onReady">EController.onReady</a>. And it will find everything, if called during or after global event
-<a href="ERoot.html#.event:onInit">ERoot.onInit</a>.</p>
+<a href="ERoot.html#.event:onReady">ERoot.onReady</a>.</p>
 </div>
 
 
@@ -1224,7 +1224,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">EController.onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">EController.extend</a>), if called during or after event
 <a href="EController.html#.event:onReady">EController.onReady</a>. And it will find everything, if called during or after global event
-<a href="ERoot.html#.event:onInit">ERoot.onInit</a>.</p>
+<a href="ERoot.html#.event:onReady">ERoot.onReady</a>.</p>
 </div>
 
 
@@ -1381,7 +1381,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
 
     
-    <h4 class="name" id=".event:onInit">onInit</h4>
+    <h4 class="name" id=".event:onReady">onReady</h4>
     
 
     
@@ -1483,7 +1483,7 @@ event at this point.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>app.onInit = function() {  // All explicit and extended controllers now can be located;  // Let's find our main app controller, and ask it do something:  app.findOne('appCtrl').doSomething();};</code></pre>
+    <pre class="prettyprint"><code>app.onReady = function() {  // All explicit and extended controllers now can be located;  // Let's find our main app controller, and ask it do something:  app.findOne('appCtrl').doSomething();};</code></pre>
 
 
 
