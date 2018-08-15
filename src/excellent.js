@@ -1004,9 +1004,9 @@
      * @description
      * Initialization event handler.
      *
-     * It represents the state of the controller when it is ready to do the following:
+     * It represents the state of the controller when it is ready to do any of the following:
      *  - find explicitly bound controllers and communicate with them
-     *  - extend other controllers (via method {@link EController#extend extend})
+     *  - extend the element with other controllers (via method {@link EController#extend extend})
      *
      * At this point you cannot locate or communicate with controllers that are being extended
      * (via method {@link EController#extend extend}). For that you need to use {@link EController.event:onPostInit onPostInit} event.
@@ -1023,8 +1023,8 @@
      * @description
      * Post-initialization event handler.
      *
-     * It represents the state of the controller when it is able to find and communicate
-     * with controllers that were created during initialization through extension (via method {@link EController#extend extend}).
+     * It represents the state of the controller when it is able to find and communicate with controllers
+     * that were created during initialization implicitly, through extension (via method {@link EController#extend extend}).
      *
      * Controllers can only be extended during initialization (see method {@link EController#extend extend}),
      * and so the controllers being extended are initialized right after. If you need to locate and communicate
@@ -1042,12 +1042,12 @@
      * @description
      * De-initialization event handler.
      *
-     * It signals the controller that its element has been removed from the DOM,
+     * It signals the controller that its element has been removed from DOM,
      * and it is time to release any pre-allocated resources, if necessary.
      *
-     * For any modern browser, the event is triggered automatically, courtesy of `MutationObserver`,
-     * while for older browsers, such as IE9 and IE10 it falls back on a manual background check
-     * that runs once a second.
+     * In any modern browser, the event is triggered immediately, courtesy of {@link external:MutationObserver MutationObserver},
+     * while in older browsers, such as IE9 and IE10, it falls back on a manual background check
+     * that runs every second.
      *
      * @see
      * {@link ERoot.event:onInit ERoot.onInit}
@@ -1088,7 +1088,7 @@
      * This method can only be called during event {@link EController.event:onInit onInit}.
      *
      * Note that while the calling controller has immediate access to extended controllers, as they are returned
-     * by the method, other controllers can communicate with them only during or after event
+     * by the method, other/global controllers can communicate with them only during or after event
      * {@link EController.event:onPostInit onPostInit}.
      *
      * @param {string|string[]} ctrlName
@@ -1130,7 +1130,7 @@
             if (!cn) {
                 throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
             }
-            var c = this.node.controllers[cn];
+            var c = ctrl[cn];
             if (!c) {
                 c = new EController(cn, this.node);
                 getCtrlFunc(cn).call(c, c);
@@ -1311,4 +1311,9 @@
 /**
  * @external HTMLElement
  * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
+ */
+
+/**
+ * @external MutationObserver
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
  */

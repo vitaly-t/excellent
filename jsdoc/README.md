@@ -11,6 +11,11 @@ Auxiliary types:
 * [EStatistics] - statistics for diagnosing of the library's state
 * [ControlledElement] - type for every controlled DOM element
 
+---
+
+For other details and examples see [WiKi].
+
+[WiKi]:https://github.com/vitaly-t/excellent/wiki
 [ERoot]:./ERoot.html
 [EController]:./EController.html
 [EStatistics]:./EStatistics.html

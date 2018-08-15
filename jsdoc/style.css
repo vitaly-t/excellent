@@ -1,3 +1,21 @@
+body {
+    background-color: #F5F5F5;
+    margin: 0;
+}
+
+#main {
+    width: 80%;
+    float: left;
+}
+
+nav {
+    float: left;
+    width: 20%;
+    max-width: 200px;
+    height: 100%;
+    border-left: none;
+}
+
 h4.name {
     border-radius: 5px;
     padding: 2px 10px;
