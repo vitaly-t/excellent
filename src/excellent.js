@@ -652,7 +652,7 @@
      * {@link ERoot#bind bind},
      * {@link ERoot#find find},
      * {@link ERoot#findOne findOne},
-     * {@link ERoot.event:onInit onInit}
+     * {@link ERoot.event:onReady onReady}
      */
     function ERoot() {
 
@@ -796,7 +796,7 @@
          * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit EController.onInit},
          * and implicitly created controllers (extended via method {@link EController#extend EController.extend}), if called during or after event
          * {@link EController.event:onReady EController.onReady}. And it will find everything, if called during or after global event
-         * {@link ERoot.event:onInit ERoot.onInit}.
+         * {@link ERoot.event:onReady ERoot.onReady}.
          *
          * @param {string} ctrlName
          * Controller name to search by. It must adhere to JavaScript open-name syntax.
@@ -822,7 +822,7 @@
          * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit EController.onInit},
          * and implicitly created controllers (extended via method {@link EController#extend EController.extend}), if called during or after event
          * {@link EController.event:onReady EController.onReady}. And it will find everything, if called during or after global event
-         * {@link ERoot.event:onInit ERoot.onInit}.
+         * {@link ERoot.event:onReady ERoot.onReady}.
          *
          * @param {string} ctrlName
          * Controller name to search by. It must adhere to JavaScript open-name syntax.
@@ -929,7 +929,7 @@
      * */
 
     /**
-     * @event ERoot.onInit
+     * @event ERoot.onReady
      * @type {function}
      * @description
      * Called once in the beginning, after all controllers in the app have been fully initialized.
@@ -945,7 +945,7 @@
      *
      * @example
      *
-     * app.onInit = function() {
+     * app.onReady = function() {
      *   // All explicit and extended controllers now can be located;
      *
      *   // Let's find our main app controller, and ask it do something:
@@ -1014,7 +1014,7 @@
      * @see
      * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy},
-     * {@link ERoot.event:onInit ERoot.onInit}
+     * {@link ERoot.event:onReady ERoot.onReady}
      */
 
     /**
@@ -1031,7 +1031,7 @@
      * @see
      * {@link EController.event:onInit onInit},
      * {@link EController.event:onDestroy onDestroy},
-     * {@link ERoot.event:onInit ERoot.onInit}
+     * {@link ERoot.event:onReady ERoot.onReady}
      */
 
     /**
@@ -1048,7 +1048,7 @@
      * that runs every second.
      *
      * @see
-     * {@link ERoot.event:onInit ERoot.onInit}
+     * {@link ERoot.event:onReady ERoot.onReady}
      */
 
     /**
@@ -1297,8 +1297,8 @@
             }
             document.addEventListener('DOMContentLoaded', function () {
                 bindElement(null, true); // binding all elements synchronously
-                if (typeof root.onInit === 'function') {
-                    root.onInit();
+                if (typeof root.onReady === 'function') {
+                    root.onReady();
                 }
             });
         }

@@ -18,7 +18,7 @@ describe('positive', () => {
         expect(typeof e.find).toBe('function');
         expect(typeof e.findOne).toBe('function');
         expect(typeof e.analyze).toBe('function');
-        expect(e.onInit).toBeUndefined();
+        expect(e.onReady).toBeUndefined();
     });
 
     it('should add alternative name with e-bind', () => {
@@ -50,11 +50,11 @@ describe('positive', () => {
         delete window[name2];
     });
 
-    it('should call onInit on DOMContentLoaded', () => {
+    it('should call onReady on DOMContentLoaded', () => {
         require('../src/excellent');
-        excellent.onInit = jest.fn();
+        excellent.onReady = jest.fn();
         window.document.dispatchEvent(new Event('DOMContentLoaded', {}));
-        expect(excellent.onInit).toBeCalled();
+        expect(excellent.onReady).toBeCalled();
     });
 
     it('should generate correct statistics with the library state', () => {

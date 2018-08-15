@@ -1,3 +1,10 @@
+<a name="0.9.1"></a>
+# [0.9.1](https://github.com/vitaly-t/excellent/releases/tag/0.9.1) (2018-08-15)
+
+### Breaking Change
+
+Renamed global event `onInit` into `onReady`.
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/vitaly-t/excellent/releases/tag/0.9.0) (2018-08-15)
 

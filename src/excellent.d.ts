@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 0.9.0 declarations
+// Complete Excellent.js 0.9.1 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -54,7 +54,7 @@ declare namespace ERoot {
 
         analyze(): EStatistics
 
-        onInit: () => void
+        onReady: () => void
     }
 
     // Type API:
