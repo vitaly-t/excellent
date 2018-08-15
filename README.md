@@ -72,7 +72,7 @@ Other features include:
 
 * Both global and local dynamic binding, with [ERoot.bind] and [EController.bind].
 * Controllers can extend / inherit each other's functionality, see [Inheritance].
-* [Modules] empower greater reusability and simpler redistribution of controllers.
+* [Modules] empower greater reusability and simpler distribution of controllers.
 * [Services] share functionality across all controllers.
 
 You can create whole libraries of reusable components that will work seamlessly with any
