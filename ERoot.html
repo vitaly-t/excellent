@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onPostInit">onPostInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
@@ -1061,7 +1061,7 @@ Because of this, it will always significantly outperform method <a href="EContro
 even though the latter searches only among child elements, but it uses DOM.</p>
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">EController.onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">EController.extend</a>), if called during or after event
-<a href="EController.html#.event:onPostInit">EController.onPostInit</a>. And it will find everything, if called during or after global event
+<a href="EController.html#.event:onReady">EController.onReady</a>. And it will find everything, if called during or after global event
 <a href="ERoot.html#.event:onInit">ERoot.onInit</a>.</p>
 </div>
 
@@ -1223,7 +1223,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 <p>The method will throw an error, if multiple or no controllers found.</p>
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">EController.onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">EController.extend</a>), if called during or after event
-<a href="EController.html#.event:onPostInit">EController.onPostInit</a>. And it will find everything, if called during or after global event
+<a href="EController.html#.event:onReady">EController.onReady</a>. And it will find everything, if called during or after global event
 <a href="ERoot.html#.event:onInit">ERoot.onInit</a>.</p>
 </div>
 
@@ -1392,7 +1392,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     <p>Called once in the beginning, after all controllers in the app have been fully initialized.</p>
 <p>It represents the state of the application when it is ready to find all controllers
 and communicate with them. This includes controllers created through extension, i.e.
-all controllers have finished processing <a href="EController.html#.event:onPostInit">onPostInit</a>
+all controllers have finished processing <a href="EController.html#.event:onReady">onReady</a>
 event at this point.</p>
 </div>
 
@@ -1457,7 +1457,7 @@ event at this point.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="EController.html#.event:onInit">EController.onInit</a>,<a href="EController.html#.event:onPostInit">EController.onPostInit</a></li>
+            <li><a href="EController.html#.event:onInit">EController.onInit</a>,<a href="EController.html#.event:onReady">EController.onReady</a></li>
         </ul>
     </dd>
     

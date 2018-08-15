@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onPostInit">onPostInit</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onInit">onInit</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
@@ -85,7 +85,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="EController.html#name">name</a>,<a href="EController.html#node">node</a>,<a href="EController.html#bind">bind</a>,<a href="EController.html#depends">depends</a>,<a href="EController.html#extend">extend</a>,<a href="EController.html#find">find</a>,<a href="EController.html#findOne">findOne</a>,<a href="EController.html#.event:onInit">onInit</a>,<a href="EController.html#.event:onPostInit">onPostInit</a>,<a href="EController.html#.event:onDestroy">onDestroy</a></li>
+            <li><a href="EController.html#name">name</a>,<a href="EController.html#node">node</a>,<a href="EController.html#bind">bind</a>,<a href="EController.html#depends">depends</a>,<a href="EController.html#extend">extend</a>,<a href="EController.html#find">find</a>,<a href="EController.html#findOne">findOne</a>,<a href="EController.html#.event:onInit">onInit</a>,<a href="EController.html#.event:onReady">onReady</a>,<a href="EController.html#.event:onDestroy">onDestroy</a></li>
         </ul>
     </dd>
     
@@ -403,7 +403,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1056">line 1056</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1054">line 1054</a>
     </li></ul></dd>
     
 
@@ -545,7 +545,7 @@ dependencies before trying to use them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1161">line 1161</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1159">line 1159</a>
     </li></ul></dd>
     
 
@@ -601,7 +601,7 @@ only a single controller type can be bound to any given element.</p>
 <p>This method can only be called during event <a href="EController.html#.event:onInit">onInit</a>.</p>
 <p>Note that while the calling controller has immediate access to extended controllers, as they are returned
 by the method, other/global controllers can communicate with them only during or after event
-<a href="EController.html#.event:onPostInit">onPostInit</a>.</p>
+<a href="EController.html#.event:onReady">onReady</a>.</p>
 </div>
 
 
@@ -757,7 +757,7 @@ extended controllers by an outside controller is undesirable.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1079">line 1079</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1077">line 1077</a>
     </li></ul></dd>
     
 
@@ -837,7 +837,7 @@ extended controllers by an outside controller is undesirable.</p>
 it searches just through a sub-set of elements, it is always slower than the global <a href="ERoot.html#find">ERoot.find</a> method.</p>
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">extend</a>), if called during or after event
-<a href="EController.html#.event:onPostInit">onPostInit</a>.</p>
+<a href="EController.html#.event:onReady">onReady</a>.</p>
 </div>
 
 
@@ -930,7 +930,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1221">line 1221</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1219">line 1219</a>
     </li></ul></dd>
     
 
@@ -1005,7 +1005,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 <p>The method will throw an error, if multiple or no controllers found.</p>
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">extend</a>), if called during or after event
-<a href="EController.html#.event:onPostInit">onPostInit</a>.</p>
+<a href="EController.html#.event:onReady">onReady</a>.</p>
 </div>
 
 
@@ -1098,7 +1098,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1196">line 1196</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1194">line 1194</a>
     </li></ul></dd>
     
 
@@ -1229,7 +1229,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1039">line 1039</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1037">line 1037</a>
     </li></ul></dd>
     
 
@@ -1281,11 +1281,11 @@ that runs every second.</p>
     <p>Initialization event handler.</p>
 <p>It represents the state of the controller when it is ready to do any of the following:</p>
 <ul>
-<li>find explicitly bound controllers and communicate with them</li>
+<li>find explicitly bound (through <code>e-bind</code> attribute) controllers and communicate with them</li>
 <li>extend the element with other controllers (via method <a href="EController.html#extend">extend</a>)</li>
 </ul>
-<p>At this point you cannot locate or communicate with controllers that are being extended
-(via method <a href="EController.html#extend">extend</a>). For that you need to use <a href="EController.html#.event:onPostInit">onPostInit</a> event.</p>
+<p>At this point you cannot locate or communicate with outside controllers being extended
+(via method <a href="EController.html#extend">extend</a>). For that you need to use <a href="EController.html#.event:onReady">onReady</a> event.</p>
 </div>
 
 
@@ -1349,7 +1349,7 @@ that runs every second.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="EController.html#.event:onPostInit">onPostInit</a>,<a href="EController.html#.event:onDestroy">onDestroy</a>,<a href="ERoot.html#.event:onInit">ERoot.onInit</a></li>
+            <li><a href="EController.html#.event:onReady">onReady</a>,<a href="EController.html#.event:onDestroy">onDestroy</a>,<a href="ERoot.html#.event:onInit">ERoot.onInit</a></li>
         </ul>
     </dd>
     
@@ -1380,7 +1380,7 @@ that runs every second.</p>
     
 
     
-    <h4 class="name" id=".event:onPostInit">onPostInit</h4>
+    <h4 class="name" id=".event:onReady">onReady</h4>
     
 
     
@@ -1389,11 +1389,9 @@ that runs every second.</p>
 
 <div class="description">
     <p>Post-initialization event handler.</p>
-<p>It represents the state of the controller when it is able to find and communicate with controllers
-that were created during initialization implicitly, through extension (via method <a href="EController.html#extend">extend</a>).</p>
-<p>Controllers can only be extended during initialization (see method <a href="EController.html#extend">extend</a>),
-and so the controllers being extended are initialized right after. If you need to locate and communicate
-with such extended controllers, it is only possible during or after this post-initialization event.</p>
+<p>At this point you can find and communicate with controllers created implicitly, through extension (via method <a href="EController.html#extend">extend</a>).</p>
+<p>Controllers can only be extended during <a href="EController.html#.event:onInit">onInit</a>, and they are initialized right after. If you need to find and communicate
+with such extended controllers, it is only possible during or after this event.</p>
 </div>
 
 
