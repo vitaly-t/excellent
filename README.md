@@ -40,8 +40,43 @@ app.addController('twinkling', function() {
 });
 ```
 
-You also get powerful [Modules], [Services] and [Inheritance] to build whole libraries
-of reusable components that can work seamlessly with any UI framework, or on their own.
+Controllers can easily find each other, among children:
+
+* [EController.find]
+* [EController.findOne]
+
+or globally (document-wide):
+
+* [ERoot.find]
+* [ERoot.findOne]
+
+and access methods and properties in found controllers directly:
+
+```js
+app.addController('myCtrl', function(ctrl) {
+    // this = ctrl
+
+    this.onInit = function() {
+        // find child controller childCtrl, and call its method:
+        ctrl.findOne('childCtrl').someMethod();
+
+        // find global controllers globCtrl, and call a method:
+        app.find('globCtrl').forEach(function(c) {
+            c.someMethod();
+        });
+    };
+});
+```
+
+Other features include:
+
+* Both global and local dynamic binding, with methods [ERoot.bind] and [EController.bind].
+* Controllers can extend / inherit each other's functionality, see [Inheritance].
+* [Modules] that empower greater reusability and simpler redistribution of controllers.
+* [Services] that share functionality across all controllers.
+
+And you can create whole libraries of reusable components that will work seamlessly with any
+UI framework, or on their own.
 
 #### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 
@@ -51,3 +86,10 @@ of reusable components that can work seamlessly with any UI framework, or on the
 [Modules]:https://github.com/vitaly-t/excellent/wiki/Modules
 [Services]:https://github.com/vitaly-t/excellent/wiki/Services
 [Inheritance]:https://github.com/vitaly-t/excellent/wiki/Inheritance
+
+[EController.find]:https://vitaly-t.github.io/excellent/EController.html#find
+[EController.findOne]:https://vitaly-t.github.io/excellent/EController.html#findOne
+[ERoot.find]:https://vitaly-t.github.io/excellent/ERoot.html#find
+[ERoot.findOne]:https://vitaly-t.github.io/excellent/ERoot.html#findOne
+[ERoot.bind]:https://vitaly-t.github.io/excellent/ERoot.html#bind
+[EController.bind]:https://vitaly-t.github.io/excellent/EController.html#bind
