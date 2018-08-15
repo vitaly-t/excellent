@@ -40,12 +40,12 @@ app.addController('twinkling', function() {
 });
 ```
 
-Controllers can easily find each other, among children:
+Such controllers can easily find each other, either among children:
 
 * [EController.find]
 * [EController.findOne]
 
-or globally (document-wide):
+or globally / document-wide:
 
 * [ERoot.find]
 * [ERoot.findOne]
@@ -70,12 +70,12 @@ app.addController('myCtrl', function(ctrl) {
 
 Other features include:
 
-* Both global and local dynamic binding, with methods [ERoot.bind] and [EController.bind].
+* Both global and local dynamic binding, with [ERoot.bind] and [EController.bind].
 * Controllers can extend / inherit each other's functionality, see [Inheritance].
-* [Modules] that empower greater reusability and simpler redistribution of controllers.
-* [Services] that share functionality across all controllers.
+* [Modules] empower greater reusability and simpler redistribution of controllers.
+* [Services] share functionality across all controllers.
 
-And you can create whole libraries of reusable components that will work seamlessly with any
+You can create whole libraries of reusable components that will work seamlessly with any
 UI framework, or on their own.
 
 #### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
