@@ -100,10 +100,10 @@ describe('positive', () => {
             expect(c.bottom_2 === c.base.node.controllers.bottom_2).toBe(true);
             expect(c.bottom_2 === c.last.node.controllers.bottom_2).toBe(true);
         });
-        it('must find extended controllers only during onPostInit', () => {
+        it('must find extended controllers only during onReady', () => {
             let ctrl1, ctrl2, ctrl3, ctrl4;
             excellent.addController('uniqueController', ctrl => {
-                ctrl.onPostInit = function () {
+                ctrl.onReady = function () {
                     ctrl3 = excellent.findOne('derivedController');
                 };
             });
@@ -118,7 +118,7 @@ describe('positive', () => {
                     ctrl.extend('uniqueController');
                     ctrl.extend('privateController', true);
                 };
-                ctrl.onPostInit = function () {
+                ctrl.onReady = function () {
                     ctrl2 = excellent.findOne('uniqueController');
                     ctrl4 = excellent.find('privateController');
                 };

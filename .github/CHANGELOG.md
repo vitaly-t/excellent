@@ -1,3 +1,10 @@
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/vitaly-t/excellent/releases/tag/0.9.0) (2018-08-15)
+
+### Breaking Change
+
+Renamed event `onPostInit` into [onReady].
+
 <a name="0.7.8"></a>
 # [0.7.8](https://github.com/vitaly-t/excellent/releases/tag/0.7.8) (2018-08-11)
 
@@ -27,7 +34,7 @@ Added new method [ERoot.analyze], to help with debugging applications.
 
 * Resolved major issue [#12]: Accessing extended controllers.
 
-This resulted in major code rework, and introduction of event [onPostInit].
+This resulted in major code rework, and introduction of event `onPostInit`.
 
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/vitaly-t/excellent/releases/tag/0.6.0) (2018-08-09)
@@ -38,6 +45,6 @@ This resulted in major code rework, and introduction of event [onPostInit].
 
 [#11]:https://github.com/vitaly-t/excellent/issues/11
 [#12]:https://github.com/vitaly-t/excellent/issues/12
-[onPostInit]:https://vitaly-t.github.io/excellent/EController.html#.event:onPostInit
+[onReady]:https://vitaly-t.github.io/excellent/EController.html#.event:onReady
 [ERoot.analyze]:https://vitaly-t.github.io/excellent/ERoot.html#analyze
 [EController.extend]:https://vitaly-t.github.io/excellent/EController.html#extend

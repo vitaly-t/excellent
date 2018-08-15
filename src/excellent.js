@@ -386,8 +386,8 @@
             }
         });
         allCtrl.forEach(function (c) {
-            if (typeof c.onPostInit === 'function') {
-                c.onPostInit();
+            if (typeof c.onReady === 'function') {
+                c.onReady();
             }
         });
     }
@@ -795,7 +795,7 @@
          *
          * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit EController.onInit},
          * and implicitly created controllers (extended via method {@link EController#extend EController.extend}), if called during or after event
-         * {@link EController.event:onPostInit EController.onPostInit}. And it will find everything, if called during or after global event
+         * {@link EController.event:onReady EController.onReady}. And it will find everything, if called during or after global event
          * {@link ERoot.event:onInit ERoot.onInit}.
          *
          * @param {string} ctrlName
@@ -821,7 +821,7 @@
          *
          * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit EController.onInit},
          * and implicitly created controllers (extended via method {@link EController#extend EController.extend}), if called during or after event
-         * {@link EController.event:onPostInit EController.onPostInit}. And it will find everything, if called during or after global event
+         * {@link EController.event:onReady EController.onReady}. And it will find everything, if called during or after global event
          * {@link ERoot.event:onInit ERoot.onInit}.
          *
          * @param {string} ctrlName
@@ -936,12 +936,12 @@
      *
      * It represents the state of the application when it is ready to find all controllers
      * and communicate with them. This includes controllers created through extension, i.e.
-     * all controllers have finished processing {@link EController.event:onPostInit onPostInit}
+     * all controllers have finished processing {@link EController.event:onReady onReady}
      * event at this point.
      *
      * @see
      * {@link EController.event:onInit EController.onInit},
-     * {@link EController.event:onPostInit EController.onPostInit}
+     * {@link EController.event:onReady EController.onReady}
      *
      * @example
      *
@@ -968,7 +968,7 @@
      * {@link EController#find find},
      * {@link EController#findOne findOne},
      * {@link EController.event:onInit onInit},
-     * {@link EController.event:onPostInit onPostInit},
+     * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy}
      *
      * @param {string} name
@@ -1005,30 +1005,28 @@
      * Initialization event handler.
      *
      * It represents the state of the controller when it is ready to do any of the following:
-     *  - find explicitly bound controllers and communicate with them
+     *  - find explicitly bound (through `e-bind` attribute) controllers and communicate with them
      *  - extend the element with other controllers (via method {@link EController#extend extend})
      *
-     * At this point you cannot locate or communicate with controllers that are being extended
-     * (via method {@link EController#extend extend}). For that you need to use {@link EController.event:onPostInit onPostInit} event.
+     * At this point you cannot locate or communicate with outside controllers being extended
+     * (via method {@link EController#extend extend}). For that you need to use {@link EController.event:onReady onReady} event.
      *
      * @see
-     * {@link EController.event:onPostInit onPostInit},
+     * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy},
      * {@link ERoot.event:onInit ERoot.onInit}
      */
 
     /**
-     * @event EController.onPostInit
+     * @event EController.onReady
      * @type {function}
      * @description
      * Post-initialization event handler.
      *
-     * It represents the state of the controller when it is able to find and communicate with controllers
-     * that were created during initialization implicitly, through extension (via method {@link EController#extend extend}).
+     * At this point you can find and communicate with controllers created implicitly, through extension (via method {@link EController#extend extend}).
      *
-     * Controllers can only be extended during initialization (see method {@link EController#extend extend}),
-     * and so the controllers being extended are initialized right after. If you need to locate and communicate
-     * with such extended controllers, it is only possible during or after this post-initialization event.
+     * Controllers can only be extended during {@link EController.event:onInit onInit}, and they are initialized right after. If you need to find and communicate
+     * with such extended controllers, it is only possible during or after this event.
      *
      * @see
      * {@link EController.event:onInit onInit},
@@ -1089,7 +1087,7 @@
      *
      * Note that while the calling controller has immediate access to extended controllers, as they are returned
      * by the method, other/global controllers can communicate with them only during or after event
-     * {@link EController.event:onPostInit onPostInit}.
+     * {@link EController.event:onReady onReady}.
      *
      * @param {string|string[]} ctrlName
      * Either a single controller name, or an array of names.
@@ -1150,8 +1148,8 @@
         });
 
         created.forEach(function (c) {
-            if (typeof c.onPostInit === 'function') {
-                c.onPostInit();
+            if (typeof c.onReady === 'function') {
+                c.onReady();
             }
         });
 
@@ -1202,7 +1200,7 @@
      *
      * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit onInit},
      * and implicitly created controllers (extended via method {@link EController#extend extend}), if called during or after event
-     * {@link EController.event:onPostInit onPostInit}.
+     * {@link EController.event:onReady onReady}.
      *
      * @param {string} ctrlName
      * Controller name to search by. It must adhere to JavaScript open-name syntax.
@@ -1228,7 +1226,7 @@
      *
      * It will find explicitly created controllers, if called during or after event {@link EController.event:onInit onInit},
      * and implicitly created controllers (extended via method {@link EController#extend extend}), if called during or after event
-     * {@link EController.event:onPostInit onPostInit}.
+     * {@link EController.event:onReady onReady}.
      *
      * @param {string} ctrlName
      * Controller name to search by. It must adhere to JavaScript open-name syntax.

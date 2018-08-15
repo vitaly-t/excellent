@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 0.8.9 declarations
+// Complete Excellent.js 0.9.0 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -30,7 +30,7 @@ declare namespace ERoot {
         findOne(ctrlName: string): EController
 
         onInit: () => void
-        onPostInit: () => void
+        onReady: () => void
         onDestroy: () => void
     }
 
