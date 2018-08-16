@@ -1061,6 +1061,49 @@
      */
 
     /**
+     * @method ERoot#attach
+     * @description
+     * Works almost the same as EController.extend, to explicitly bind to an element.
+     *
+     * @param {HTMLElement|ControlledElement} e
+     *
+     * @param {CtrlName|CtrlName[]} names
+     *
+     * @returns {EController|EController[]}
+     */
+    ERoot.prototype.attach = function (e, names) {
+        // TODO: Validate e here;
+
+        var ctrl = e.controllers;
+        var created = [];
+
+        function ext(n) {
+            var cn = validateControllerName(n, true);
+            if (!cn) {
+                throw new TypeError('Invalid controller name ' + jStr(n) + ' specified.');
+            }
+            var c = ctrl[cn];
+            if (!c) {
+                c = new EController(cn, e);
+                getCtrlFunc(cn).call(c, c);
+                readOnlyProp(ctrl, cn, c);
+                addLiveCtrl(cn, c);
+                created.push(c);
+            }
+            return c;
+        }
+
+        if (!ctrl) {
+            ctrl = {};
+            readOnlyProp(e, 'controllers', ctrl);
+        }
+        var result = Array.isArray(names) ? names.map(ext) : ext(names);
+        notify(created, 'onInit');
+        notify(created, 'onReady');
+        return result;
+    };
+
+    /**
      * @method EController#bind
      * @description
      * Signals the framework that the element's content has been modified to contain new child controlled
@@ -1098,7 +1141,7 @@
      * by the method, other/global controllers can communicate with them only during or after event
      * {@link EController.event:onReady onReady}.
      *
-     * @param {CtrlName|CtrlName[]} name
+     * @param {CtrlName|CtrlName[]} names
      * Either a single controller name, or an array of names. Trailing spaces are ignored.
      *
      * @param {boolean} [local=false]
@@ -1127,7 +1170,7 @@
      *     };
      * });
      */
-    EController.prototype.extend = function (name, local) {
+    EController.prototype.extend = function (names, local) {
         var ctrl = this.verifyInit('extend');
         var created = [];
 
