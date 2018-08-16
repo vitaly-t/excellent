@@ -1074,7 +1074,7 @@
     ERoot.prototype.attach = function (e, names) {
         // TODO: Validate e here;
 
-        var ctrl = e.controllers;
+        var ctrl = e.controllers, fresh;
         var created = [];
 
         function ext(n) {
@@ -1094,6 +1094,7 @@
         }
 
         if (!ctrl) {
+            fresh = true;
             ctrl = {};
             readOnlyProp(e, 'controllers', ctrl);
         }
@@ -1106,6 +1107,8 @@
         // TODO: Need to set the watch observer, if it is a new element,
         // or else onDestroy will not trigger in new browsers.
         // Make sure not to do it twice with the initial bind.
+
+        // TODO issue: what happens when we attach to an element that has e-bind with some controllers in it?
 
         notify(created, 'onInit');
         notify(created, 'onReady');
