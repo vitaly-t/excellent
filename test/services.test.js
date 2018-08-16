@@ -3,7 +3,7 @@ require('../src/excellent');
 describe('positive', () => {
     beforeEach(() => {
         require('../src/excellent');
-        excellent.addService('srv', function () {
+        excellent.addService('\t\tsrv\r\n', function () {
             this.first = function () {
                 return 'first';
             };
@@ -24,7 +24,16 @@ describe('negative', () => {
     it('must throw on invalid service names', () => {
         expect(() => {
             excellent.addService();
+        }).toThrow('Invalid service name <undefined> specified.');
+        expect(() => {
+            excellent.addService('');
         }).toThrow('Invalid service name "" specified.');
+        expect(() => {
+            excellent.addService('   ');
+        }).toThrow('Invalid service name "   " specified.');
+        expect(() => {
+            excellent.addService(123);
+        }).toThrow('Invalid service name <123> specified.');
         expect(() => {
             excellent.addService('t e s t');
         }).toThrow('Invalid service name "t e s t" specified.');

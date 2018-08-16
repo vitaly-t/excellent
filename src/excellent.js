@@ -106,8 +106,6 @@
     /**
      * Validates an entity being registered.
      *
-     * The entity must use JavaScript open-name syntax.
-     *
      * @param {JSName} name
      * Name of the entity.
      *
@@ -116,15 +114,19 @@
      *
      * @param {string} entity
      * Entity name.
+     *
+     * @returns {JSName}
+     * Validated entity name.
      */
     function validateEntity(name, cb, entity) {
-        name = typeof name === 'string' ? name : '';
-        if (!validJsVariable(name)) {
+        var n = typeof name === 'string' ? trim(name) : '';
+        if (!validJsVariable(n)) {
             throw new TypeError('Invalid ' + entity + ' name ' + jStr(name) + ' specified.');
         }
         if (typeof cb !== 'function') {
             throw new TypeError('Initialization function for ' + entity + ' ' + jStr(name) + ' is missing.');
         }
+        return n;
     }
 
     /**
@@ -644,14 +646,14 @@
      *
      * @see
      * {@link ERoot#analyze analyze},
-     * {@link ERoot#services services},
-     * {@link ERoot#version version},
      * {@link ERoot#addController addController},
      * {@link ERoot#addModule addModule},
      * {@link ERoot#addService addService},
-     * {@link ERoot#bind bind},
      * {@link ERoot#find find},
      * {@link ERoot#findOne findOne},
+     * {@link ERoot#services services},
+     * {@link ERoot#version version},
+     * {@link ERoot#bind bind},
      * {@link ERoot.event:onReady onReady}
      */
     function ERoot() {
@@ -692,14 +694,14 @@
          * _**TIP:** In order to avoid naming conflicts, reusable controllers should reside inside modules._
          *
          * @param {JSName} name
-         * Controller name.
+         * Controller name. Trailing spaces are ignored.
          *
          * @param {function} cf
          * Controller function, to be called with controller's scope/instance as a single parameter,
          * and as `this` context, to initialize the controller as required.
          */
         this.addController = function (name, cf) {
-            validateEntity(name, cf, 'controller');
+            name = validateEntity(name, cf, 'controller');
             if (name in ctrlRegistered) {
                 // controller name has been registered previously
                 if (ctrlRegistered[name] === cf) {
@@ -719,14 +721,14 @@
          * If the service with such name already exists, the method will do nothing.
          *
          * @param {JSName} name
-         * Service name.
+         * Service name. Trailing spaces are ignored.
          *
          * @param {function} sf
          * Service initialization function, to be called with the service's scope as a single parameter,
          * and as `this` context, to initialize the service as required.
          */
         this.addService = function (name, sf) {
-            validateEntity(name, sf, 'service');
+            name = validateEntity(name, sf, 'service');
             if (!(name in root.services)) {
                 var scope = {};
                 readOnlyProp(root.services, name, scope);
@@ -742,14 +744,14 @@
          * If the module with such name already exists, the method will do nothing.
          *
          * @param {JSName} name
-         * Module name.
+         * Module name. Trailing spaces are ignored.
          *
          * @param {function} mf
          * Module initialization function, to be called with the module's scope as a single parameter,
          * and as `this` context, to initialize the module as required.
          */
         this.addModule = function (name, mf) {
-            validateEntity(name, mf, 'module');
+            name = validateEntity(name, mf, 'module');
             if (!(name in modules)) {
                 var scope = {};
                 modules[name] = scope;
@@ -929,7 +931,7 @@
      * @event ERoot.onReady
      * @type {function}
      * @description
-     * Called once in the beginning, after all controllers in the app have been fully initialized.
+     * Called only once, after initializing controllers in the app for the first time.
      *
      * It represents the state of the application when it is ready to find all controllers
      * and communicate with them. This includes controllers created through extension, i.e.

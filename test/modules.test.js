@@ -6,7 +6,7 @@ beforeEach(() => {
             <div e-bind="mod.deep.space.third"></div>
             <div id="last"></div>`;
 
-    excellent.addModule('mod', function () {
+    excellent.addModule(' mod\t', function () {
         this.first = function () {
             this.node.innerHTML = 'first';
         };
@@ -55,7 +55,16 @@ describe('negative', () => {
     it('must throw on invalid module names', () => {
         expect(() => {
             excellent.addModule();
+        }).toThrow('Invalid module name <undefined> specified.');
+        expect(() => {
+            excellent.addModule(null);
+        }).toThrow('Invalid module name <null> specified.');
+        expect(() => {
+            excellent.addModule('');
         }).toThrow('Invalid module name "" specified.');
+        expect(() => {
+            excellent.addModule('   ');
+        }).toThrow('Invalid module name "   " specified.');
         expect(() => {
             excellent.addModule('t e s t');
         }).toThrow('Invalid module name "t e s t" specified.');

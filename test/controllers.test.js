@@ -26,7 +26,7 @@ beforeEach(() => {
             this.extend(['first', 'second']);
         };
     });
-    excellent.addController('base', ctrl => {
+    excellent.addController('\t\tbase\r\n', ctrl => {
         ctrl.node.innerHTML = 'base';
     });
 
@@ -248,7 +248,10 @@ describe('negative', () => {
     it('must throw on invalid controller names', () => {
         expect(() => {
             excellent.addController();
-        }).toThrow('Invalid controller name "" specified.');
+        }).toThrow('Invalid controller name <undefined> specified.');
+        expect(() => {
+            excellent.addController(123);
+        }).toThrow('Invalid controller name <123> specified.');
         expect(() => {
             excellent.addController('t e s t');
         }).toThrow('Invalid controller name "t e s t" specified.');
