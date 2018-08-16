@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 0.9.2 declarations
+// Complete Excellent.js 0.9.3 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -23,7 +23,7 @@ declare namespace ERoot {
 
         depends(ctrlNames: string[]): void
 
-        extend(ctrlName: string | string[], local?: boolean): EController | EController[]
+        extend(ctrlNames: string | string[], local?: boolean): EController | EController[]
 
         find(ctrlName: string): EController[]
 
@@ -45,6 +45,8 @@ declare namespace ERoot {
         addModule(name: string, cb: (scope: { [name: string]: any }) => void)
 
         addService(name: string, cb: (scope: { [name: string]: any }) => void)
+
+        attach(e: HTMLElement | ControlledElement, ctrlNames: string | string[]): EController | EController[]
 
         bind(process?: BindingProcess): void
 
