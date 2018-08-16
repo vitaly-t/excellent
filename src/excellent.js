@@ -1110,8 +1110,8 @@
 
         // TODO issue: what happens when we attach to an element that has e-bind with some controllers in it?
 
-        notify(created, 'onInit');
-        notify(created, 'onReady');
+        eventNotify(created, 'onInit');
+        eventNotify(created, 'onReady');
         return result;
     };
 
