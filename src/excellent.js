@@ -382,14 +382,23 @@
                 }
             });
         els.forEach(observer.watch);
-        allCtrl.forEach(function (c) {
-            if (typeof c.onInit === 'function') {
-                c.onInit();
-            }
-        });
-        allCtrl.forEach(function (c) {
-            if (typeof c.onReady === 'function') {
-                c.onReady();
+        notify(allCtrl, 'onInit');
+        notify(allCtrl, 'onReady');
+    }
+
+    /**
+     * Abstract event parameter-less notification for controllers.
+     *
+     * @param {Array<EController|ERoot>} arr
+     * List of controllers.
+     *
+     * @param {string} event
+     * Event name.
+     */
+    function notify(arr, event) {
+        arr.forEach(function (a) {
+            if (typeof a[event] === 'function') {
+                a[event]();
             }
         });
     }
@@ -1138,19 +1147,8 @@
         }
 
         var result = Array.isArray(name) ? name.map(ext, this) : ext.call(this, name);
-
-        created.forEach(function (c) {
-            if (typeof c.onInit === 'function') {
-                c.onInit();
-            }
-        });
-
-        created.forEach(function (c) {
-            if (typeof c.onReady === 'function') {
-                c.onReady();
-            }
-        });
-
+        notify(created, 'onInit');
+        notify(created, 'onReady');
         return result;
     };
 
@@ -1295,9 +1293,7 @@
             }
             document.addEventListener('DOMContentLoaded', function () {
                 bindElement(null, true); // binding all elements synchronously
-                if (typeof root.onReady === 'function') {
-                    root.onReady();
-                }
+                notify([root], 'onReady');
             });
         }
     })();
