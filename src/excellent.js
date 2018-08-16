@@ -1098,6 +1098,15 @@
             readOnlyProp(e, 'controllers', ctrl);
         }
         var result = Array.isArray(names) ? names.map(ext) : ext(names);
+
+        // TODO: Need to set attribute e-bind here, if it is not set,
+        // or else EController.find won't be able to find such controllers,
+        // and onDestroy won't work in IE9/10
+
+        // TODO: Need to set the watch observer, if it is a new element,
+        // or else onDestroy will not trigger in new browsers.
+        // Make sure not to do it twice with the initial bind.
+
         notify(created, 'onInit');
         notify(created, 'onReady');
         return result;
