@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul><h3><a href="global.html">Global</a></h3>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
@@ -45,7 +45,7 @@
      *
      * It is a controller name-to-function map for the app's local controllers.
      *
-     * @type {Object.&lt;string, Function>}
+     * @type {Object.&lt;JSName, function>}
      */
     var ctrlRegistered = {};
 
@@ -53,7 +53,7 @@
      * Live global controllers (initialized, but not destroyed), with each property -
      * controller name set to an array of controller objects.
      *
-     * @type {Object.&lt;string, EController[]>}
+     * @type {Object.&lt;CtrlName, EController[]>}
      */
     var ctrlGlobal = {};
 
@@ -61,21 +61,21 @@
      * Live local controllers (initialized, but not destroyed), with each property -
      * controller name set to an array of controller objects.
      *
-     * @type {Object.&lt;string, EController[]>}
+     * @type {Object.&lt;CtrlName, EController[]>}
      */
     var ctrlLocal = {};
 
     /**
      * Global name-to-function cache for all controllers.
      *
-     * @type {Object.&lt;string, Function>}
+     * @type {Object.&lt;CtrlName, function>}
      */
     var ctrlCache = {};
 
     /**
      * All registered modules.
      *
-     * @type {Object.&lt;string, {}>}
+     * @type {Object.&lt;JSName, {}>}
      */
     var modules = {};
 
@@ -103,13 +103,13 @@
     /**
      * Validates controller name, optionally trimmed.
      *
-     * @param {string} cn
+     * @param {CtrlName} cn
      * Controller name.
      *
-     * @param {boolean} [t]
+     * @param {boolean} [t=false]
      * Trims the name before validation.
      *
-     * @returns {string|undefined}
+     * @returns {CtrlName|undefined}
      * Valid controller name, or nothing.
      */
     function validateControllerName(cn, t) {
@@ -125,7 +125,7 @@
     /**
      * Validates a string to be a proper JavaScript open name.
      *
-     * @param {string} name
+     * @param {JSName} name
      * @returns {boolean}
      */
     function validJsVariable(name) {
@@ -138,7 +138,7 @@
      *
      * The entity must use JavaScript open-name syntax.
      *
-     * @param {string} name
+     * @param {JSName} name
      * Name of the entity.
      *
      * @param {function} cb
@@ -354,7 +354,7 @@
     /**
      * Registers the live controller in the global list, so it can be found globally.
      *
-     * @param {string} name
+     * @param {CtrlName} name
      * Controller name.
      *
      * @param {EController} c
@@ -551,7 +551,7 @@
      */
 
     /**
-     * @member {Object.&lt;string, EController>} ControlledElement#controllers
+     * @member {Object.&lt;CtrlName, EController>} ControlledElement#controllers
      * @readonly
      * @description
      * An object - map, with each property (controller name) of type {@link EController}.
@@ -587,7 +587,7 @@
      * Searches for a controller function, based on the controller's full name.
      * For that it uses the cache of names, plus modules.
      *
-     * @param {string} name
+     * @param {CtrlName} name
      * Controller name to be resolved.
      *
      * @param {HTMLElement} [e]
@@ -646,10 +646,10 @@
     /**
      * Parses a controller name, while allowing for trailing spaces.
      *
-     * @param {string} cn
+     * @param {CtrlName} cn
      * Controller name.
      *
-     * @returns {string}
+     * @returns {CtrlName}
      * Validated controller name (without trailing spaces).
      */
     function parseControllerName(cn) {
@@ -699,7 +699,7 @@
 
         /**
          * @member ERoot#services
-         * @type {Object.&lt;string, {}>}
+         * @type {Object.&lt;JSName, {}>}
          * @readonly
          * @description
          * Namespace of all registered and initialized services.
@@ -712,32 +712,33 @@
         /**
          * @method ERoot#addController
          * @description
-         * Adds/Registers a new controller.
+         * Registers a new controller name + function.
          *
          * If controller with such name already exists, then the method will do the following:
          *
          *  - throw an error, if the function is different
          *  - nothing, if the function is the same
          *
-         * In order to avoid naming conflicts, reusable controllers should reside inside modules.
+         * _**TIP:** In order to avoid naming conflicts, reusable controllers should reside inside modules._
          *
-         * @param {string} name
-         * Controller name. Must adhere to JavaScript open-name syntax.
+         * @param {JSName} name
+         * Controller name.
          *
-         * @param {function} cb
-         * Controller function.
+         * @param {function} cf
+         * Controller function, to be called with controller's scope/instance as a single parameter,
+         * and as `this` context, to initialize the controller as required.
          */
-        this.addController = function (name, cb) {
-            validateEntity(name, cb, 'controller');
+        this.addController = function (name, cf) {
+            validateEntity(name, cf, 'controller');
             if (name in ctrlRegistered) {
-                // controller name has been registered before
-                if (ctrlRegistered[name] === cb) {
+                // controller name has been registered previously
+                if (ctrlRegistered[name] === cf) {
                     // it is the same controller, so we can just ignore it;
                     return;
                 }
                 throw new Error('Controller with name ' + jStr(name) + ' already exists.');
             }
-            ctrlRegistered[name] = cb;
+            ctrlRegistered[name] = cf;
         };
 
         /**
@@ -745,23 +746,21 @@
          * @description
          * Adds and initializes a new service.
          *
-         * If the service with such name already exists, the method will do nothing, because it cannot determine
-         * whether the actual service behind the name is the same, while services need to be fully reusable,
-         * like in dynamically loaded pages.
+         * If the service with such name already exists, the method will do nothing.
          *
-         * @param {string} name
-         * Service name. Must adhere to JavaScript open-name syntax.
+         * @param {JSName} name
+         * Service name.
          *
-         * @param {function} cb
-         * Service initialization function. The function will be passed the service's scope as a single parameter
-         * and as `this` context, and it is expected to initialize the service as required.
+         * @param {function} sf
+         * Service initialization function, to be called with the service's scope as a single parameter,
+         * and as `this` context, to initialize the service as required.
          */
-        this.addService = function (name, cb) {
-            validateEntity(name, cb, 'service');
+        this.addService = function (name, sf) {
+            validateEntity(name, sf, 'service');
             if (!(name in root.services)) {
                 var scope = {};
                 readOnlyProp(root.services, name, scope);
-                cb.call(scope, scope);
+                sf.call(scope, scope);
             }
         };
 
@@ -770,23 +769,21 @@
          * @description
          * Adds and initializes a new module.
          *
-         * If the module with such name already exists, the method will do nothing, because it cannot determine
-         * whether the actual module behind the name is the same, while modules need to be fully reusable,
-         * like in dynamically loaded pages.
+         * If the module with such name already exists, the method will do nothing.
          *
-         * @param {string} name
-         * Module name. Must adhere to JavaScript open-name syntax.
+         * @param {JSName} name
+         * Module name.
          *
-         * @param {function} cb
-         * Module initialization function. The function will be passed the module's scope as a single parameter
-         * and as `this` context, and it is expected to initialize the module as required.
+         * @param {function} mf
+         * Module initialization function, to be called with the module's scope as a single parameter,
+         * and as `this` context, to initialize the module as required.
          */
-        this.addModule = function (name, cb) {
-            validateEntity(name, cb, 'module');
+        this.addModule = function (name, mf) {
+            validateEntity(name, mf, 'module');
             if (!(name in modules)) {
                 var scope = {};
                 modules[name] = scope;
-                cb.call(scope, scope);
+                mf.call(scope, scope);
             }
         };
 
@@ -828,14 +825,14 @@
          * {@link EController.event:onReady EController.onReady}. And it will find everything, if called during or after global event
          * {@link ERoot.event:onReady ERoot.onReady}.
          *
-         * @param {string} ctrlName
-         * Controller name to search by. It must adhere to JavaScript open-name syntax.
+         * @param {CtrlName} name
+         * Controller name to search by. Trailing spaces are ignored.
          *
          * @returns {EController[]}
          * List of found initialized controllers.
          */
-        this.find = function (ctrlName) {
-            var cn = parseControllerName(ctrlName);
+        this.find = function (name) {
+            var cn = parseControllerName(name);
             if (cn in ctrlGlobal) {
                 return ctrlGlobal[cn].slice();
             }
@@ -854,16 +851,16 @@
          * {@link EController.event:onReady EController.onReady}. And it will find everything, if called during or after global event
          * {@link ERoot.event:onReady ERoot.onReady}.
          *
-         * @param {string} ctrlName
-         * Controller name to search by. It must adhere to JavaScript open-name syntax.
+         * @param {CtrlName} name
+         * Controller name to search by. Trailing spaces are ignored.
          *
          * @returns {EController}
          * A single controller with the matching name.
          */
-        this.findOne = function (ctrlName) {
-            var a = this.find(ctrlName);
+        this.findOne = function (name) {
+            var a = this.find(name);
             if (a.length !== 1) {
-                throw new Error('Expected a single controller from findOne(' + jStr(ctrlName) + '), but found ' + a.length + '.');
+                throw new Error('Expected a single controller from findOne(' + jStr(name) + '), but found ' + a.length + '.');
             }
             return a[0];
         };
@@ -934,14 +931,14 @@
      * @property {} controllers
      * Details about controllers.
      *
-     * @property {Object.&lt;string, EController[]>} controllers.global
+     * @property {Object.&lt;CtrlName, EController[]>} controllers.global
      * All global live controllers, visible to search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
      *
-     * @property {Object.&lt;string, EController[]>} controllers.local
+     * @property {Object.&lt;CtrlName, EController[]>} controllers.local
      * All local live controllers (created via {@link EController#extend EController.extend} with `local` = `true`),
      * and thus not visible to search methods {@link ERoot#find ERoot.find} and {@link ERoot#findOne ERoot.findOne}.
      *
-     * @property {string[]} controllers.registered
+     * @property {JSName[]} controllers.registered
      * Names of all registered controllers.
      *
      * @property {number} controllers.total
@@ -950,10 +947,10 @@
      * @property {ControlledElement[]} elements
      * List of all controlled elements currently in the DOM.
      *
-     * @property {Object.&lt;string, {}>} modules
+     * @property {Object.&lt;JSName, {}>} modules
      * All registered and initialized modules.
      *
-     * @property {Object.&lt;string, {}>} services
+     * @property {Object.&lt;JSName, {}>} services
      * All registered and initialized services.
      *
      * */
@@ -1011,7 +1008,7 @@
 
         /**
          * @member EController#name
-         * @type {string}
+         * @type {CtrlName}
          * @readonly
          * @description
          * Full name of the controller.
@@ -1119,9 +1116,8 @@
      * by the method, other/global controllers can communicate with them only during or after event
      * {@link EController.event:onReady onReady}.
      *
-     * @param {string|string[]} ctrlName
-     * Either a single controller name, or an array of names.
-     * Names must adhere to JavaScript open-name syntax.
+     * @param {CtrlName|CtrlName[]} name
+     * Either a single controller name, or an array of names. Trailing spaces are ignored.
      *
      * @param {boolean} [local=false]
      * When `true`, newly created controllers are not registered in the global map,
@@ -1149,14 +1145,14 @@
      *     };
      * });
      */
-    EController.prototype.extend = function (ctrlName, local) {
+    EController.prototype.extend = function (name, local) {
         var ctrl = this.verifyInit('extend');
         var created = [];
 
-        function ext(name) {
-            var cn = validateControllerName(name, true);
+        function ext(n) {
+            var cn = validateControllerName(n, true);
             if (!cn) {
-                throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
+                throw new TypeError('Invalid controller name ' + jStr(n) + ' specified.');
             }
             var c = ctrl[cn];
             if (!c) {
@@ -1169,7 +1165,7 @@
             return c;
         }
 
-        var result = Array.isArray(ctrlName) ? ctrlName.map(ext, this) : ext.call(this, ctrlName);
+        var result = Array.isArray(name) ? name.map(ext, this) : ext.call(this, name);
 
         created.forEach(function (c) {
             if (typeof c.onInit === 'function') {
@@ -1198,22 +1194,22 @@
      *
      * Note however, that this method may not see controllers registered dynamically.
      *
-     * @param {string[]} ctrlNames
+     * @param {CtrlName[]} names
      * List of controller names. It should include all controller names that are due to be extended
      * (via method {@link EController#extend extend}), plus the ones that can be requested dynamically.
      *
-     * Controller names must adhere to JavaScript open-name syntax.
+     * Trailing spaces are ignored.
      *
      * @see {@link EController#extend extend}
      */
-    EController.prototype.depends = function (ctrlNames) {
-        if (!Array.isArray(ctrlNames)) {
+    EController.prototype.depends = function (names) {
+        if (!Array.isArray(names)) {
             throw new TypeError('Invalid list of controller names.');
         }
-        ctrlNames.forEach(function (name) {
-            var cn = validateControllerName(name, true);
+        names.forEach(function (n) {
+            var cn = validateControllerName(n, true);
             if (!cn) {
-                throw new TypeError('Invalid controller name ' + jStr(name) + ' specified.');
+                throw new TypeError('Invalid controller name ' + jStr(n) + ' specified.');
             }
             if (!getCtrlFunc(cn, null, true)) {
                 throw new Error('Controller ' + jStr(this.name) + ' depends on ' + jStr(cn) + ', which was not found.');
@@ -1232,16 +1228,16 @@
      * and implicitly created controllers (extended via method {@link EController#extend extend}), if called during or after event
      * {@link EController.event:onReady onReady}.
      *
-     * @param {string} ctrlName
-     * Controller name to search by. It must adhere to JavaScript open-name syntax.
+     * @param {CtrlName} name
+     * Controller name to search by. Trailing spaces are ignored.
      *
      * @returns {EController}
      * A single child controller with the matching name.
      */
-    EController.prototype.findOne = function (ctrlName) {
-        var a = this.find(ctrlName);
+    EController.prototype.findOne = function (name) {
+        var a = this.find(name);
         if (a.length !== 1) {
-            throw new Error('Expected a single controller from ' + jStr(this.name) + '.findOne(' + jStr(ctrlName) + '), but found ' + a.length + '.');
+            throw new Error('Expected a single controller from ' + jStr(this.name) + '.findOne(' + jStr(name) + '), but found ' + a.length + '.');
         }
         return a[0];
     };
@@ -1258,16 +1254,16 @@
      * and implicitly created controllers (extended via method {@link EController#extend extend}), if called during or after event
      * {@link EController.event:onReady onReady}.
      *
-     * @param {string} ctrlName
-     * Controller name to search by. It must adhere to JavaScript open-name syntax.
+     * @param {CtrlName} name
+     * Controller name to search by. Trailing spaces are ignored.
      *
      * @returns {EController[]}
      * List of initialized child controllers.
      *
      * @see {@link ERoot#find ERoot.find}
      */
-    EController.prototype.find = function (ctrlName) {
-        var cn = parseControllerName(ctrlName);
+    EController.prototype.find = function (name) {
+        var cn = parseControllerName(name);
         return findAll('[data-e-bind],[e-bind]', this.node)
             .filter(function (e) {
                 return e.controllers &amp;&amp; e.controllers[cn];
@@ -1335,6 +1331,33 @@
     })();
 
 })();
+
+/**
+ * @typedef JSName
+ * @type {string}
+ * @description
+ * It is a string that complies with the open-name syntax for JavaScript variables:
+ * - It must contain 1 or more symbols
+ * - It is treated as case-sensitive
+ * - Allowed symbols are: `a-z`, `A-Z`, `0-9`, `$` and `_`
+ * - It cannot start with a digit (`0-9`)
+ */
+
+/**
+ * @typedef CtrlName
+ * @type {string}
+ * @description
+ * It is a standard JavaScript nested-name string, made up by 1 or more {@link JSName} strings, joined by a dot:
+ *
+ * ```js
+ * module_1.$name2._ctrl3
+ * ```
+ *
+ * It cannot start or end with a dot. And it cannot have any spaces in between.
+ *
+ * It represents a full controller name. And if the name contains more than one {@link JSName}, then the first name
+ * always refers to a module, followed by either a simple or nested controller name implemented in that module.
+ */
 
 /**
  * @external HTMLElement

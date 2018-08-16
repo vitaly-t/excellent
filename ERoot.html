@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul><h3><a href="global.html">Global</a></h3>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
@@ -117,7 +117,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
 
         
             
-<h4 class="name" id="services"><span class="type-signature">(readonly) </span>services<span class="type-signature"> :Object.&lt;string, {}></span></h4>
+<h4 class="name" id="services"><span class="type-signature">(readonly) </span>services<span class="type-signature"> :Object.&lt;<a href="global.html#JSName">JSName</a>, {}></span></h4>
 
 
 
@@ -132,7 +132,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     <ul>
         <li>
             
-<span class="param-type">Object.&lt;string, {}></span>
+<span class="param-type">Object.&lt;<a href="global.html#JSName">JSName</a>, {}></span>
 
 
         </li>
@@ -280,7 +280,7 @@ because the library is distributed with the source maps.</p>
     
 
     
-    <h4 class="name" id="addController"><span class="type-signature"></span>addController<span class="signature">(name, cb)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addController"><span class="type-signature"></span>addController<span class="signature">(name, cf)</span><span class="type-signature"></span></h4>
     
 
     
@@ -288,13 +288,13 @@ because the library is distributed with the source maps.</p>
 
 
 <div class="description">
-    <p>Adds/Registers a new controller.</p>
+    <p>Registers a new controller name + function.</p>
 <p>If controller with such name already exists, then the method will do the following:</p>
 <ul>
 <li>throw an error, if the function is different</li>
 <li>nothing, if the function is the same</li>
 </ul>
-<p>In order to avoid naming conflicts, reusable controllers should reside inside modules.</p>
+<p><em><strong>TIP:</strong> In order to avoid naming conflicts, reusable controllers should reside inside modules.</em></p>
 </div>
 
 
@@ -336,7 +336,7 @@ because the library is distributed with the source maps.</p>
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#JSName">JSName</a></span>
 
 
             
@@ -346,14 +346,14 @@ because the library is distributed with the source maps.</p>
 
             
 
-            <td class="description last"><p>Controller name. Must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Controller name.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>cb</code></td>
+                <td class="name"><code>cf</code></td>
             
 
             <td class="type">
@@ -369,7 +369,8 @@ because the library is distributed with the source maps.</p>
 
             
 
-            <td class="description last"><p>Controller function.</p></td>
+            <td class="description last"><p>Controller function, to be called with controller's scope/instance as a single parameter,
+and as <code>this</code> context, to initialize the controller as required.</p></td>
         </tr>
 
     
@@ -444,7 +445,7 @@ because the library is distributed with the source maps.</p>
     
 
     
-    <h4 class="name" id="addModule"><span class="type-signature"></span>addModule<span class="signature">(name, cb)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addModule"><span class="type-signature"></span>addModule<span class="signature">(name, mf)</span><span class="type-signature"></span></h4>
     
 
     
@@ -453,9 +454,7 @@ because the library is distributed with the source maps.</p>
 
 <div class="description">
     <p>Adds and initializes a new module.</p>
-<p>If the module with such name already exists, the method will do nothing, because it cannot determine
-whether the actual module behind the name is the same, while modules need to be fully reusable,
-like in dynamically loaded pages.</p>
+<p>If the module with such name already exists, the method will do nothing.</p>
 </div>
 
 
@@ -497,7 +496,7 @@ like in dynamically loaded pages.</p>
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#JSName">JSName</a></span>
 
 
             
@@ -507,14 +506,14 @@ like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Module name. Must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Module name.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>cb</code></td>
+                <td class="name"><code>mf</code></td>
             
 
             <td class="type">
@@ -530,8 +529,8 @@ like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Module initialization function. The function will be passed the module's scope as a single parameter
-and as <code>this</code> context, and it is expected to initialize the module as required.</p></td>
+            <td class="description last"><p>Module initialization function, to be called with the module's scope as a single parameter,
+and as <code>this</code> context, to initialize the module as required.</p></td>
         </tr>
 
     
@@ -572,7 +571,7 @@ and as <code>this</code> context, and it is expected to initialize the module as
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line738">line 738</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line737">line 737</a>
     </li></ul></dd>
     
 
@@ -606,7 +605,7 @@ and as <code>this</code> context, and it is expected to initialize the module as
     
 
     
-    <h4 class="name" id="addService"><span class="type-signature"></span>addService<span class="signature">(name, cb)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addService"><span class="type-signature"></span>addService<span class="signature">(name, sf)</span><span class="type-signature"></span></h4>
     
 
     
@@ -615,9 +614,7 @@ and as <code>this</code> context, and it is expected to initialize the module as
 
 <div class="description">
     <p>Adds and initializes a new service.</p>
-<p>If the service with such name already exists, the method will do nothing, because it cannot determine
-whether the actual service behind the name is the same, while services need to be fully reusable,
-like in dynamically loaded pages.</p>
+<p>If the service with such name already exists, the method will do nothing.</p>
 </div>
 
 
@@ -659,7 +656,7 @@ like in dynamically loaded pages.</p>
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#JSName">JSName</a></span>
 
 
             
@@ -669,14 +666,14 @@ like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Service name. Must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Service name.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>cb</code></td>
+                <td class="name"><code>sf</code></td>
             
 
             <td class="type">
@@ -692,8 +689,8 @@ like in dynamically loaded pages.</p>
 
             
 
-            <td class="description last"><p>Service initialization function. The function will be passed the service's scope as a single parameter
-and as <code>this</code> context, and it is expected to initialize the service as required.</p></td>
+            <td class="description last"><p>Service initialization function, to be called with the service's scope as a single parameter,
+and as <code>this</code> context, to initialize the service as required.</p></td>
         </tr>
 
     
@@ -734,7 +731,7 @@ and as <code>this</code> context, and it is expected to initialize the service a
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line713">line 713</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line714">line 714</a>
     </li></ul></dd>
     
 
@@ -821,7 +818,7 @@ and as <code>this</code> context, and it is expected to initialize the service a
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line841">line 841</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line838">line 838</a>
     </li></ul></dd>
     
 
@@ -1012,7 +1009,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line763">line 763</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line760">line 760</a>
     </li></ul></dd>
     
 
@@ -1046,7 +1043,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
 
     
-    <h4 class="name" id="find"><span class="type-signature"></span>find<span class="signature">(ctrlName)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="EController.html">EController</a>>}</span></h4>
+    <h4 class="name" id="find"><span class="type-signature"></span>find<span class="signature">(name)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="EController.html">EController</a>>}</span></h4>
     
 
     
@@ -1098,13 +1095,13 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
         <tr>
             
-                <td class="name"><code>ctrlName</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#CtrlName">CtrlName</a></span>
 
 
             
@@ -1114,7 +1111,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
             
 
-            <td class="description last"><p>Controller name to search by. It must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Controller name to search by. Trailing spaces are ignored.</p></td>
         </tr>
 
     
@@ -1155,7 +1152,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line786">line 786</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line783">line 783</a>
     </li></ul></dd>
     
 
@@ -1211,7 +1208,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
 
     
-    <h4 class="name" id="findOne"><span class="type-signature"></span>findOne<span class="signature">(ctrlName)</span><span class="type-signature"> &rarr; {<a href="EController.html">EController</a>}</span></h4>
+    <h4 class="name" id="findOne"><span class="type-signature"></span>findOne<span class="signature">(name)</span><span class="type-signature"> &rarr; {<a href="EController.html">EController</a>}</span></h4>
     
 
     
@@ -1260,13 +1257,13 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
         <tr>
             
-                <td class="name"><code>ctrlName</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#CtrlName">CtrlName</a></span>
 
 
             
@@ -1276,7 +1273,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
             
 
-            <td class="description last"><p>Controller name to search by. It must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Controller name to search by. Trailing spaces are ignored.</p></td>
         </tr>
 
     
@@ -1317,7 +1314,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line815">line 815</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line812">line 812</a>
     </li></ul></dd>
     
 
@@ -1447,7 +1444,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line931">line 931</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line928">line 928</a>
     </li></ul></dd>
     
 

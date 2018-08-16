@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Externals</h3><ul><li><a href="external-HTMLElement.html">HTMLElement</a></li><li><a href="external-MutationObserver.html">MutationObserver</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul><h3><a href="global.html">Global</a></h3>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
@@ -75,7 +75,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line956">line 956</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line953">line 953</a>
     </li></ul></dd>
     
 
@@ -115,7 +115,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
 
         
             
-<h4 class="name" id="name"><span class="type-signature">(readonly) </span>name<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="name"><span class="type-signature">(readonly) </span>name<span class="type-signature"> :<a href="global.html#CtrlName">CtrlName</a></span></h4>
 
 
 
@@ -130,7 +130,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     <ul>
         <li>
             
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#CtrlName">CtrlName</a></span>
 
 
         </li>
@@ -169,7 +169,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line982">line 982</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line979">line 979</a>
     </li></ul></dd>
     
 
@@ -241,7 +241,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line991">line 991</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line988">line 988</a>
     </li></ul></dd>
     
 
@@ -403,7 +403,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1054">line 1054</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1051">line 1051</a>
     </li></ul></dd>
     
 
@@ -437,7 +437,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
 
     
-    <h4 class="name" id="depends"><span class="type-signature"></span>depends<span class="signature">(ctrlNames)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="depends"><span class="type-signature"></span>depends<span class="signature">(names)</span><span class="type-signature"></span></h4>
     
 
     
@@ -486,13 +486,13 @@ dependencies before trying to use them.</p>
 
         <tr>
             
-                <td class="name"><code>ctrlNames</code></td>
+                <td class="name"><code>names</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array.&lt;<a href="global.html#CtrlName">CtrlName</a>></span>
 
 
             
@@ -504,7 +504,7 @@ dependencies before trying to use them.</p>
 
             <td class="description last"><p>List of controller names. It should include all controller names that are due to be extended
 (via method <a href="EController.html#extend">extend</a>), plus the ones that can be requested dynamically.</p>
-<p>Controller names must adhere to JavaScript open-name syntax.</p></td>
+<p>Trailing spaces are ignored.</p></td>
         </tr>
 
     
@@ -545,7 +545,7 @@ dependencies before trying to use them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1159">line 1159</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1155">line 1155</a>
     </li></ul></dd>
     
 
@@ -586,7 +586,7 @@ dependencies before trying to use them.</p>
     
 
     
-    <h4 class="name" id="extend"><span class="type-signature"></span>extend<span class="signature">(ctrlName, local<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="EController.html">EController</a>|Array.&lt;<a href="EController.html">EController</a>>}</span></h4>
+    <h4 class="name" id="extend"><span class="type-signature"></span>extend<span class="signature">(name, local<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="EController.html">EController</a>|Array.&lt;<a href="EController.html">EController</a>>}</span></h4>
     
 
     
@@ -641,16 +641,16 @@ by the method, other/global controllers can communicate with them only during or
 
         <tr>
             
-                <td class="name"><code>ctrlName</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#CtrlName">CtrlName</a></span>
 |
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array.&lt;<a href="global.html#CtrlName">CtrlName</a>></span>
 
 
             
@@ -672,8 +672,7 @@ by the method, other/global controllers can communicate with them only during or
                 </td>
             
 
-            <td class="description last"><p>Either a single controller name, or an array of names.
-Names must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Either a single controller name, or an array of names. Trailing spaces are ignored.</p></td>
         </tr>
 
     
@@ -757,7 +756,7 @@ extended controllers by an outside controller is undesirable.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1077">line 1077</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1074">line 1074</a>
     </li></ul></dd>
     
 
@@ -824,7 +823,7 @@ extended controllers by an outside controller is undesirable.</p>
     
 
     
-    <h4 class="name" id="find"><span class="type-signature"></span>find<span class="signature">(ctrlName)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="EController.html">EController</a>>}</span></h4>
+    <h4 class="name" id="find"><span class="type-signature"></span>find<span class="signature">(name)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="EController.html">EController</a>>}</span></h4>
     
 
     
@@ -873,13 +872,13 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
         <tr>
             
-                <td class="name"><code>ctrlName</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#CtrlName">CtrlName</a></span>
 
 
             
@@ -889,7 +888,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
             
 
-            <td class="description last"><p>Controller name to search by. It must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Controller name to search by. Trailing spaces are ignored.</p></td>
         </tr>
 
     
@@ -930,7 +929,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1219">line 1219</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1215">line 1215</a>
     </li></ul></dd>
     
 
@@ -993,7 +992,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
 
     
-    <h4 class="name" id="findOne"><span class="type-signature"></span>findOne<span class="signature">(ctrlName)</span><span class="type-signature"> &rarr; {<a href="EController.html">EController</a>}</span></h4>
+    <h4 class="name" id="findOne"><span class="type-signature"></span>findOne<span class="signature">(name)</span><span class="type-signature"> &rarr; {<a href="EController.html">EController</a>}</span></h4>
     
 
     
@@ -1041,13 +1040,13 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
         <tr>
             
-                <td class="name"><code>ctrlName</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="global.html#CtrlName">CtrlName</a></span>
 
 
             
@@ -1057,7 +1056,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
             
 
-            <td class="description last"><p>Controller name to search by. It must adhere to JavaScript open-name syntax.</p></td>
+            <td class="description last"><p>Controller name to search by. Trailing spaces are ignored.</p></td>
         </tr>
 
     
@@ -1098,7 +1097,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1194">line 1194</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1190">line 1190</a>
     </li></ul></dd>
     
 
@@ -1229,7 +1228,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1037">line 1037</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1034">line 1034</a>
     </li></ul></dd>
     
 
@@ -1339,7 +1338,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1001">line 1001</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line998">line 998</a>
     </li></ul></dd>
     
 
@@ -1445,7 +1444,7 @@ with such extended controllers, it is only possible during or after this event.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1020">line 1020</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1017">line 1017</a>
     </li></ul></dd>
     
 
