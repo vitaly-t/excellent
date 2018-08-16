@@ -50,9 +50,9 @@
     var modules = {};
 
     /**
-     * All elements with controllers, currently in the DOM.
+     * All controlled elements currently in the DOM.
      *
-     * @type {HTMLElement[]}
+     * @type {ControlledElement[]}
      */
     var elements = [];
 
@@ -73,7 +73,7 @@
     /**
      * Validates controller name, optionally trimmed.
      *
-     * @param {CtrlName} cn
+     * @param {string} cn
      * Controller name.
      *
      * @param {boolean} [t=false]
@@ -95,7 +95,8 @@
     /**
      * Validates a string to be a proper JavaScript open name.
      *
-     * @param {JSName} name
+     * @param {string} name
+     *
      * @returns {boolean}
      */
     function validJsVariable(name) {
@@ -509,11 +510,11 @@
          * @param {ControlledElement} e
          */
         function destroyNotify(e) {
-            var elements = [];
+            var c = [];
             for (var i in e.controllers) {
-                elements.push(e.controllers[i]);
+                c.push(e.controllers[i]);
             }
-            eventNotify(elements, 'onDestroy');
+            eventNotify(c, 'onDestroy');
         }
 
     }
