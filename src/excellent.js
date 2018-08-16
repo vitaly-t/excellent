@@ -1074,7 +1074,7 @@
     ERoot.prototype.attach = function (e, names) {
         // TODO: Validate e here;
 
-        var ctrl = e.controllers, fresh;
+        var ctrl = e.controllers, fresh; // eslint-disable-line
         var created = [];
 
         function ext(n) {
