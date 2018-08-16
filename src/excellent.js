@@ -261,7 +261,7 @@
      * - _a function:_ binding is asynchronous, calling the function when finished;
      * - _any truthy value, except a function type:_ forces synchronous binding.
      */
-    function bindElement(node, process) {
+    function processBinding(node, process) {
         var cb = typeof process === 'function' && process;
         if (process && !cb) {
             // synchronous binding;
@@ -281,7 +281,7 @@
                     bs.nodes.length = 0;
                 }
             }
-            bind(node);
+            bindAll(node);
         } else {
             // asynchronous binding;
             if (node) {
@@ -311,9 +311,9 @@
                     bs.waiting = false;
                     if (bs.glob) {
                         bs.glob = false;
-                        bind(null);
+                        bindAll(null);
                     } else {
-                        nodes.forEach(bind);
+                        nodes.forEach(bindAll);
                     }
                 }
                 cbs.forEach(function (f) {
@@ -342,13 +342,14 @@
     }
 
     /**
-     * Binds to controllers all elements that are not yet bound.
+     * Binds to controllers all elements that are not yet bound,
+     * within the specified child elements, or globally.
      *
      * @param {HTMLElement} [node]
      * Top-level node element to start searching from. When not specified,
      * the search is done for the entire document.
      */
-    function bind(node) {
+    function bindAll(node) {
         var allCtrl = [], els = [];
         findAll('[data-e-bind],[e-bind]', node)
             .forEach(function (e) {
@@ -382,8 +383,8 @@
                 }
             });
         els.forEach(observer.watch);
-        notify(allCtrl, 'onInit');
-        notify(allCtrl, 'onReady');
+        eventNotify(allCtrl, 'onInit');
+        eventNotify(allCtrl, 'onReady');
     }
 
     /**
@@ -395,7 +396,7 @@
      * @param {string} event
      * Event name.
      */
-    function notify(arr, event) {
+    function eventNotify(arr, event) {
         arr.forEach(function (a) {
             if (typeof a[event] === 'function') {
                 a[event]();
@@ -452,7 +453,7 @@
                         var idx = elements.indexOf(e);
                         if (idx >= 0) {
                             elements.splice(idx, 1);
-                            notify(e);
+                            destroyNotify(e);
                         }
                         removeControllers(e);
                     }
@@ -495,7 +496,7 @@
                     var e = elements[i];
                     if (ce.indexOf(e) === -1) {
                         elements.splice(i, 1);
-                        notify(e);
+                        destroyNotify(e);
                         removeControllers(e);
                     }
                 }
@@ -507,13 +508,12 @@
          *
          * @param {ControlledElement} e
          */
-        function notify(e) {
+        function destroyNotify(e) {
+            var elements = [];
             for (var i in e.controllers) {
-                var c = e.controllers[i];
-                if (typeof c.onDestroy === 'function') {
-                    c.onDestroy();
-                }
+                elements.push(e.controllers[i]);
             }
+            eventNotify(elements, 'onDestroy');
         }
 
     }
@@ -788,7 +788,7 @@
          * - _any truthy value, except a function type:_ forces synchronous binding.
          */
         this.bind = function (process) {
-            bindElement(null, process);
+            processBinding(null, process);
         };
 
         /**
@@ -1079,7 +1079,7 @@
      */
     EController.prototype.bind = function (process) {
         this.verifyInit('bind');
-        bindElement(this.node, process);
+        processBinding(this.node, process);
     };
 
     /**
@@ -1147,8 +1147,8 @@
         }
 
         var result = Array.isArray(name) ? name.map(ext, this) : ext.call(this, name);
-        notify(created, 'onInit');
-        notify(created, 'onReady');
+        eventNotify(created, 'onInit');
+        eventNotify(created, 'onReady');
         return result;
     };
 
@@ -1292,8 +1292,8 @@
                 window[name] = root; // adding alternative root name
             }
             document.addEventListener('DOMContentLoaded', function () {
-                bindElement(null, true); // binding all elements synchronously
-                notify([root], 'onReady');
+                processBinding(null, true); // binding all elements synchronously
+                eventNotify([root], 'onReady');
             });
         }
     })();
