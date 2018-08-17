@@ -599,7 +599,7 @@
      * Searches for a controller function, based on the controller's full name.
      * For that it uses the cache of names, plus modules.
      *
-     * @param {string} name
+     * @param {string|CtrlName} name
      * Controller name to be resolved.
      *
      * @param {HTMLElement} [e]
@@ -852,10 +852,7 @@
          *         var b = app.attach(ctrl.node, ['ctrl1', 'ctrl2']);
          *     };
          * });
-         *
          */
-        // TODO: Tests are to be written for this method.
-        // istanbul ignore next
         ERoot.prototype.attach = function (e, names) {
             if (!e || typeof e.innerHTML !== 'string') {
                 throw new TypeError('Invalid DOM Element specified.');
@@ -873,7 +870,7 @@
                 }
                 var c = ctrl[cn];
                 if (!c) {
-                    var f = getCtrlFunc(name);
+                    var f = getCtrlFunc(cn);
                     c = createController(cn, e, f);
                     readOnlyProp(ctrl, cn, c);
                     addLiveCtrl(cn, c);
@@ -892,7 +889,9 @@
             // Need to set the attribute, if missing, or else EController.find
             // won't see it; and worse - event onDestroy won't work in IE9/10
             if (!e.hasAttribute('data-e-bind') && !e.hasAttribute('e-bind')) {
-                e.setAttribute('data-e-bind', arr.map(trim).join());
+                e.setAttribute('data-e-bind', created.map(function (c) {
+                    return c.name;
+                }).join());
             }
 
             // If it is a new element, register it and set the observer:

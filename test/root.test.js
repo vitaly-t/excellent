@@ -18,6 +18,7 @@ describe('positive', () => {
         expect(typeof e.find).toBe('function');
         expect(typeof e.findOne).toBe('function');
         expect(typeof e.analyze).toBe('function');
+        expect(typeof e.attach).toBe('function');
         expect(e.onReady).toBeUndefined();
     });
 

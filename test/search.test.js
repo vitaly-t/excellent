@@ -1,6 +1,5 @@
-function dummy() {
-
-}
+const dummy = () => {
+};
 
 beforeEach(() => {
     require('../src/excellent');
@@ -93,7 +92,7 @@ describe('negative', () => {
         }).toThrow('Invalid controller name <true> specified.');
         expect(() => {
             excellent.find(dummy);
-        }).toThrow('Invalid controller name <function dummy() {}> specified.');
+        }).toThrow('Invalid controller name <() => {}> specified.');
         expect(() => {
             excellent.find('one two');
         }).toThrow('Invalid controller name "one two" specified.');
@@ -108,7 +107,7 @@ describe('negative', () => {
         }).toThrow('Invalid controller name <false> specified.');
         expect(() => {
             excellent.findOne(dummy);
-        }).toThrow('Invalid controller name <function dummy() {}> specified.');
+        }).toThrow('Invalid controller name <() => {}> specified.');
         expect(() => {
             excellent.findOne('one two');
         }).toThrow('Invalid controller name "one two" specified.');

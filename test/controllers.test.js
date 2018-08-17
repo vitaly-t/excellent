@@ -29,7 +29,6 @@ beforeEach(() => {
     excellent.addController('\t\tbase\r\n', ctrl => {
         ctrl.node.innerHTML = 'base';
     });
-
     excellent.addController('last', ctrl => {
         ctrl.depends(['base']);
         ctrl.onInit = function () {
