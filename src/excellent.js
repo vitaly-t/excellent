@@ -80,7 +80,7 @@
     /**
      * Validates controller name, optionally trimmed.
      *
-     * @param {string} cn
+     * @param {string|CtrlName} cn
      * Controller name.
      *
      * @param {boolean} [t=false]
@@ -140,7 +140,7 @@
     /**
      * Wraps a value to be friendly within error messages.
      *
-     * @param {} value
+     * @param {*} value
      * @returns {string}
      */
     function jStr(value) {
@@ -213,7 +213,7 @@
     /**
      * Trims a string, by removing all trailing spaces, tabs and line breaks.
      *
-     * @param {string} txt
+     * @param {string|JSName} txt
      * Input string.
      *
      * @returns {string}
@@ -230,10 +230,10 @@
      * @param {object} target
      * Target object.
      *
-     * @param {string|CtrlName} prop
+     * @param {string|JSName|CtrlName} prop
      * Property name.
      *
-     * @param {} value
+     * @param {*} value
      * Property value.
      */
     function readOnlyProp(target, prop, value) {
@@ -334,7 +334,7 @@
     /**
      * Registers the live controller in the global list, so it can be found globally.
      *
-     * @param {CtrlName} name
+     * @param {CtrlName|string} name
      * Controller name.
      *
      * @param {EController} c
@@ -689,6 +689,7 @@
      * {@link ERoot#addController addController},
      * {@link ERoot#addModule addModule},
      * {@link ERoot#addService addService},
+     * {@link ERoot#attach attach},
      * {@link ERoot#find find},
      * {@link ERoot#findOne findOne},
      * {@link ERoot#services services},
@@ -834,6 +835,24 @@
          * @returns {EController|EController[]}
          * - if you pass in a single controller name, it returns a single controller.
          * - if you pass in an array of names, it returns an array of controllers.
+         *
+         * @example
+         *
+         * // This example is only to show how ERoot.attach relates to EController.extend,
+         * // but not how it is to be used, as using ERoot.attach like this is pointless.
+         *
+         * app.addController('ctrlName', function(ctrl) {
+         *     this.onInit = function() {
+         *
+         *         // Specifically in this context, the result of
+         *         // calling the following two lines is identical:
+         *
+         *         var a = ctrl.extend(['ctrl1', 'ctrl2']);
+         *
+         *         var b = app.attach(ctrl.node, ['ctrl1', 'ctrl2']);
+         *     };
+         * });
+         *
          */
         // TODO: Tests are to be written for this method.
         // istanbul ignore next
@@ -1013,7 +1032,7 @@
      * @description
      * Statistics / Diagnostics data, as returned by method {@link ERoot#analyze ERoot.analyze}.
      *
-     * @property {} bindings
+     * @property bindings
      * Element-to-controller binding status.
      *
      * @property {number} bindings.locals
@@ -1028,7 +1047,7 @@
      * @property {boolean} bindings.global
      * A global asynchronous request is being processed.
      *
-     * @property {} controllers
+     * @property controllers
      * Details about controllers.
      *
      * @property {Object.<CtrlName, EController[]>} controllers.global
