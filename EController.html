@@ -39,8 +39,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Controller interface, attached to each controlled element in the DOM. Such elements
-adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
+            <div class="description"><p>Controller interface, attached to each <a href="ControlledElement.html">ControlledElement</a> in the DOM.</p></div>
         
 
         
@@ -75,7 +74,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1157">line 1157</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1173">line 1173</a>
     </li></ul></dd>
     
 
@@ -169,7 +168,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1183">line 1183</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1198">line 1198</a>
     </li></ul></dd>
     
 
@@ -241,7 +240,7 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1192">line 1192</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1207">line 1207</a>
     </li></ul></dd>
     
 
@@ -277,9 +276,12 @@ adhere to type <a href="ControlledElement.html">ControlledElement</a>.</p></div>
 
 
 <div class="description">
-    <p>Signals the framework that the element's content has been modified to contain new child controlled
-elements, and that it is time to bind those elements with the corresponding controllers.</p>
+    <p>Signals the framework that the element's content has been modified to contain new child controlled elements,
+and that it is time to bind those elements with the corresponding controllers.</p>
 <p>This method requires that the calling controller has been initialized.</p>
+<p>Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
+then you can alternatively make use of method <a href="ERoot.html#attach">ERoot.attach</a>, to bind and initialize controllers
+for one specific DOM element.</p>
 <p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
 performance of the application. The binding engine implements the logic of minimizing the number of checks
 against the DOM, but it works best when requests are asynchronous.</p>
@@ -403,12 +405,19 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1255">line 1255</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1270">line 1270</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#bind">ERoot.bind</a>,<a href="ERoot.html#attach">ERoot.attach</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -545,7 +554,7 @@ dependencies before trying to use them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1348">line 1348</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1371">line 1371</a>
     </li></ul></dd>
     
 
@@ -756,7 +765,7 @@ extended controllers by an outside controller is undesirable.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1278">line 1278</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1301">line 1301</a>
     </li></ul></dd>
     
 
@@ -929,7 +938,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1408">line 1408</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1431">line 1431</a>
     </li></ul></dd>
     
 
@@ -1097,7 +1106,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1383">line 1383</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1406">line 1406</a>
     </li></ul></dd>
     
 
@@ -1228,7 +1237,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1238">line 1238</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1253">line 1253</a>
     </li></ul></dd>
     
 
@@ -1338,7 +1347,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1202">line 1202</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1217">line 1217</a>
     </li></ul></dd>
     
 
@@ -1444,7 +1453,7 @@ with such extended controllers, it is only possible during or after this event.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1221">line 1221</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1236">line 1236</a>
     </li></ul></dd>
     
 

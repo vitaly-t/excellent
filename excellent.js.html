@@ -864,20 +864,18 @@
          * Manually attaches/binds and initializes controller(s) to one specific DOM element, bypassing the automatic
          * controller binding.
          *
-         * This method is to simplify integration of controllers when an element is only exposed dynamically.
-         * Therefore, the typical use for this method is outside of the framework and/or controllers.
+         * This method is to simplify the binding when elements are available only as DOM objects, and not as HTML.
          *
-         * If, however, for some reasons, you decide to call it from inside a controller, please note that while
-         * it will work during and after {@link EController.event:onInit onInit} event, it will throw an error,
-         * if called during the controller's construction, because it will cause nested binding execution,
-         * which this library does not support.
+         * Most practical use cases for this method are that of an integration process into an application.
+         * If however, you decide to call it from inside a controller, please note that while it will work during
+         * and after {@link EController.event:onInit onInit} event, it will throw an error, if called during the
+         * controller's construction, because it will cause nested binding execution, which this library does not support.
          *
-         * The method's primary use is as a direct integration tool, and a replacement for automatic binding, not an addition.
+         * The method's primary use is as an integration tool, and a replacement for automatic binding, not an addition.
          * However, if you try to combine it, note that while attaching to an element previously bound automatically,
          * it will work correctly, as an extension (just like method {@link EController#extend EController.extend}),
          * but automatic binding will not work on elements with manually attached controllers, due to the conflict
-         * of controllers initialization in this case. Therefore, this method should only be used when necessary,
-         * during integration.
+         * of controllers initialization in this case.
          *
          * Similar to method {@link EController#extend EController.extend}, it creates and returns a new controller(s),
          * according to the parameters. And if you specify a controller name that's already bound to the element,
@@ -893,6 +891,10 @@
          * @returns {EController|EController[]}
          * - if you pass in a single controller name, it returns a single controller.
          * - if you pass in an array of names, it returns an array of controllers.
+         *
+         * @see
+         * {@link ERoot#bind bind},
+         * {@link EController#bind EController.bind}
          *
          * @example
          *
@@ -973,6 +975,9 @@
          * **NOTE:** If an alternative root name was set with `e-root` / `data-e-root`, its value is reset,
          * but the name itself is not removed from the global scope, because the library can pick it up
          * only once, on the initial run.
+         *
+         * @see
+         * {@link ERoot#analyze analyze}
          */
         this.reset = function () {
             ctrlRegistered = {};
@@ -1000,6 +1005,10 @@
          * {@link EController#bind EController.bind} method. It is only when you create a new controlled
          * element that's not a child element, then you would use this global binding.
          *
+         * Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
+         * then you can alternatively make use of method {@link ERoot#attach attach}, to bind and initialize controllers
+         * for one specific DOM element.
+         *
          * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
          * while affecting performance of the application. The binding engine implements the logic
          * of minimizing the number of checks against the DOM, but it works best when requests are asynchronous.
@@ -1009,6 +1018,10 @@
          * - _any falsy value (default):_ the binding will be done asynchronously;
          * - _a function:_ binding is asynchronous, calling the function when finished;
          * - _any truthy value, except a function type:_ forces synchronous binding.
+         *
+         * @see
+         * {@link ERoot#attach ERoot.attach},
+         * {@link EController#bind EController.bind}
          */
         this.bind = function (process) {
             processBinding(null, process);
@@ -1078,6 +1091,9 @@
          *
          * @returns {EStatistics}
          * Statistics Data.
+         *
+         * @see
+         * {@link ERoot#reset reset}
          */
         this.analyze = function () {
             var res = {
@@ -1187,8 +1203,7 @@
     /**
      * @interface EController
      * @description
-     * Controller interface, attached to each controlled element in the DOM. Such elements
-     * adhere to type {@link ControlledElement}.
+     * Controller interface, attached to each {@link ControlledElement} in the DOM.
      *
      * @see
      * {@link EController#name name},
@@ -1285,10 +1300,14 @@
     /**
      * @method EController#bind
      * @description
-     * Signals the framework that the element's content has been modified to contain new child controlled
-     * elements, and that it is time to bind those elements with the corresponding controllers.
+     * Signals the framework that the element's content has been modified to contain new child controlled elements,
+     * and that it is time to bind those elements with the corresponding controllers.
      *
      * This method requires that the calling controller has been initialized.
+     *
+     * Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
+     * then you can alternatively make use of method {@link ERoot#attach ERoot.attach}, to bind and initialize controllers
+     * for one specific DOM element.
      *
      * You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
      * performance of the application. The binding engine implements the logic of minimizing the number of checks
@@ -1299,6 +1318,10 @@
      * - _any falsy value (default):_ the binding will be done asynchronously;
      * - _a function:_ binding is asynchronous, calling the function when finished;
      * - _any truthy value, except a function type:_ forces synchronous binding.
+     *
+     * @see
+     * {@link ERoot#bind ERoot.bind},
+     * {@link ERoot#attach ERoot.attach}
      */
     EController.prototype.bind = function (process) {
         this.verifyInit('bind');

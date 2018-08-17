@@ -818,12 +818,19 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1042">line 1042</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1055">line 1055</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#reset">reset</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -884,18 +891,16 @@ and as <code>this</code> context, to initialize the service as required.</p></td
 <div class="description">
     <p>Manually attaches/binds and initializes controller(s) to one specific DOM element, bypassing the automatic
 controller binding.</p>
-<p>This method is to simplify integration of controllers when an element is only exposed dynamically.
-Therefore, the typical use for this method is outside of the framework and/or controllers.</p>
-<p>If, however, for some reasons, you decide to call it from inside a controller, please note that while
-it will work during and after <a href="EController.html#.event:onInit">onInit</a> event, it will throw an error,
-if called during the controller's construction, because it will cause nested binding execution,
-which this library does not support.</p>
-<p>The method's primary use is as a direct integration tool, and a replacement for automatic binding, not an addition.
+<p>This method is to simplify the binding when elements are available only as DOM objects, and not as HTML.</p>
+<p>Most practical use cases for this method are that of an integration process into an application.
+If however, you decide to call it from inside a controller, please note that while it will work during
+and after <a href="EController.html#.event:onInit">onInit</a> event, it will throw an error, if called during the
+controller's construction, because it will cause nested binding execution, which this library does not support.</p>
+<p>The method's primary use is as an integration tool, and a replacement for automatic binding, not an addition.
 However, if you try to combine it, note that while attaching to an element previously bound automatically,
 it will work correctly, as an extension (just like method <a href="EController.html#extend">EController.extend</a>),
 but automatic binding will not work on elements with manually attached controllers, due to the conflict
-of controllers initialization in this case. Therefore, this method should only be used when necessary,
-during integration.</p>
+of controllers initialization in this case.</p>
 <p>Similar to method <a href="EController.html#extend">EController.extend</a>, it creates and returns a new controller(s),
 according to the parameters. And if you specify a controller name that's already bound to the element,
 that controller is returned instead, to be reused, because only a single controller type can be bound to any
@@ -1025,6 +1030,13 @@ given element.</p>
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#bind">bind</a>,<a href="EController.html#bind">EController.bind</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -1097,6 +1109,9 @@ given element.</p>
 <p>Normally, a controller creates new controlled elements within its children, and then uses
 <a href="EController.html#bind">EController.bind</a> method. It is only when you create a new controlled
 element that's not a child element, then you would use this global binding.</p>
+<p>Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
+then you can alternatively make use of method <a href="ERoot.html#attach">attach</a>, to bind and initialize controllers
+for one specific DOM element.</p>
 <p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
 while affecting performance of the application. The binding engine implements the logic
 of minimizing the number of checks against the DOM, but it works best when requests are asynchronous.</p>
@@ -1220,12 +1235,19 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line964">line 964</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line969">line 969</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#attach">ERoot.attach</a>,<a href="EController.html#bind">EController.bind</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -1363,7 +1385,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line987">line 987</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1000">line 1000</a>
     </li></ul></dd>
     
 
@@ -1525,7 +1547,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1016">line 1016</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1029">line 1029</a>
     </li></ul></dd>
     
 
@@ -1637,12 +1659,19 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line936">line 936</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line938">line 938</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#analyze">analyze</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -1745,7 +1774,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1132">line 1132</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1148">line 1148</a>
     </li></ul></dd>
     
 
