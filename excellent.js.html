@@ -80,9 +80,9 @@
     var modules = {};
 
     /**
-     * All elements with controllers, currently in the DOM.
+     * All controlled elements currently in the DOM.
      *
-     * @type {HTMLElement[]}
+     * @type {ControlledElement[]}
      */
     var elements = [];
 
@@ -103,7 +103,7 @@
     /**
      * Validates controller name, optionally trimmed.
      *
-     * @param {CtrlName} cn
+     * @param {string} cn
      * Controller name.
      *
      * @param {boolean} [t=false]
@@ -125,7 +125,8 @@
     /**
      * Validates a string to be a proper JavaScript open name.
      *
-     * @param {JSName} name
+     * @param {string} name
+     *
      * @returns {boolean}
      */
     function validJsVariable(name) {
@@ -291,7 +292,7 @@
      * - _a function:_ binding is asynchronous, calling the function when finished;
      * - _any truthy value, except a function type:_ forces synchronous binding.
      */
-    function bindElement(node, process) {
+    function processBinding(node, process) {
         var cb = typeof process === 'function' &amp;&amp; process;
         if (process &amp;&amp; !cb) {
             // synchronous binding;
@@ -311,7 +312,7 @@
                     bs.nodes.length = 0;
                 }
             }
-            bind(node);
+            bindAll(node);
         } else {
             // asynchronous binding;
             if (node) {
@@ -341,9 +342,9 @@
                     bs.waiting = false;
                     if (bs.glob) {
                         bs.glob = false;
-                        bind(null);
+                        bindAll(null);
                     } else {
-                        nodes.forEach(bind);
+                        nodes.forEach(bindAll);
                     }
                 }
                 cbs.forEach(function (f) {
@@ -366,19 +367,20 @@
      * Local-controller flag.
      */
     function addLiveCtrl(name, c, local) {
-        var dest = local ? ctrlLocal : ctrlGlobal;
-        dest[name] = dest[name] || [];
-        dest[name].push(c);
+        var target = local ? ctrlLocal : ctrlGlobal;
+        target[name] = target[name] || [];
+        target[name].push(c);
     }
 
     /**
-     * Binds to controllers all elements that are not yet bound.
+     * Binds to controllers all elements that are not yet bound,
+     * within the specified parent element, or globally.
      *
      * @param {HTMLElement} [node]
      * Top-level node element to start searching from. When not specified,
      * the search is done for the entire document.
      */
-    function bind(node) {
+    function bindAll(node) {
         var allCtrl = [], els = [];
         findAll('[data-e-bind],[e-bind]', node)
             .forEach(function (e) {
@@ -412,14 +414,23 @@
                 }
             });
         els.forEach(observer.watch);
-        allCtrl.forEach(function (c) {
-            if (typeof c.onInit === 'function') {
-                c.onInit();
-            }
-        });
-        allCtrl.forEach(function (c) {
-            if (typeof c.onReady === 'function') {
-                c.onReady();
+        eventNotify(allCtrl, 'onInit');
+        eventNotify(allCtrl, 'onReady');
+    }
+
+    /**
+     * Abstract event parameter-less notification for controllers.
+     *
+     * @param {Array&lt;EController|ERoot>} arr
+     * List of controllers.
+     *
+     * @param {string} event
+     * Event name.
+     */
+    function eventNotify(arr, event) {
+        arr.forEach(function (a) {
+            if (typeof a[event] === 'function') {
+                a[event]();
             }
         });
     }
@@ -448,7 +459,7 @@
         }
 
         /**
-         * @member DestroyObserver.watch
+         * @method DestroyObserver#watch
          * @description
          * Initiates watching the element.
          *
@@ -473,7 +484,7 @@
                         var idx = elements.indexOf(e);
                         if (idx >= 0) {
                             elements.splice(idx, 1);
-                            notify(e);
+                            destroyNotify(e);
                         }
                         removeControllers(e);
                     }
@@ -516,7 +527,7 @@
                     var e = elements[i];
                     if (ce.indexOf(e) === -1) {
                         elements.splice(i, 1);
-                        notify(e);
+                        destroyNotify(e);
                         removeControllers(e);
                     }
                 }
@@ -528,13 +539,12 @@
          *
          * @param {ControlledElement} e
          */
-        function notify(e) {
+        function destroyNotify(e) {
+            var c = [];
             for (var i in e.controllers) {
-                var c = e.controllers[i];
-                if (typeof c.onDestroy === 'function') {
-                    c.onDestroy();
-                }
+                c.push(e.controllers[i]);
             }
+            eventNotify(c, 'onDestroy');
         }
 
     }
@@ -589,7 +599,7 @@
      * Searches for a controller function, based on the controller's full name.
      * For that it uses the cache of names, plus modules.
      *
-     * @param {CtrlName} name
+     * @param {string} name
      * Controller name to be resolved.
      *
      * @param {HTMLElement} [e]
@@ -809,7 +819,7 @@
          * - _any truthy value, except a function type:_ forces synchronous binding.
          */
         this.bind = function (process) {
-            bindElement(null, process);
+            processBinding(null, process);
         };
 
         /**
@@ -1100,7 +1110,7 @@
      */
     EController.prototype.bind = function (process) {
         this.verifyInit('bind');
-        bindElement(this.node, process);
+        processBinding(this.node, process);
     };
 
     /**
@@ -1118,7 +1128,7 @@
      * by the method, other/global controllers can communicate with them only during or after event
      * {@link EController.event:onReady onReady}.
      *
-     * @param {CtrlName|CtrlName[]} name
+     * @param {CtrlName|CtrlName[]} names
      * Either a single controller name, or an array of names. Trailing spaces are ignored.
      *
      * @param {boolean} [local=false]
@@ -1147,7 +1157,7 @@
      *     };
      * });
      */
-    EController.prototype.extend = function (name, local) {
+    EController.prototype.extend = function (names, local) {
         var ctrl = this.verifyInit('extend');
         var created = [];
 
@@ -1167,20 +1177,9 @@
             return c;
         }
 
-        var result = Array.isArray(name) ? name.map(ext, this) : ext.call(this, name);
-
-        created.forEach(function (c) {
-            if (typeof c.onInit === 'function') {
-                c.onInit();
-            }
-        });
-
-        created.forEach(function (c) {
-            if (typeof c.onReady === 'function') {
-                c.onReady();
-            }
-        });
-
+        var result = Array.isArray(names) ? names.map(ext, this) : ext.call(this, names);
+        eventNotify(created, 'onInit');
+        eventNotify(created, 'onReady');
         return result;
     };
 
@@ -1324,10 +1323,8 @@
                 window[name] = root; // adding alternative root name
             }
             document.addEventListener('DOMContentLoaded', function () {
-                bindElement(null, true); // binding all elements synchronously
-                if (typeof root.onReady === 'function') {
-                    root.onReady();
-                }
+                processBinding(null, true); // binding all elements synchronously
+                eventNotify([root], 'onReady');
             });
         }
     })();
