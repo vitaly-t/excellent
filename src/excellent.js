@@ -826,8 +826,8 @@
          * that controller is returned instead, to be reused, because only a single controller type can be bound to any
          * given element.
          *
-         * @param {HTMLElement|ControlledElement} e
-         * Either a new DOM element or a controlled element, to bind with the specified controller(s).
+         * @param {external:HTMLElement} e
+         * Either a new DOM element or a {@link ControlledElement}, to bind with the specified controller(s).
          *
          * @param {CtrlName|CtrlName[]} names
          * Either a single controller name, or an array of names. Trailing spaces are ignored.
