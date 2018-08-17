@@ -337,14 +337,14 @@
      * Local-controller flag.
      */
     function addLiveCtrl(name, c, local) {
-        var dest = local ? ctrlLocal : ctrlGlobal;
-        dest[name] = dest[name] || [];
-        dest[name].push(c);
+        var target = local ? ctrlLocal : ctrlGlobal;
+        target[name] = target[name] || [];
+        target[name].push(c);
     }
 
     /**
      * Binds to controllers all elements that are not yet bound,
-     * within the specified child elements, or globally.
+     * within the specified parent element, or globally.
      *
      * @param {HTMLElement} [node]
      * Top-level node element to start searching from. When not specified,
@@ -429,7 +429,7 @@
         }
 
         /**
-         * @member DestroyObserver.watch
+         * @method DestroyObserver#watch
          * @description
          * Initiates watching the element.
          *
@@ -569,7 +569,7 @@
      * Searches for a controller function, based on the controller's full name.
      * For that it uses the cache of names, plus modules.
      *
-     * @param {CtrlName} name
+     * @param {string} name
      * Controller name to be resolved.
      *
      * @param {HTMLElement} [e]
@@ -1098,7 +1098,7 @@
      * by the method, other/global controllers can communicate with them only during or after event
      * {@link EController.event:onReady onReady}.
      *
-     * @param {CtrlName|CtrlName[]} name
+     * @param {CtrlName|CtrlName[]} names
      * Either a single controller name, or an array of names. Trailing spaces are ignored.
      *
      * @param {boolean} [local=false]
@@ -1127,7 +1127,7 @@
      *     };
      * });
      */
-    EController.prototype.extend = function (name, local) {
+    EController.prototype.extend = function (names, local) {
         var ctrl = this.verifyInit('extend');
         var created = [];
 
@@ -1147,7 +1147,7 @@
             return c;
         }
 
-        var result = Array.isArray(name) ? name.map(ext, this) : ext.call(this, name);
+        var result = Array.isArray(names) ? names.map(ext, this) : ext.call(this, names);
         eventNotify(created, 'onInit');
         eventNotify(created, 'onReady');
         return result;

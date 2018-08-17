@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 0.9.2 declarations
+// Complete Excellent.js 0.9.3 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -23,7 +23,7 @@ declare namespace ERoot {
 
         depends(ctrlNames: string[]): void
 
-        extend(ctrlName: string | string[], local?: boolean): EController | EController[]
+        extend(ctrlNames: string | string[], local?: boolean): EController | EController[]
 
         find(ctrlName: string): EController[]
 
