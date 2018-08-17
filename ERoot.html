@@ -77,7 +77,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line645">line 645</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line675">line 675</a>
     </li></ul></dd>
     
 
@@ -87,7 +87,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="ERoot.html#analyze">analyze</a>,<a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addModule">addModule</a>,<a href="ERoot.html#addService">addService</a>,<a href="ERoot.html#find">find</a>,<a href="ERoot.html#findOne">findOne</a>,<a href="ERoot.html#services">services</a>,<a href="ERoot.html#version">version</a>,<a href="ERoot.html#bind">bind</a>,<a href="ERoot.html#.event:onReady">onReady</a></li>
+            <li><a href="ERoot.html#analyze">analyze</a>,<a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addModule">addModule</a>,<a href="ERoot.html#addService">addService</a>,<a href="ERoot.html#attach">attach</a>,<a href="ERoot.html#find">find</a>,<a href="ERoot.html#findOne">findOne</a>,<a href="ERoot.html#services">services</a>,<a href="ERoot.html#version">version</a>,<a href="ERoot.html#bind">bind</a>,<a href="ERoot.html#.event:onReady">onReady</a></li>
         </ul>
     </dd>
     
@@ -171,7 +171,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line682">line 682</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line713">line 713</a>
     </li></ul></dd>
     
 
@@ -252,7 +252,7 @@ because the library is distributed with the source maps.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line671">line 671</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line702">line 702</a>
     </li></ul></dd>
     
 
@@ -411,7 +411,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line694">line 694</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line725">line 725</a>
     </li></ul></dd>
     
 
@@ -571,7 +571,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line749">line 749</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line780">line 780</a>
     </li></ul></dd>
     
 
@@ -731,7 +731,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line726">line 726</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line757">line 757</a>
     </li></ul></dd>
     
 
@@ -818,7 +818,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line850">line 850</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line986">line 986</a>
     </li></ul></dd>
     
 
@@ -865,6 +865,220 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
 
 
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="attach"><span class="type-signature"></span>attach<span class="signature">(e, names)</span><span class="type-signature"> &rarr; {<a href="EController.html">EController</a>|Array.&lt;<a href="EController.html">EController</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Manually attaches/binds and initializes controller(s) to one specific DOM element, bypassing the automatic
+controller binding.</p>
+<p>This method is to simplify integration of controllers when an element is only exposed dynamically.
+Therefore, the typical use for this method is outside of the framework and/or controllers.</p>
+<p>If, however, for some reasons, you decide to call it from inside a controller, please note that while
+it will work during and after <a href="EController.html#.event:onInit">onInit</a> event, it will throw an error,
+if called during the controller's construction, because it will cause nested binding execution,
+which this library does not support.</p>
+<p>The method's primary use is as a direct integration tool, and a replacement for automatic binding, not an addition.
+However, if you try to combine it, note that while attaching to an element previously bound automatically,
+it will work correctly, as an extension (just like method <a href="EController.html#extend">EController.extend</a>),
+but automatic binding will not work on elements with manually attached controllers, due to the conflict
+of controllers initialization in this case. Therefore, this method should only be used when necessary,
+during integration.</p>
+<p>Similar to method <a href="EController.html#extend">EController.extend</a>, it creates and returns a new controller(s),
+according to the parameters. And if you specify a controller name that's already bound to the element,
+that controller is returned instead, to be reused, because only a single controller type can be bound to any
+given element.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+|
+
+<span class="param-type"><a href="ControlledElement.html">ControlledElement</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Either a new DOM element or a controlled element, to bind with the specified controller(s).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>names</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#CtrlName">CtrlName</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="global.html#CtrlName">CtrlName</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Either a single controller name, or an array of names. Trailing spaces are ignored.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line803">line 803</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>if you pass in a single controller name, it returns a single controller.</li>
+<li>if you pass in an array of names, it returns an array of controllers.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="EController.html">EController</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="EController.html">EController</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// This example is only to show how ERoot.attach relates to EController.extend,// but not how it is to be used, as using ERoot.attach like this is pointless.app.addController('ctrlName', function(ctrl) {    this.onInit = function() {        // Specifically in this context, the result of        // calling the following two lines is identical:        var a = ctrl.extend(['ctrl1', 'ctrl2']);        var b = app.attach(ctrl.node, ['ctrl1', 'ctrl2']);    };});</code></pre>
 
 
 
@@ -1009,7 +1223,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line772">line 772</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line908">line 908</a>
     </li></ul></dd>
     
 
@@ -1152,7 +1366,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line795">line 795</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line931">line 931</a>
     </li></ul></dd>
     
 
@@ -1314,7 +1528,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line824">line 824</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line960">line 960</a>
     </li></ul></dd>
     
 
@@ -1444,7 +1658,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line940">line 940</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1076">line 1076</a>
     </li></ul></dd>
     
 
