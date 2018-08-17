@@ -46,6 +46,8 @@ declare namespace ERoot {
 
         addService(name: string, cb: (scope: { [name: string]: any }) => void)
 
+        attach(e: HTMLElement | ControlledElement, ctrlNames: string | string[]): EController | EController[]
+
         bind(process?: BindingProcess): void
 
         find(ctrlName: string): EController[]
