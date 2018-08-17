@@ -22,12 +22,14 @@ describe('positive', () => {
         expect(e.onReady).toBeUndefined();
     });
 
-    it('should add alternative name with e-bind', () => {
+    it('should add alternative name with e-root', () => {
         const name = 'alternateName1';
         expect(window[name]).toBeUndefined();
         document.body.innerHTML = `<div e-root="${name}"></div>`;
         require('../src/excellent');
         expect(window[name]).toBe(excellent);
+        excellent.reset();
+        expect(window[name]).toBe(excellent); // must restore the alternative name
         delete window[name];
     });
 
@@ -37,6 +39,8 @@ describe('positive', () => {
         document.body.innerHTML = `<div data-e-root="${name}"></div>`;
         require('../src/excellent');
         expect(window[name]).toBe(excellent);
+        excellent.reset();
+        expect(window[name]).toBe(excellent); // must restore the alternative name
         delete window[name];
     });
 
@@ -80,6 +84,13 @@ describe('positive', () => {
         expect(Array.isArray(stat.elements)).toBe(true);
         expect(stat.modules).toEqual({mod1: {one: 1}});
         expect(stat.services).toEqual({srv1: {two: 2}});
+    });
+
+    it('can reset everything, including the root interface', () => {
+        const a = excellent;
+        a.reset();
+        const b = excellent;
+        expect(a === b).toBe(false);
     });
 });
 

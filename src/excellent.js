@@ -64,6 +64,13 @@
     var root = new ERoot();
 
     /**
+     * Alternative root name, if it was specified.
+     *
+     * @type {string}
+     */
+    var altRootName;
+
+    /**
      * Helps observing when elements are removed.
      *
      * @type {DestroyObserver}
@@ -445,18 +452,38 @@
      * For IE9/10 that do not support `MutationObserver`, it executes a manual check once a second.
      */
     function DestroyObserver() {
-        var mo;
+        var mo, timer;
+
         // MutationObserver does not exist in JEST:
         // istanbul ignore else
         if (typeof MutationObserver === 'undefined') {
             // istanbul ignore else
             if (typeof window !== 'undefined' && window) {
                 // We do not create any timer when inside Node.js
-                setInterval(manualCheck, 1000); // This is a work-around for IE9 and IE10
+                timer = setInterval(manualCheck, 1000); // This is a work-around for IE9 and IE10
             }
         } else {
             mo = new MutationObserver(mutantCB);
         }
+
+        /**
+         * @method DestroyObserver#stop
+         * @description
+         * To be used only from tests, it helps fully reset the library.
+         */
+        this.stop = function () {
+            // istanbul ignore else
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            // MutationObserver does not exist in JEST:
+            // istanbul ignore next
+            if (mo) {
+                mo.disconnect();
+                mo = null;
+            }
+        };
 
         /**
          * @method DestroyObserver#watch
@@ -692,6 +719,7 @@
      * {@link ERoot#attach attach},
      * {@link ERoot#find find},
      * {@link ERoot#findOne findOne},
+     * {@link ERoot#reset reset},
      * {@link ERoot#services services},
      * {@link ERoot#version version},
      * {@link ERoot#bind bind},
@@ -853,7 +881,7 @@
          *     };
          * });
          */
-        ERoot.prototype.attach = function (e, names) {
+        this.attach = function (e, names) {
             if (!e || typeof e.innerHTML !== 'string') {
                 throw new TypeError('Invalid DOM Element specified.');
             }
@@ -903,6 +931,32 @@
             eventNotify(created, 'onInit');
             eventNotify(created, 'onReady');
             return result;
+        };
+
+        /**
+         * @method ERoot#reset
+         * @description
+         * Performs instant hard reset of the entire library state, including the root interface object.
+         *
+         * It is only to help with some automatic tests that may require fresh state of the library.
+         *
+         * NOTE: The only thing it does not reset - alternative root name, if such was set.
+         */
+        this.reset = function () {
+            ctrlRegistered = {};
+            ctrlGlobal = {};
+            ctrlLocal = {};
+            ctrlCache = {};
+            modules = {};
+            elements.length = 0;
+            observer.stop();
+            observer = new DestroyObserver();
+            constructing = false;
+            root = new ERoot();
+            window.excellent = root;
+            if (altRootName) {
+                window[altRootName] = root;
+            }
         };
 
         /**
@@ -1426,6 +1480,7 @@
                     // The name must adhere to JavaScript open-name syntax!
                     throw new Error('Invalid ' + jStr(name) + ' root name specified: ' + startTag(e[0]));
                 }
+                altRootName = name;
                 window[name] = root; // adding alternative root name
             }
             document.addEventListener('DOMContentLoaded', function () {
