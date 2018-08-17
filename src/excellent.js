@@ -230,7 +230,7 @@
      * @param {object} target
      * Target object.
      *
-     * @param {string} prop
+     * @param {string|CtrlName} prop
      * Property name.
      *
      * @param {} value
@@ -350,6 +350,29 @@
     }
 
     /**
+     * Helper for creating a controller in a safe way.
+     *
+     * @param {string|CtrlName} name
+     * Controller name.
+     *
+     * @param {HTMLElement|ControlledElement} e
+     * Element associated with the controller.
+     *
+     * @param {function} f
+     * Controller's construction function.
+     *
+     * @returns {EController}
+     * Created controller.
+     */
+    function createController(name, e, f) {
+        constructing = true;
+        var c = new EController(name, e);
+        f.call(c, c);
+        constructing = false;
+        return c;
+    }
+
+    /**
      * Binds to controllers all elements that are not yet bound,
      * within the specified parent element, or globally.
      *
@@ -375,11 +398,8 @@
                                     throw new Error('Duplicate controller name ' + jStr(name) + ' not allowed: ' + startTag(e));
                                 }
                                 namesMap[name] = true;
-                                var c = new EController(name, e);
                                 var f = getCtrlFunc(name, e);
-                                constructing = true;
-                                f.call(c, c);
-                                constructing = false;
+                                var c = createController(name, e, f);
                                 eCtrl = eCtrl || {};
                                 readOnlyProp(eCtrl, name, c);
                                 allCtrl.push(c);
@@ -785,18 +805,25 @@
          * Manually attaches/binds and initializes controller(s) to one specific DOM element, bypassing the automatic
          * controller binding.
          *
+         * This method is to simplify integration of controllers when an element is only exposed dynamically.
+         * Therefore, the typical use for this method is outside of the framework and/or controllers.
+         *
+         * If, however, for some reasons, you decide to call it from inside a controller, please note that while
+         * it will work during and after {@link EController.event:onInit onInit} event, it will throw an error,
+         * if called during the controller's construction, because it will cause nested binding execution,
+         * which this library does not support.
+         *
+         * The method's primary use is as a direct integration tool, and a replacement for automatic binding, not an addition.
+         * However, if you try to combine it, note that while attaching to an element previously bound automatically,
+         * it will work correctly, as an extension (just like method {@link EController#extend EController.extend}),
+         * but automatic binding will not work on elements with manually attached controllers, due to the conflict
+         * of controllers initialization in this case. Therefore, this method should only be used when necessary,
+         * during integration.
+         *
          * Similar to method {@link EController#extend EController.extend}, it creates and returns a new controller(s),
          * according to the parameters. And if you specify a controller name that's already bound to the element,
          * that controller is returned instead, to be reused, because only a single controller type can be bound to any
          * given element.
-         *
-         * This method is to simplify integration of controllers when an element is only exposed dynamically.
-         * Therefore, the typical use for this method is outside of the framework and/or controllers.
-         *
-         * If however, for some reasons you decide to call it from inside a controller, please note that while
-         * it will work during {@link EController.event:onInit onInit} and {@link EController.event:onReady onReady}
-         * events, it will throw an error, if called during the controller's construction, because it will cause
-         * nested binding execution, which this library does not support.
          *
          * @param {HTMLElement|ControlledElement} e
          * Either a new DOM element or a controlled element, to bind with the specified controller(s).
@@ -808,6 +835,8 @@
          * - if you pass in a single controller name, it returns a single controller.
          * - if you pass in an array of names, it returns an array of controllers.
          */
+        // TODO: Tests are to be written for this method.
+        // istanbul ignore next
         ERoot.prototype.attach = function (e, names) {
             if (!e || typeof e.innerHTML !== 'string') {
                 throw new TypeError('Invalid DOM Element specified.');
@@ -825,8 +854,8 @@
                 }
                 var c = ctrl[cn];
                 if (!c) {
-                    c = new EController(cn, e);
-                    getCtrlFunc(cn).call(c, c);
+                    var f = getCtrlFunc(name);
+                    c = createController(cn, e, f);
                     readOnlyProp(ctrl, cn, c);
                     addLiveCtrl(cn, c);
                     created.push(c);
@@ -850,13 +879,8 @@
             // If it is a new element, register it and set the observer:
             if (elements.indexOf(e) === -1) {
                 elements.push(e);
-                observer.watch(e); // TODO: Think about this one inside bind
+                observer.watch(e);
             }
-
-            // TODO: Consider race scenarios with global bind.
-            // If attach is called while global binding is running we do not want it
-            // to register an element that's already registered.
-            // And we need to consider what if the element already has non-empty e-bind.
 
             eventNotify(created, 'onInit');
             eventNotify(created, 'onReady');
@@ -1232,11 +1256,8 @@
             }
             var c = ctrl[cn];
             if (!c) {
-                c = new EController(cn, this.node);
                 var f = getCtrlFunc(cn);
-                constructing = true;
-                f.call(c, c);
-                constructing = false;
+                c = createController(cn, this.node, f);
                 readOnlyProp(ctrl, cn, c);
                 addLiveCtrl(cn, c, local);
                 created.push(c);
