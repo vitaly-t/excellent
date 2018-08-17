@@ -970,7 +970,9 @@
          *
          * It is only to help with some automatic tests that may require fresh state of the library.
          *
-         * NOTE: The only thing it does not reset - alternative root name, if such was set.
+         * **NOTE:** If an alternative root name was set with `e-root` / `data-e-root`, its value is reset,
+         * but the name itself is not removed from the global scope, because the library can pick it up
+         * only once, on the initial run.
          */
         this.reset = function () {
             ctrlRegistered = {};

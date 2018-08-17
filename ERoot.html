@@ -818,7 +818,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1040">line 1040</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1042">line 1042</a>
     </li></ul></dd>
     
 
@@ -1220,7 +1220,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line962">line 962</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line964">line 964</a>
     </li></ul></dd>
     
 
@@ -1363,7 +1363,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line985">line 985</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line987">line 987</a>
     </li></ul></dd>
     
 
@@ -1525,7 +1525,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1014">line 1014</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1016">line 1016</a>
     </li></ul></dd>
     
 
@@ -1591,7 +1591,9 @@ and implicitly created controllers (extended via method <a href="EController.htm
 <div class="description">
     <p>Performs instant hard reset of the entire library state, including the root interface object.</p>
 <p>It is only to help with some automatic tests that may require fresh state of the library.</p>
-<p>NOTE: The only thing it does not reset - alternative root name, if such was set.</p>
+<p><strong>NOTE:</strong> If an alternative root name was set with <code>e-root</code> / <code>data-e-root</code>, its value is reset,
+but the name itself is not removed from the global scope, because the library can pick it up
+only once, on the initial run.</p>
 </div>
 
 
@@ -1743,7 +1745,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1130">line 1130</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1132">line 1132</a>
     </li></ul></dd>
     
 
