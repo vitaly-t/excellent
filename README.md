@@ -8,7 +8,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/vitaly-t/excellent/badge.svg?branch=master)](https://coveralls.io/github/vitaly-t/excellent?branch=master)
 [![Join Chat](https://badges.gitter.im/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent)
 
-If you like working with DOM directly, this tiny (2Kb gzip) library makes it productive, giving you the tools
+If you like working with DOM directly, this tiny (3Kb gzip) library makes it productive, giving you the tools
 for writing reusable DOM components. See [WiKi] for details.
 
 <br/>
