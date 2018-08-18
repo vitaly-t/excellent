@@ -743,7 +743,7 @@
          * @type {Object.<JSName, {}>}
          * @readonly
          * @description
-         * Namespace of all registered and initialized services.
+         * Namespace of all services, registered and initialized via method {@link ERoot#addService addService}.
          *
          * @see {@link ERoot#addService addService}
          *
@@ -768,6 +768,44 @@
          * @param {function} cf
          * Controller function, to be called with controller's scope/instance as a single parameter,
          * and as `this` context, to initialize the controller as required.
+         *
+         * @see
+         * {@link ERoot#addModule addModule},
+         * {@link ERoot#addService addService},
+         * {@link EController.event:onInit EController.onInit},
+         * {@link EController.event:onReady EController.onReady},
+         * {@link EController.event:onDestroy EController.onDestroy}
+         *
+         * @example
+         *
+         * app.addController('ctrlName', function(ctrl) {
+         *     // this = ctrl
+         *
+         *     // Initializing your controller here...
+         *
+         *     // Creating all event handlers, as needed:
+         *
+         *     this.onInit = function() {
+         *         // initializing the controller
+         *     };
+         *
+         *     this.onReady = function() {
+         *         // in case something needs to be done here
+         *     };
+         *
+         *     this.onDestroy = function() {
+         *         // any clean-up, if needed
+         *     };
+         *
+         *     // Creating public properties + methods for
+         *     // communication with other controllers:
+         *
+         *     this.someProp = 123;
+         *
+         *     this.someMethod = function() {
+         *         // do something
+         *     };
+         * });
          */
         this.addController = function (name, cf) {
             name = validateEntity(name, cf, 'controller');
@@ -789,12 +827,30 @@
          *
          * If the service with such name already exists, the method will do nothing.
          *
+         * Each registered service becomes globally available from the {@link ERoot#services services} namespace.
+         *
          * @param {JSName} name
          * Service name. Trailing spaces are ignored.
          *
          * @param {function} sf
          * Service initialization function, to be called with the service's scope as a single parameter,
          * and as `this` context, to initialize the service as required.
+         *
+         * @see
+         * {@link ERoot#addController addController},
+         * {@link ERoot#addModule addModule}
+         *
+         * @example
+         *
+         * app.addService('serviceName', function(scope) {
+         *     // this = scope
+         *
+         *     // Implement the service API on the scope here:
+         *
+         *     this.getMessage = function() {
+         *         // implement the method here
+         *     };
+         * });
          */
         this.addService = function (name, sf) {
             name = validateEntity(name, sf, 'service');
@@ -818,6 +874,32 @@
          * @param {function} mf
          * Module initialization function, to be called with the module's scope as a single parameter,
          * and as `this` context, to initialize the module as required.
+         *
+         * @see
+         * {@link ERoot#addController addController},
+         * {@link ERoot#addService addService}
+         *
+         * @example
+         *
+         * app.addModule('moduleName', function(scope) {
+         *     // this = scope
+         *
+         *     // Creating functions-controllers on the scope:
+         *
+         *     this.ctrl1 = function() {
+         *         // controller implementation here;
+         *     };
+         *
+         *     // Can use sub-spaces of any depth:
+         *     this.effects = {
+         *         fadeIn: function() {
+         *             // implement fadeIn controller here;
+         *         },
+         *         fadeOut: function() {
+         *             // implement fadeOut controller here;
+         *         };
+         *     };
+         * });
          */
         this.addModule = function (name, mf) {
             name = validateEntity(name, mf, 'module');
@@ -974,7 +1056,7 @@
          * element that's not a child element, then you would use this global binding.
          *
          * Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
-         * then you can alternatively make use of method {@link ERoot#attach attach}, to bind and initialize controllers
+         * then you can alternatively make use of method {@link ERoot#attach attach}, to inject and initialize controllers
          * for one specific DOM element.
          *
          * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
@@ -1027,7 +1109,7 @@
         /**
          * @method ERoot#findOne
          * @description
-         * Searches for a single initialized controller, in the entire application, based on the controller name.
+         * Implements a safe-check search for a single initialized controller, in the entire application, based on the controller name.
          *
          * The method will throw an error, if multiple or no controllers found.
          *
@@ -1229,13 +1311,24 @@
      * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy},
      * {@link ERoot.event:onReady ERoot.onReady}
+     *
+     * @example
+     *
+     * app.addController('ctrlName', function(ctrl) {
+     *    ctrl.onInit = function() {
+     *        // this = ctrl
+     *
+     *        // - you can use ctrl.extend here, to extend it
+     *        // - you can find explicitly created controllers
+     *    };
+     * });
      */
 
     /**
      * @event EController.onReady
      * @type {function}
      * @description
-     * Post-initialization event handler.
+     * Post-initialization event (happens after event {@link EController.event:onInit onInit}).
      *
      * At this point you can find and communicate with controllers created implicitly, through extension (via method {@link EController#extend extend}).
      *
@@ -1246,6 +1339,16 @@
      * {@link EController.event:onInit onInit},
      * {@link EController.event:onDestroy onDestroy},
      * {@link ERoot.event:onReady ERoot.onReady}
+     *
+     * @example
+     *
+     * app.addController('ctrlName', function(ctrl) {
+     *    ctrl.onReady = function() {
+     *        // this = ctrl
+     *
+     *        // you can find and communicate with all controllers here
+     *    };
+     * });
      */
 
     /**
@@ -1263,6 +1366,16 @@
      *
      * @see
      * {@link ERoot.event:onReady ERoot.onReady}
+     *
+     * @example
+     *
+     * app.addController('ctrlName', function(ctrl) {
+     *    ctrl.onDestroy = function() {
+     *        // this = ctrl
+     *
+     *        // Release any resources here, if necessary
+     *    };
+     * });
      */
 
     /**
@@ -1274,7 +1387,7 @@
      * This method requires that the calling controller has been initialized.
      *
      * Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
-     * then you can alternatively make use of method {@link ERoot#attach ERoot.attach}, to bind and initialize controllers
+     * then you can alternatively make use of method {@link ERoot#attach ERoot.attach}, to inject and initialize controllers
      * for one specific DOM element.
      *
      * You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
@@ -1290,6 +1403,27 @@
      * @see
      * {@link ERoot#bind ERoot.bind},
      * {@link ERoot#attach ERoot.attach}
+     *
+     * @example
+     *
+     * app.addController('appCtrl', function(ctrl) {
+     *
+     *     // You can also change content here, but
+     *     // the binding only possible during onInit;
+     *
+     *     ctrl.onInit = function() {
+     *         // Injecting a new controlled element:
+     *         ctrl.node.innerHTML = '<div e-bind="someCtrl"></div>';
+     *
+     *         // Asynchronously bind all child controlled elements:
+     *         ctrl.bind(function() {
+     *             // Binding has finished, we can now find the controller:
+     *             var c = ctrl.findOne('someCtrl');
+     *             // and communicate with it:
+     *             c.someMethod();
+     *         });
+     *     };
+     * });
      */
     EController.prototype.bind = function (process) {
         this.verifyInit('bind');
@@ -1385,6 +1519,16 @@
      * Trailing spaces are ignored.
      *
      * @see {@link EController#extend extend}
+     *
+     * @example
+     *
+     * app.addController('ctrlName', function(ctrl) {
+     *
+     *     // Make sure every controller on the list is available,
+     *     // or else throw a detailed dependency error:
+     *     ctrl.depends(['appCtrl', 'mod.ctrl1']);
+     *
+     * });
      */
     EController.prototype.depends = function (names) {
         if (!Array.isArray(names)) {
@@ -1404,7 +1548,7 @@
     /**
      * @method EController#findOne
      * @description
-     * Searches for a single initialized child controller by a given controller name.
+     * Implements a safe-check search for a single initialized child controller by a given controller name.
      *
      * The method will throw an error, if multiple or no controllers found.
      *
