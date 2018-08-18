@@ -35,10 +35,11 @@ h4.name {
 .prettyprint {
     width: auto;
     border-radius: 5px;
+    padding: 6px;
 }
 
 .prettyprint code {
-    padding: 10px 12px;
+    padding: 3px;
 }
 
 code {
