@@ -74,7 +74,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1171">line 1171</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1253">line 1253</a>
     </li></ul></dd>
     
 
@@ -168,7 +168,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1196">line 1196</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1278">line 1278</a>
     </li></ul></dd>
     
 
@@ -240,7 +240,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1205">line 1205</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1287">line 1287</a>
     </li></ul></dd>
     
 
@@ -280,7 +280,7 @@
 and that it is time to bind those elements with the corresponding controllers.</p>
 <p>This method requires that the calling controller has been initialized.</p>
 <p>Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
-then you can alternatively make use of method <a href="ERoot.html#attach">ERoot.attach</a>, to bind and initialize controllers
+then you can alternatively make use of method <a href="ERoot.html#attach">ERoot.attach</a>, to inject and initialize controllers
 for one specific DOM element.</p>
 <p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
 performance of the application. The binding engine implements the logic of minimizing the number of checks
@@ -405,7 +405,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1268">line 1268</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1381">line 1381</a>
     </li></ul></dd>
     
 
@@ -437,6 +437,11 @@ against the DOM, but it works best when requests are asynchronous.</p>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addController('appCtrl', function(ctrl) {    // You can also change content here, but    // the binding only possible during onInit;    ctrl.onInit = function() {        // Injecting a new controlled element:        ctrl.node.innerHTML = '&lt;div e-bind="someCtrl">&lt;/div>';        // Asynchronously bind all child controlled elements:        ctrl.bind(function() {            // Binding has finished, we can now find the controller:            var c = ctrl.findOne('someCtrl');            // and communicate with it:            c.someMethod();        });    };});</code></pre>
 
 
 
@@ -554,7 +559,7 @@ dependencies before trying to use them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1369">line 1369</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1503">line 1503</a>
     </li></ul></dd>
     
 
@@ -586,6 +591,11 @@ dependencies before trying to use them.</p>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {    // Make sure every controller on the list is available,    // or else throw a detailed dependency error:    ctrl.depends(['appCtrl', 'mod.ctrl1']);});</code></pre>
 
 
 
@@ -765,7 +775,7 @@ extended controllers by an outside controller is undesirable.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1299">line 1299</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1433">line 1433</a>
     </li></ul></dd>
     
 
@@ -938,7 +948,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1429">line 1429</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1573">line 1573</a>
     </li></ul></dd>
     
 
@@ -1009,7 +1019,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
 
 <div class="description">
-    <p>Searches for a single initialized child controller by a given controller name.</p>
+    <p>Implements a safe-check search for a single initialized child controller by a given controller name.</p>
 <p>The method will throw an error, if multiple or no controllers found.</p>
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">extend</a>), if called during or after event
@@ -1106,7 +1116,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1404">line 1404</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1548">line 1548</a>
     </li></ul></dd>
     
 
@@ -1237,7 +1247,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1251">line 1251</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1354">line 1354</a>
     </li></ul></dd>
     
 
@@ -1269,6 +1279,11 @@ that runs every second.</p>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {   ctrl.onDestroy = function() {       // this = ctrl       // Release any resources here, if necessary   };});</code></pre>
 
 
 
@@ -1347,7 +1362,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1215">line 1215</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1297">line 1297</a>
     </li></ul></dd>
     
 
@@ -1381,6 +1396,11 @@ that runs every second.</p>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {   ctrl.onInit = function() {       // this = ctrl       // - you can use ctrl.extend here, to extend it       // - you can find explicitly created controllers   };});</code></pre>
+
+
 
         
             
@@ -1396,7 +1416,7 @@ that runs every second.</p>
 
 
 <div class="description">
-    <p>Post-initialization event handler.</p>
+    <p>Post-initialization event (happens after event <a href="EController.html#.event:onInit">onInit</a>).</p>
 <p>At this point you can find and communicate with controllers created implicitly, through extension (via method <a href="EController.html#extend">extend</a>).</p>
 <p>Controllers can only be extended during <a href="EController.html#.event:onInit">onInit</a>, and they are initialized right after. If you need to find and communicate
 with such extended controllers, it is only possible during or after this event.</p>
@@ -1453,7 +1473,7 @@ with such extended controllers, it is only possible during or after this event.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1234">line 1234</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1327">line 1327</a>
     </li></ul></dd>
     
 
@@ -1485,6 +1505,11 @@ with such extended controllers, it is only possible during or after this event.<
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {   ctrl.onReady = function() {       // this = ctrl       // you can find and communicate with all controllers here   };});</code></pre>
 
 
 

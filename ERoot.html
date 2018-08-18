@@ -123,7 +123,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
 
 
 <div class="description">
-    <p>Namespace of all registered and initialized services.</p>
+    <p>Namespace of all services, registered and initialized via method <a href="ERoot.html#addService">addService</a>.</p>
 </div>
 
 
@@ -418,6 +418,13 @@ and as <code>this</code> context, to initialize the controller as required.</p><
     
 
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#addModule">addModule</a>,<a href="ERoot.html#addService">addService</a>,<a href="EController.html#.event:onInit">EController.onInit</a>,<a href="EController.html#.event:onReady">EController.onReady</a>,<a href="EController.html#.event:onDestroy">EController.onDestroy</a></li>
+        </ul>
+    </dd>
+    
 
     
 </dl>
@@ -436,6 +443,11 @@ and as <code>this</code> context, to initialize the controller as required.</p><
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {    // this = ctrl    // Initializing your controller here...    // Creating all event handlers, as needed:    this.onInit = function() {        // initializing the controller    };    this.onReady = function() {        // in case something needs to be done here    };    this.onDestroy = function() {        // any clean-up, if needed    };    // Creating public properties + methods for    // communication with other controllers:    this.someProp = 123;    this.someMethod = function() {        // do something    };});</code></pre>
 
 
 
@@ -571,12 +583,19 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line808">line 808</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line864">line 864</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addService">addService</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -598,6 +617,11 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addModule('moduleName', function(scope) {    // this = scope    // Creating functions-controllers on the scope:    this.ctrl1 = function() {        // controller implementation here;    };    // Can use sub-spaces of any depth:    this.effects = {        fadeIn: function() {            // implement fadeIn controller here;        },        fadeOut: function() {            // implement fadeOut controller here;        };    };});</code></pre>
+
+
 
         
             
@@ -615,6 +639,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
 <div class="description">
     <p>Adds and initializes a new service.</p>
 <p>If the service with such name already exists, the method will do nothing.</p>
+<p>Each registered service becomes globally available from the <a href="ERoot.html#services">services</a> namespace.</p>
 </div>
 
 
@@ -731,12 +756,19 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line785">line 785</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line823">line 823</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addModule">addModule</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -756,6 +788,11 @@ and as <code>this</code> context, to initialize the service as required.</p></td
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>app.addService('serviceName', function(scope) {    // this = scope    // Implement the service API on the scope here:    this.getMessage = function() {        // implement the method here    };});</code></pre>
 
 
 
@@ -818,7 +855,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1053">line 1053</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1135">line 1135</a>
     </li></ul></dd>
     
 
@@ -1025,7 +1062,7 @@ to the list of controllers explicitly created by the method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line831">line 831</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line913">line 913</a>
     </li></ul></dd>
     
 
@@ -1112,7 +1149,7 @@ to the list of controllers explicitly created by the method.</p>
 <a href="EController.html#bind">EController.bind</a> method. It is only when you create a new controlled
 element that's not a child element, then you would use this global binding.</p>
 <p>Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
-then you can alternatively make use of method <a href="ERoot.html#attach">attach</a>, to bind and initialize controllers
+then you can alternatively make use of method <a href="ERoot.html#attach">attach</a>, to inject and initialize controllers
 for one specific DOM element.</p>
 <p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
 while affecting performance of the application. The binding engine implements the logic
@@ -1237,7 +1274,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line967">line 967</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1049">line 1049</a>
     </li></ul></dd>
     
 
@@ -1387,7 +1424,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line998">line 998</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1080">line 1080</a>
     </li></ul></dd>
     
 
@@ -1451,7 +1488,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
 
 <div class="description">
-    <p>Searches for a single initialized controller, in the entire application, based on the controller name.</p>
+    <p>Implements a safe-check search for a single initialized controller, in the entire application, based on the controller name.</p>
 <p>The method will throw an error, if multiple or no controllers found.</p>
 <p>It will find explicitly created controllers, if called during or after event <a href="EController.html#.event:onInit">EController.onInit</a>,
 and implicitly created controllers (extended via method <a href="EController.html#extend">EController.extend</a>), if called during or after event
@@ -1549,7 +1586,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1027">line 1027</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1109">line 1109</a>
     </li></ul></dd>
     
 
@@ -1661,7 +1698,7 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line936">line 936</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1018">line 1018</a>
     </li></ul></dd>
     
 
@@ -1776,7 +1813,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1146">line 1146</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1228">line 1228</a>
     </li></ul></dd>
     
 
