@@ -852,6 +852,9 @@
          * that controller is returned instead, to be reused, because only a single controller type can be bound to any
          * given element.
          *
+         * In addition, if the element has no previous binding set on it, attribute `data-e-bind` is created, set
+         * to the list of controllers explicitly created by the method.
+         *
          * @param {external:HTMLElement} e
          * Either a new DOM element or a {@link ControlledElement}, to bind with the specified controller(s).
          *
@@ -891,7 +894,7 @@
                 throw new Error('Cannot invoke ERoot.attach from a controller constructor.');
             }
             var ctrl = e.controllers;
-            var created = [];
+            var created = [], attrNames = [];
 
             function ext(n) {
                 var cn = validateControllerName(n, true);
@@ -905,6 +908,7 @@
                     readOnlyProp(ctrl, cn, c);
                     addLiveCtrl(cn, c);
                     created.push(c);
+                    attrNames.push(cn);
                 }
                 return c;
             }
@@ -912,6 +916,8 @@
             if (!ctrl) {
                 ctrl = {};
                 readOnlyProp(e, 'controllers', ctrl);
+                elements.push(e);
+                observer.watch(e);
             }
             var arr = Array.isArray(names) ? names : [names];
             var result = arr.map(ext);
@@ -919,15 +925,7 @@
             // Need to set the attribute, if missing, or else EController.find
             // won't see it; and worse - event onDestroy won't work in IE9/10
             if (!e.hasAttribute('data-e-bind') && !e.hasAttribute('e-bind')) {
-                e.setAttribute('data-e-bind', created.map(function (c) {
-                    return c.name;
-                }).join());
-            }
-
-            // If it is a new element, register it and set the observer:
-            if (elements.indexOf(e) === -1) {
-                elements.push(e);
-                observer.watch(e);
+                e.setAttribute('data-e-bind', attrNames.join(', '));
             }
 
             eventNotify(created, 'onInit');

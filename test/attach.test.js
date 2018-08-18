@@ -50,9 +50,9 @@ describe('positive', () => {
         });
         const e = document.getElementById('last');
         excellent.attach(e, ['attrTest1', 'attrTest2', 'attrTest1', 'attrTest2']);
-        expect(e.getAttribute('data-e-bind')).toBe('attrTest1,attrTest2');
+        expect(e.getAttribute('data-e-bind')).toBe('attrTest1, attrTest2');
         excellent.attach(e, ['attrTest3', 'attrTest3']);
-        expect(e.getAttribute('data-e-bind')).toBe('attrTest1,attrTest2');
+        expect(e.getAttribute('data-e-bind')).toBe('attrTest1, attrTest2');
     });
 
     it('must trigger onDestroy event for attached elements', () => {
