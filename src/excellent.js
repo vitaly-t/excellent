@@ -1097,6 +1097,11 @@
          *
          * @returns {EController[]}
          * List of found initialized controllers.
+         *
+         * @see
+         * {@link ERoot#findOne findOne},
+         * {@link EController#find EController.find},
+         * {@link EController#findOne EController.findOne}
          */
         this.find = function (name) {
             var cn = parseControllerName(name);
@@ -1123,6 +1128,11 @@
          *
          * @returns {EController}
          * A single controller with the matching name.
+         *
+         * @see
+         * {@link ERoot#find find},
+         * {@link EController#find EController.find},
+         * {@link EController#findOne EController.findOne}
          */
         this.findOne = function (name) {
             var a = this.find(name);
@@ -1561,6 +1571,11 @@
      *
      * @returns {EController}
      * A single child controller with the matching name.
+     *
+     * @see
+     * {@link EController#find EController.find},
+     * {@link ERoot#find ERoot.find},
+     * {@link ERoot#findOne ERoot.findOne}
      */
     EController.prototype.findOne = function (name) {
         var a = this.find(name);
@@ -1589,6 +1604,11 @@
      * List of initialized child controllers.
      *
      * @see {@link ERoot#find ERoot.find}
+     *
+     * @see
+     * {@link EController#findOne EController.findOne},
+     * {@link ERoot#findOne ERoot.findOne},
+     * {@link ERoot#find ERoot.find}
      */
     EController.prototype.find = function (name) {
         var cn = parseControllerName(name);

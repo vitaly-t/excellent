@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DOM Component Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
@@ -30,7 +30,9 @@
   "keywords": [
     "DOM",
     "component",
-    "framework"
+    "framework",
+    "vanilla",
+    "VanillaJS"
   ],
   "author": {
     "name": "Vitaly Tomilov",
