@@ -1603,8 +1603,6 @@
      * @returns {EController[]}
      * List of initialized child controllers.
      *
-     * @see {@link ERoot#find ERoot.find}
-     *
      * @see
      * {@link EController#findOne EController.findOne},
      * {@link ERoot#findOne ERoot.findOne},
