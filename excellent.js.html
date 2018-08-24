@@ -989,8 +989,10 @@
          * Either a single controller name, or an array of names. Trailing spaces are ignored.
          *
          * @returns {EController|EController[]}
-         * - if you pass in a single controller name, it returns a single controller.
-         * - if you pass in an array of names, it returns an array of controllers.
+         * - if you pass in a single controller name, it returns a single created controller.
+         * - if you pass in an array of names, it returns an array of created controllers.
+         *
+         * The returned controller(s) have already finished processing event {@link EController.event:onReady EController.onReady}.
          *
          * @see
          * {@link ERoot#bind bind},
