@@ -39,7 +39,8 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Controller interface, attached to each <a href="ControlledElement.html">ControlledElement</a> in the DOM.</p></div>
+            <div class="description"><p>Controller interface, attached to each <a href="ControlledElement.html">ControlledElement</a> in the DOM.</p>
+<p>It is created automatically, during element-to-controller binding, or when <a href="ERoot.html#attach">attaching</a> to an element.</p></div>
         
 
         
@@ -168,7 +169,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1288">line 1288</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1290">line 1290</a>
     </li></ul></dd>
     
 
@@ -240,7 +241,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1297">line 1297</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1299">line 1299</a>
     </li></ul></dd>
     
 
@@ -405,7 +406,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1391">line 1391</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1392">line 1392</a>
     </li></ul></dd>
     
 
@@ -559,7 +560,7 @@ dependencies before trying to use them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1513">line 1513</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1517">line 1517</a>
     </li></ul></dd>
     
 
@@ -775,12 +776,19 @@ extended controllers by an outside controller is undesirable.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1443">line 1443</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1444">line 1444</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="EController.html#depends">depends</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -948,7 +956,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1588">line 1588</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1592">line 1592</a>
     </li></ul></dd>
     
 
@@ -1116,7 +1124,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1558">line 1558</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1562">line 1562</a>
     </li></ul></dd>
     
 
@@ -1199,8 +1207,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 <p>It signals the controller that its element has been removed from DOM,
 and it is time to release any pre-allocated resources, if necessary.</p>
 <p>In any modern browser, the event is triggered immediately, courtesy of <a href="external-MutationObserver.html">MutationObserver</a>,
-while in older browsers, such as IE9 and IE10, it falls back on a manual background check
-that runs every second.</p>
+while in older browsers (IE9 and IE10), it falls back on a manual background check that runs every second.</p>
 </div>
 
 
@@ -1254,7 +1261,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1364">line 1364</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1366">line 1366</a>
     </li></ul></dd>
     
 
@@ -1369,7 +1376,7 @@ that runs every second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1307">line 1307</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1309">line 1309</a>
     </li></ul></dd>
     
 
@@ -1480,7 +1487,7 @@ with such extended controllers, it is only possible during or after this event.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1337">line 1337</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1339">line 1339</a>
     </li></ul></dd>
     
 
