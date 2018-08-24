@@ -959,8 +959,10 @@
          * Either a single controller name, or an array of names. Trailing spaces are ignored.
          *
          * @returns {EController|EController[]}
-         * - if you pass in a single controller name, it returns a single controller.
-         * - if you pass in an array of names, it returns an array of controllers.
+         * - if you pass in a single controller name, it returns a single created controller.
+         * - if you pass in an array of names, it returns an array of created controllers.
+         *
+         * The returned controller(s) have already finished processing event {@link EController.event:onReady EController.onReady}.
          *
          * @see
          * {@link ERoot#bind bind},
@@ -972,7 +974,7 @@
          * // without using element-to-controller explicit bindings:
          *
          * var e = document.getElementById('someId'); // find a DOM element
-         * var c = excellent.attach(e, 'myController'); // attach a controller to it
+         * var c = app.attach(e, 'myController'); // attach a controller to it
          * c.someMethod(data); // data = parametrization data for the controller
          *
          * @example
