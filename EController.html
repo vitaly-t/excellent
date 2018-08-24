@@ -75,7 +75,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1263">line 1263</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1277">line 1277</a>
     </li></ul></dd>
     
 
@@ -169,7 +169,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1290">line 1290</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1304">line 1304</a>
     </li></ul></dd>
     
 
@@ -241,7 +241,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1299">line 1299</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1313">line 1313</a>
     </li></ul></dd>
     
 
@@ -277,15 +277,14 @@
 
 
 <div class="description">
-    <p>Signals the framework that the element's content has been modified to contain new child controlled elements,
-and that it is time to bind those elements with the corresponding controllers.</p>
+    <p>Signals the framework that the element's inner content has been modified to contain new child controlled elements,
+and that it is time to bind those with the corresponding controllers.</p>
 <p>This method requires that the calling controller has been initialized.</p>
 <p>Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
 then you can alternatively make use of method <a href="ERoot.html#attach">ERoot.attach</a>, to inject and initialize controllers
 for one specific DOM element.</p>
-<p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
-performance of the application. The binding engine implements the logic of minimizing the number of checks
-against the DOM, but it works best when requests are asynchronous.</p>
+<p>You should try to avoid use of synchronous bindings, if possible. The binding engine implements the logic of minimizing
+the number of checks against the DOM, but it works/scales best when requests are asynchronous.</p>
 </div>
 
 
@@ -406,7 +405,7 @@ against the DOM, but it works best when requests are asynchronous.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1392">line 1392</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1407">line 1407</a>
     </li></ul></dd>
     
 
@@ -560,7 +559,7 @@ dependencies before trying to use them.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1517">line 1517</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1531">line 1531</a>
     </li></ul></dd>
     
 
@@ -776,7 +775,7 @@ extended controllers by an outside controller is undesirable.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1444">line 1444</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1458">line 1458</a>
     </li></ul></dd>
     
 
@@ -956,7 +955,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1592">line 1592</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1606">line 1606</a>
     </li></ul></dd>
     
 
@@ -1124,7 +1123,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1562">line 1562</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1576">line 1576</a>
     </li></ul></dd>
     
 
@@ -1204,8 +1203,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
 <div class="description">
     <p>De-initialization event handler.</p>
-<p>It signals the controller that its element has been removed from DOM,
-and it is time to release any pre-allocated resources, if necessary.</p>
+<p>It signals the controller that its element has been removed from DOM, and it is time to release any pre-allocated resources, if necessary.</p>
 <p>In any modern browser, the event is triggered immediately, courtesy of <a href="external-MutationObserver.html">MutationObserver</a>,
 while in older browsers (IE9 and IE10), it falls back on a manual background check that runs every second.</p>
 </div>
@@ -1261,7 +1259,7 @@ while in older browsers (IE9 and IE10), it falls back on a manual background che
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1366">line 1366</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1382">line 1382</a>
     </li></ul></dd>
     
 
@@ -1321,8 +1319,9 @@ while in older browsers (IE9 and IE10), it falls back on a manual background che
 <li>find explicitly bound (through <code>e-bind</code> attribute) controllers and communicate with them</li>
 <li>extend the element with other controllers (via method <a href="EController.html#extend">extend</a>)</li>
 </ul>
-<p>At this point you cannot locate or communicate with outside controllers being extended
+<p>Note that at this point you cannot locate or communicate with outside controllers being extended
 (via method <a href="EController.html#extend">extend</a>). For that you need to use <a href="EController.html#.event:onReady">onReady</a> event.</p>
+<p>If a controller doesn't extend or communicate with other controllers, then it does not need to handle this event.</p>
 </div>
 
 
@@ -1376,7 +1375,7 @@ while in older browsers (IE9 and IE10), it falls back on a manual background che
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1309">line 1309</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1323">line 1323</a>
     </li></ul></dd>
     
 
@@ -1487,7 +1486,7 @@ with such extended controllers, it is only possible during or after this event.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1339">line 1339</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1355">line 1355</a>
     </li></ul></dd>
     
 

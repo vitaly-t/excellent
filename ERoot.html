@@ -123,7 +123,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
 
 
 <div class="description">
-    <p>Namespace of all services, registered and initialized via method <a href="ERoot.html#addService">addService</a>.</p>
+    <p>Namespace of all services, registered via method <a href="ERoot.html#addService">addService</a>.</p>
 </div>
 
 
@@ -280,7 +280,7 @@ because the library is distributed with the source maps.</p>
     
 
     
-    <h4 class="name" id="addController"><span class="type-signature"></span>addController<span class="signature">(name, cf)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addController"><span class="type-signature"></span>addController<span class="signature">(name, func)</span><span class="type-signature"></span></h4>
     
 
     
@@ -288,13 +288,17 @@ because the library is distributed with the source maps.</p>
 
 
 <div class="description">
-    <p>Registers a new controller name + function.</p>
+    <p>Registers a new application-level controller name + function.</p>
+<p>Typical implementation for any reusable controller is to be done inside a module, which registers
+itself (and all its controllers automatically) with <a href="ERoot.html#addModule">addModule</a>. It is only when you
+need some application-specific controllers that you would create them on the application level, and then
+you need to use this method, in order to register them.</p>
 <p>If controller with such name already exists, then the method will do the following:</p>
 <ul>
-<li>throw an error, if the function is different</li>
-<li>nothing, if the function is the same</li>
+<li>throw an error, if the function is different from the original</li>
+<li>nothing, if the function passed in is the same as the original</li>
 </ul>
-<p><em><strong>TIP:</strong> In order to avoid naming conflicts, reusable controllers should reside inside modules.</em></p>
+<p><em><strong>TIP:</strong> Reusable controllers should always reside inside modules.</em></p>
 </div>
 
 
@@ -353,7 +357,7 @@ because the library is distributed with the source maps.</p>
 
         <tr>
             
-                <td class="name"><code>cf</code></td>
+                <td class="name"><code>func</code></td>
             
 
             <td class="type">
@@ -447,7 +451,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {    // this = ctrl    // Initializing your controller here...    // Creating all event handlers, as needed:    this.onInit = function() {        // initializing the controller    };    this.onReady = function() {        // in case something needs to be done here    };    this.onDestroy = function() {        // any clean-up, if needed    };    // Creating public properties + methods for    // communication with other controllers:    this.someProp = 123;    this.someMethod = function() {        // do something    };});</code></pre>
+    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {    // this = ctrl    // Initializing your controller here:    //    // - setting up public properties and methods    // - setting up event handlers, as needed    // - changing DOM, if needed    // Creating all event handlers, as needed:    this.onInit = function() {        // - can do ctrl.extend(...) here, to extend functionality        // - can find controllers created through explicit binding    };    this.onReady = function() {        // can find all controllers here, including the ones        // created implicitly (through extension)    };    this.onDestroy = function() {        // any clean-up, if needed    };    // Creating public properties + methods for    // communication with other controllers:    this.someProp = 123;    this.someMethod = function() {        // do something    };});</code></pre>
 
 
 
@@ -457,7 +461,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
     
 
     
-    <h4 class="name" id="addModule"><span class="type-signature"></span>addModule<span class="signature">(name, mf)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addModule"><span class="type-signature"></span>addModule<span class="signature">(name, func)</span><span class="type-signature"></span></h4>
     
 
     
@@ -465,8 +469,10 @@ and as <code>this</code> context, to initialize the controller as required.</p><
 
 
 <div class="description">
-    <p>Adds and initializes a new module.</p>
+    <p>Adds and initializes a new module, which is effectively an isolated namespace of controllers.</p>
 <p>If the module with such name already exists, the method will do nothing.</p>
+<p>Unlike application-level controllers, which register themselves by calling <a href="ERoot.html#addController">addController</a>,
+all controllers inside a module are available automatically, just as the module is added.</p>
 </div>
 
 
@@ -525,7 +531,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
 
         <tr>
             
-                <td class="name"><code>mf</code></td>
+                <td class="name"><code>func</code></td>
             
 
             <td class="type">
@@ -583,7 +589,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line864">line 864</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line876">line 876</a>
     </li></ul></dd>
     
 
@@ -629,7 +635,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
 
     
-    <h4 class="name" id="addService"><span class="type-signature"></span>addService<span class="signature">(name, sf)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addService"><span class="type-signature"></span>addService<span class="signature">(name, func)</span><span class="type-signature"></span></h4>
     
 
     
@@ -637,9 +643,10 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
 
 
 <div class="description">
-    <p>Adds and initializes a new service.</p>
+    <p>Adds and initializes a new service, which is simply an isolated namespace that contains
+generic reusable code, to be shared across components and/or the application.</p>
 <p>If the service with such name already exists, the method will do nothing.</p>
-<p>Each registered service becomes globally available from the <a href="ERoot.html#services">services</a> namespace.</p>
+<p>Each added service becomes globally available via the <a href="ERoot.html#services">services</a> namespace.</p>
 </div>
 
 
@@ -698,7 +705,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
 
         <tr>
             
-                <td class="name"><code>sf</code></td>
+                <td class="name"><code>func</code></td>
             
 
             <td class="type">
@@ -756,7 +763,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line823">line 823</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line834">line 834</a>
     </li></ul></dd>
     
 
@@ -855,7 +862,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1145">line 1145</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1159">line 1159</a>
     </li></ul></dd>
     
 
@@ -1062,7 +1069,7 @@ to the list of controllers explicitly created by the method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line913">line 913</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line928">line 928</a>
     </li></ul></dd>
     
 
@@ -1151,9 +1158,8 @@ element that's not a child element, then you would use this global binding.</p>
 <p>Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
 then you can alternatively make use of method <a href="ERoot.html#attach">attach</a>, to inject and initialize controllers
 for one specific DOM element.</p>
-<p>You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
-while affecting performance of the application. The binding engine implements the logic
-of minimizing the number of checks against the DOM, but it works best when requests are asynchronous.</p>
+<p>You should try to avoid use of synchronous bindings, if possible. The binding engine implements the logic
+of minimizing the number of checks against the DOM, but it works/scales best when requests are asynchronous.</p>
 </div>
 
 
@@ -1274,7 +1280,7 @@ of minimizing the number of checks against the DOM, but it works best when reque
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1049">line 1049</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1064">line 1064</a>
     </li></ul></dd>
     
 
@@ -1424,7 +1430,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1080">line 1080</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1094">line 1094</a>
     </li></ul></dd>
     
 
@@ -1593,7 +1599,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1114">line 1114</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1128">line 1128</a>
     </li></ul></dd>
     
 
@@ -1712,7 +1718,7 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1018">line 1018</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1033">line 1033</a>
     </li></ul></dd>
     
 
@@ -1827,7 +1833,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1238">line 1238</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1252">line 1252</a>
     </li></ul></dd>
     
 

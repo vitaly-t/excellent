@@ -773,7 +773,7 @@
          * @type {Object.&lt;JSName, {}>}
          * @readonly
          * @description
-         * Namespace of all services, registered and initialized via method {@link ERoot#addService addService}.
+         * Namespace of all services, registered via method {@link ERoot#addService addService}.
          *
          * @see {@link ERoot#addService addService}
          *
@@ -783,19 +783,24 @@
         /**
          * @method ERoot#addController
          * @description
-         * Registers a new controller name + function.
+         * Registers a new application-level controller name + function.
+         *
+         * Typical implementation for any reusable controller is to be done inside a module, which registers
+         * itself (and all its controllers automatically) with {@link ERoot#addModule addModule}. It is only when you
+         * need some application-specific controllers that you would create them on the application level, and then
+         * you need to use this method, in order to register them.
          *
          * If controller with such name already exists, then the method will do the following:
          *
-         *  - throw an error, if the function is different
-         *  - nothing, if the function is the same
+         *  - throw an error, if the function is different from the original
+         *  - nothing, if the function passed in is the same as the original
          *
-         * _**TIP:** In order to avoid naming conflicts, reusable controllers should reside inside modules._
+         * _**TIP:** Reusable controllers should always reside inside modules._
          *
          * @param {JSName} name
          * Controller name. Trailing spaces are ignored.
          *
-         * @param {function} cf
+         * @param {function} func
          * Controller function, to be called with controller's scope/instance as a single parameter,
          * and as `this` context, to initialize the controller as required.
          *
@@ -811,16 +816,22 @@
          * app.addController('ctrlName', function(ctrl) {
          *     // this = ctrl
          *
-         *     // Initializing your controller here...
+         *     // Initializing your controller here:
+         *     //
+         *     // - setting up public properties and methods
+         *     // - setting up event handlers, as needed
+         *     // - changing DOM, if needed
          *
          *     // Creating all event handlers, as needed:
          *
          *     this.onInit = function() {
-         *         // initializing the controller
+         *         // - can do ctrl.extend(...) here, to extend functionality
+         *         // - can find controllers created through explicit binding
          *     };
          *
          *     this.onReady = function() {
-         *         // in case something needs to be done here
+         *         // can find all controllers here, including the ones
+         *         // created implicitly (through extension)
          *     };
          *
          *     this.onDestroy = function() {
@@ -837,32 +848,33 @@
          *     };
          * });
          */
-        this.addController = function (name, cf) {
-            name = validateEntity(name, cf, 'controller');
+        this.addController = function (name, func) {
+            name = validateEntity(name, func, 'controller');
             if (name in ctrlRegistered) {
                 // controller name has been registered previously
-                if (ctrlRegistered[name] === cf) {
+                if (ctrlRegistered[name] === func) {
                     // it is the same controller, so we can just ignore it;
                     return;
                 }
                 throw new Error('Controller with name ' + jStr(name) + ' already exists.');
             }
-            ctrlRegistered[name] = cf;
+            ctrlRegistered[name] = func;
         };
 
         /**
          * @method ERoot#addService
          * @description
-         * Adds and initializes a new service.
+         * Adds and initializes a new service, which is simply an isolated namespace that contains
+         * generic reusable code, to be shared across components and/or the application.
          *
          * If the service with such name already exists, the method will do nothing.
          *
-         * Each registered service becomes globally available from the {@link ERoot#services services} namespace.
+         * Each added service becomes globally available via the {@link ERoot#services services} namespace.
          *
          * @param {JSName} name
          * Service name. Trailing spaces are ignored.
          *
-         * @param {function} sf
+         * @param {function} func
          * Service initialization function, to be called with the service's scope as a single parameter,
          * and as `this` context, to initialize the service as required.
          *
@@ -882,26 +894,29 @@
          *     };
          * });
          */
-        this.addService = function (name, sf) {
-            name = validateEntity(name, sf, 'service');
+        this.addService = function (name, func) {
+            name = validateEntity(name, func, 'service');
             if (!(name in root.services)) {
                 var scope = {};
                 readOnlyProp(root.services, name, scope);
-                sf.call(scope, scope);
+                func.call(scope, scope);
             }
         };
 
         /**
          * @method ERoot#addModule
          * @description
-         * Adds and initializes a new module.
+         * Adds and initializes a new module, which is effectively an isolated namespace of controllers.
          *
          * If the module with such name already exists, the method will do nothing.
+         *
+         * Unlike application-level controllers, which register themselves by calling {@link ERoot#addController addController},
+         * all controllers inside a module are available automatically, just as the module is added.
          *
          * @param {JSName} name
          * Module name. Trailing spaces are ignored.
          *
-         * @param {function} mf
+         * @param {function} func
          * Module initialization function, to be called with the module's scope as a single parameter,
          * and as `this` context, to initialize the module as required.
          *
@@ -931,12 +946,12 @@
          *     };
          * });
          */
-        this.addModule = function (name, mf) {
-            name = validateEntity(name, mf, 'module');
+        this.addModule = function (name, func) {
+            name = validateEntity(name, func, 'module');
             if (!(name in modules)) {
                 var scope = {};
                 modules[name] = scope;
-                mf.call(scope, scope);
+                func.call(scope, scope);
             }
         };
 
@@ -1089,9 +1104,8 @@
          * then you can alternatively make use of method {@link ERoot#attach attach}, to inject and initialize controllers
          * for one specific DOM element.
          *
-         * You should try to avoid use of synchronous bindings, as they are hardly ever necessary,
-         * while affecting performance of the application. The binding engine implements the logic
-         * of minimizing the number of checks against the DOM, but it works best when requests are asynchronous.
+         * You should try to avoid use of synchronous bindings, if possible. The binding engine implements the logic
+         * of minimizing the number of checks against the DOM, but it works/scales best when requests are asynchronous.
          *
          * @param {boolean|function} [process=false]
          * Determines how to process the binding:
@@ -1346,8 +1360,10 @@
      *  - find explicitly bound (through `e-bind` attribute) controllers and communicate with them
      *  - extend the element with other controllers (via method {@link EController#extend extend})
      *
-     * At this point you cannot locate or communicate with outside controllers being extended
+     * Note that at this point you cannot locate or communicate with outside controllers being extended
      * (via method {@link EController#extend extend}). For that you need to use {@link EController.event:onReady onReady} event.
+     *
+     * If a controller doesn't extend or communicate with other controllers, then it does not need to handle this event.
      *
      * @see
      * {@link EController.event:onReady onReady},
@@ -1399,8 +1415,7 @@
      * @description
      * De-initialization event handler.
      *
-     * It signals the controller that its element has been removed from DOM,
-     * and it is time to release any pre-allocated resources, if necessary.
+     * It signals the controller that its element has been removed from DOM, and it is time to release any pre-allocated resources, if necessary.
      *
      * In any modern browser, the event is triggered immediately, courtesy of {@link external:MutationObserver MutationObserver},
      * while in older browsers (IE9 and IE10), it falls back on a manual background check that runs every second.
@@ -1422,8 +1437,8 @@
     /**
      * @method EController#bind
      * @description
-     * Signals the framework that the element's content has been modified to contain new child controlled elements,
-     * and that it is time to bind those elements with the corresponding controllers.
+     * Signals the framework that the element's inner content has been modified to contain new child controlled elements,
+     * and that it is time to bind those with the corresponding controllers.
      *
      * This method requires that the calling controller has been initialized.
      *
@@ -1431,9 +1446,8 @@
      * then you can alternatively make use of method {@link ERoot#attach ERoot.attach}, to inject and initialize controllers
      * for one specific DOM element.
      *
-     * You should try to avoid use of synchronous bindings, as they are hardly ever necessary, while affecting
-     * performance of the application. The binding engine implements the logic of minimizing the number of checks
-     * against the DOM, but it works best when requests are asynchronous.
+     * You should try to avoid use of synchronous bindings, if possible. The binding engine implements the logic of minimizing
+     * the number of checks against the DOM, but it works/scales best when requests are asynchronous.
      *
      * @param {boolean|function} [process=false]
      * Determines how to process the binding:
