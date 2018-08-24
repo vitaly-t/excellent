@@ -26,8 +26,10 @@ describe('positive', () => {
             ctrl.node.innerHTML = 'missing content';
         });
         const f = excellent.findOne('first');
-        excellent.attach(f.node, 'missingCtrl');
+        const c = excellent.attach(f.node, 'missingCtrl');
         expect(f.node.innerHTML).toBe('missing content');
+        expect(c && typeof c).toBe('object');
+        expect(Array.isArray(c)).toBe(false);
     });
 
     it('must skip existing controllers', () => {

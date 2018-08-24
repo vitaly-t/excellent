@@ -1016,8 +1016,7 @@
                 elements.push(e);
                 observer.watch(e);
             }
-            var arr = Array.isArray(names) ? names : [names];
-            var result = arr.map(ext);
+            var result = Array.isArray(names) ? names.map(ext) : ext(names);
 
             // Need to set the attribute, if missing, or else EController.find
             // won't see it; and worse - event onDestroy won't work in IE9/10
