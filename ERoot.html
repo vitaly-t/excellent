@@ -862,7 +862,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1158">line 1158</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1167">line 1167</a>
     </li></ul></dd>
     
 
@@ -1131,8 +1131,10 @@ to the list of controllers explicitly created by the method.</p>
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
+    <pre class="prettyprint"><code>// This is how you can integrate a controller into an existing app,// without using element-to-controller explicit bindings:var e = document.getElementById('someId'); // find a DOM elementvar c = excellent.attach(e, 'myController'); // attach a controller to itc.someMethod(data); // data = parametrization data for the controller</code></pre>
+
     <pre class="prettyprint"><code>// This example is only to show how ERoot.attach relates to EController.extend,// but not how it is to be used, as using ERoot.attach like this is pointless.app.addController('ctrlName', function(ctrl) {    this.onInit = function() {        // Specifically in this context, the result of        // calling the following two lines is identical:        var a = ctrl.extend(['ctrl1', 'ctrl2']);        var b = app.attach(ctrl.node, ['ctrl1', 'ctrl2']);    };});</code></pre>
 
 
@@ -1280,7 +1282,7 @@ of minimizing the number of checks against the DOM, but it works/scales best whe
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1063">line 1063</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1072">line 1072</a>
     </li></ul></dd>
     
 
@@ -1430,7 +1432,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1093">line 1093</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1102">line 1102</a>
     </li></ul></dd>
     
 
@@ -1599,7 +1601,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1127">line 1127</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1136">line 1136</a>
     </li></ul></dd>
     
 
@@ -1718,7 +1720,7 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1032">line 1032</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1041">line 1041</a>
     </li></ul></dd>
     
 
@@ -1833,7 +1835,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1251">line 1251</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1260">line 1260</a>
     </li></ul></dd>
     
 
