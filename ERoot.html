@@ -1133,7 +1133,7 @@ to the list of controllers explicitly created by the method.</p>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>// This is how you can integrate a controller into an existing app,// without using element-to-controller explicit bindings:var e = document.getElementById('someId'); // find a DOM elementvar c = excellent.attach(e, 'myController'); // attach a controller to itc.someMethod(data); // data = parametrization data for the controller</code></pre>
+    <pre class="prettyprint"><code>// This is how you can integrate a controller into an existing app,// without using element-to-controller explicit bindings:var e = document.getElementById('someId'); // find a DOM elementvar c = app.attach(e, 'myController'); // attach a controller to itc.someMethod(data); // data = parametrization data for the controller</code></pre>
 
     <pre class="prettyprint"><code>// This example is only to show how ERoot.attach relates to EController.extend,// but not how it is to be used, as using ERoot.attach like this is pointless.app.addController('ctrlName', function(ctrl) {    this.onInit = function() {        // Specifically in this context, the result of        // calling the following two lines is identical:        var a = ctrl.extend(['ctrl1', 'ctrl2']);        var b = app.attach(ctrl.node, ['ctrl1', 'ctrl2']);    };});</code></pre>
 
