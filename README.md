@@ -48,10 +48,10 @@ app.addController('myCtrl', function(ctrl) {
     // this = ctrl
 
     this.onInit = function() {
-        // find child controller childCtrl, and call its method:
+        // find one child controller, and call its method:
         ctrl.findOne('childCtrl').someMethod();
 
-        // find global controllers globCtrl, and call a method:
+        // find some global controllers, and call a method:
         app.find('globCtrl').forEach(function(c) {
             c.someMethod();
         });
@@ -66,8 +66,7 @@ Other features include:
 * [Modules] empower greater reusability and simpler distribution of controllers.
 * [Services] share functionality across all controllers.
 
-You can create whole libraries of reusable components that will work seamlessly with any
-UI framework, or on their own.
+You can create whole libraries of reusable components that will work with any UI framework, or on their own.
 
 #### Quick Links: &nbsp;[Examples]&nbsp; |&nbsp; [WiKi]&nbsp; |&nbsp; [API]
 

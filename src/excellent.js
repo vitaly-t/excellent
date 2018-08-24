@@ -1265,6 +1265,8 @@
      * @description
      * Controller interface, attached to each {@link ControlledElement} in the DOM.
      *
+     * It is created automatically, during element-to-controller binding, or when {@link ERoot#attach attaching} to an element.
+     *
      * @see
      * {@link EController#name name},
      * {@link EController#node node},
@@ -1371,8 +1373,7 @@
      * and it is time to release any pre-allocated resources, if necessary.
      *
      * In any modern browser, the event is triggered immediately, courtesy of {@link external:MutationObserver MutationObserver},
-     * while in older browsers, such as IE9 and IE10, it falls back on a manual background check
-     * that runs every second.
+     * while in older browsers (IE9 and IE10), it falls back on a manual background check that runs every second.
      *
      * @see
      * {@link ERoot.event:onReady ERoot.onReady}
@@ -1469,6 +1470,9 @@
      * @returns {EController|EController[]}
      * - if you pass in a single controller name, it returns a single controller.
      * - if you pass in an array of names, it returns an array of controllers.
+     *
+     * @see
+     * {@link EController#depends depends}
      *
      * @example
      *
@@ -1573,7 +1577,7 @@
      * A single child controller with the matching name.
      *
      * @see
-     * {@link EController#find EController.find},
+     * {@link EController#find find},
      * {@link ERoot#find ERoot.find},
      * {@link ERoot#findOne ERoot.findOne}
      */
@@ -1604,7 +1608,7 @@
      * List of initialized child controllers.
      *
      * @see
-     * {@link EController#findOne EController.findOne},
+     * {@link EController#findOne findOne},
      * {@link ERoot#findOne ERoot.findOne},
      * {@link ERoot#find ERoot.find}
      */
@@ -1698,7 +1702,9 @@
  * module_1.$name2._ctrl3
  * ```
  *
- * It cannot start or end with a dot. And it cannot have any spaces in between.
+ * - It cannot start or end with a dot
+ * - It cannot have any spaces in between
+ * - It is treated as case-sensitive
  *
  * It represents a full controller name. And if the name contains more than one {@link JSName}, then the first name
  * always refers to a module, followed by either a simple or nested controller name implemented in that module.
