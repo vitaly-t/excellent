@@ -985,7 +985,7 @@
          */
         this.attach = function (e, names) {
             if (!e || typeof e.innerHTML !== 'string') {
-                throw new TypeError('Invalid DOM Element specified.');
+                throw new TypeError('Parameter ' + jStr(e) + ' does not represent a valid DOM element.');
             }
             if (constructing) {
                 throw new Error('Cannot invoke ERoot.attach from a controller constructor.');

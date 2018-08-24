@@ -86,16 +86,18 @@ describe('positive', () => {
 describe('negative', () => {
 
     it('must throw on invalid element', () => {
-        const err = 'Invalid DOM Element specified.';
         expect(() => {
             excellent.attach();
-        }).toThrow(err);
+        }).toThrow('Parameter <undefined> does not represent a valid DOM element.');
+        expect(() => {
+            excellent.attach('');
+        }).toThrow('Parameter "" does not represent a valid DOM element.');
         expect(() => {
             excellent.attach(123);
-        }).toThrow(err);
+        }).toThrow('Parameter <123> does not represent a valid DOM element.');
         expect(() => {
             excellent.attach({});
-        }).toThrow(err);
+        }).toThrow('Parameter {} does not represent a valid DOM element.');
     });
 
     it('must throw when called during a controller construction', () => {
