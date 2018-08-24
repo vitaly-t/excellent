@@ -968,6 +968,15 @@
          *
          * @example
          *
+         * // This is how you can integrate a controller into an existing app,
+         * // without using element-to-controller explicit bindings:
+         *
+         * var e = document.getElementById('someId'); // find a DOM element
+         * var c = excellent.attach(e, 'myController'); // attach a controller to it
+         * c.someMethod(data); // data = parametrization data for the controller
+         *
+         * @example
+         *
          * // This example is only to show how ERoot.attach relates to EController.extend,
          * // but not how it is to be used, as using ERoot.attach like this is pointless.
          *
