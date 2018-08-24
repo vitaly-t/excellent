@@ -23,7 +23,9 @@ declare namespace ERoot {
 
         depends(ctrlNames: string[]): void
 
-        extend(ctrlNames: string | string[], local?: boolean): EController | EController[]
+        extend(ctrlName: string, local?: boolean): EController
+
+        extend(ctrlNames: string[], local?: boolean): EController[]
 
         find(ctrlName: string): EController[]
 
@@ -46,7 +48,9 @@ declare namespace ERoot {
 
         addService(name: string, func: (scope: { [name: string]: any }) => void): boolean
 
-        attach(e: Element, ctrlNames: string | string[]): EController | EController[]
+        attach(e: Element, ctrlName: string): EController
+
+        attach(e: Element, ctrlNames: string[]): EController[]
 
         bind(process?: BindingProcess): void
 
