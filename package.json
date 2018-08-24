@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "DOM Component Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "coveralls": "3.0.2",
-    "eslint-plugin-jest": "21.21.0",
+    "eslint-plugin-jest": "21.22.0",
     "gulp": "4.0.0",
     "gulp-eslint": "5.0.0",
     "gulp-gzip": "1.4.2",

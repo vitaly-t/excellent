@@ -32,11 +32,11 @@ afterEach(() => {
 describe('positive', () => {
 
     test('should ignore re-registration attempts', () => {
-        excellent.addModule('mod', () => {
-            // all the other tests will continue working,
-            // which is in itself the indication that repeated
-            // registration was ignored.
+        const res = excellent.addModule('mod', () => {
+            // all the other tests will continue working, which in itself
+            // is the extra proof that repeated registration was ignored.
         });
+        expect(res).toBe(false);
     });
 
     test('should resolve top-level controller', () => {

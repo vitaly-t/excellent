@@ -11,11 +11,23 @@ describe('positive', () => {
         });
     });
 
-    test('should allow access to functions', () => {
+    test('must return false when registering a new service', () => {
+        const res = excellent.addService('$srv$', () => {
+        });
+        expect(res).toBe(true);
+    });
+
+    test('must ignore a repeated attempt to register the same service', () => {
+        const res = excellent.addService('srv', () => {
+        });
+        expect(res).toBe(false);
+    });
+
+    test('must allow access to functions', () => {
         expect(excellent.services.srv.first()).toBe('first');
     });
 
-    test('should allow access to properties', () => {
+    test('must allow access to properties', () => {
         expect(excellent.services.srv.second).toBe('second');
     });
 });

@@ -61,8 +61,12 @@ afterEach(() => {
 
 describe('positive', () => {
 
-    test('must not throw on re-registration with the same function', () => {
-        expect(excellent.addController('first', firstController)).toBeUndefined();
+    test('must return true when registering a unique controller', () => {
+        expect(excellent.addController('$uniqueCtrlName$', firstController)).toBe(true);
+    });
+
+    test('must return false on re-registration with the same function', () => {
+        expect(excellent.addController('first', firstController)).toBe(false);
     });
 
     test('controller must work via this', () => {
