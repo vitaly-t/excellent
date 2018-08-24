@@ -793,7 +793,7 @@
          * If controller with such name already exists, then the method will do the following:
          *
          *  - throw an error, if the function is different from the original
-         *  - nothing, if the function passed in is the same as the original
+         *  - nothing (and return `false`), if the function passed in is the same
          *
          * _**TIP:** Reusable controllers should always reside inside modules._
          *
@@ -803,6 +803,11 @@
          * @param {function} func
          * Controller function, to be called with controller's scope/instance as a single parameter,
          * and as `this` context, to initialize the controller as required.
+         *
+         * @returns {boolean}
+         * Indication of whether the controller was added:
+         * - `true` - a new controller has been added
+         * - `false` - a controller with the same name and function was added previously
          *
          * @see
          * {@link ERoot#addModule addModule},
@@ -854,11 +859,12 @@
                 // controller name has been registered previously
                 if (ctrlRegistered[name] === func) {
                     // it is the same controller, so we can just ignore it;
-                    return;
+                    return false;
                 }
                 throw new Error('Controller with name ' + jStr(name) + ' already exists.');
             }
             ctrlRegistered[name] = func;
+            return true;
         };
 
         /**
@@ -867,7 +873,7 @@
          * Adds and initializes a new service, which is simply an isolated namespace that contains
          * generic reusable code, to be shared across components and/or the application.
          *
-         * If the service with such name already exists, the method will do nothing.
+         * If the service with such name already exists, the method will do nothing, and return `false`.
          *
          * Each added service becomes globally available via the {@link ERoot#services services} namespace.
          *
@@ -881,6 +887,11 @@
          * @see
          * {@link ERoot#addController addController},
          * {@link ERoot#addModule addModule}
+         *
+         * @returns {boolean}
+         * Indication of whether the service was added:
+         * - `true` - the service has been successfully added
+         * - `false` - ignoring the service, as it was added previously
          *
          * @example
          *
@@ -896,11 +907,13 @@
          */
         this.addService = function (name, func) {
             name = validateEntity(name, func, 'service');
-            if (!(name in root.services)) {
-                var scope = {};
-                readOnlyProp(root.services, name, scope);
-                func.call(scope, scope);
+            if (name in root.services) {
+                return false;
             }
+            var scope = {};
+            readOnlyProp(root.services, name, scope);
+            func.call(scope, scope);
+            return true;
         };
 
         /**
@@ -908,7 +921,7 @@
          * @description
          * Adds and initializes a new module, which is effectively an isolated namespace of controllers.
          *
-         * If the module with such name already exists, the method will do nothing.
+         * If the module with such name already exists, the method will do nothing, and return `false`.
          *
          * Unlike application-level controllers, which register themselves by calling {@link ERoot#addController addController},
          * all controllers inside a module are available automatically, just as the module is added.
@@ -919,6 +932,11 @@
          * @param {function} func
          * Module initialization function, to be called with the module's scope as a single parameter,
          * and as `this` context, to initialize the module as required.
+         *
+         * @returns {boolean}
+         * Indication of whether the module was added:
+         * - `true` - the module has been successfully added
+         * - `false` - ignoring the module, as it was added previously
          *
          * @see
          * {@link ERoot#addController addController},
@@ -948,11 +966,13 @@
          */
         this.addModule = function (name, func) {
             name = validateEntity(name, func, 'module');
-            if (!(name in modules)) {
-                var scope = {};
-                modules[name] = scope;
-                func.call(scope, scope);
+            if (name in modules) {
+                return false;
             }
+            var scope = {};
+            modules[name] = scope;
+            func.call(scope, scope);
+            return true;
         };
 
         /**

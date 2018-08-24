@@ -280,7 +280,7 @@ because the library is distributed with the source maps.</p>
     
 
     
-    <h4 class="name" id="addController"><span class="type-signature"></span>addController<span class="signature">(name, func)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addController"><span class="type-signature"></span>addController<span class="signature">(name, func)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -296,7 +296,7 @@ you need to use this method, in order to register them.</p>
 <p>If controller with such name already exists, then the method will do the following:</p>
 <ul>
 <li>throw an error, if the function is different from the original</li>
-<li>nothing, if the function passed in is the same as the original</li>
+<li>nothing (and return <code>false</code>), if the function passed in is the same</li>
 </ul>
 <p><em><strong>TIP:</strong> Reusable controllers should always reside inside modules.</em></p>
 </div>
@@ -445,6 +445,32 @@ and as <code>this</code> context, to initialize the controller as required.</p><
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Indication of whether the controller was added:</p>
+<ul>
+<li><code>true</code> - a new controller has been added</li>
+<li><code>false</code> - a controller with the same name and function was added previously</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -461,7 +487,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
     
 
     
-    <h4 class="name" id="addModule"><span class="type-signature"></span>addModule<span class="signature">(name, func)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addModule"><span class="type-signature"></span>addModule<span class="signature">(name, func)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -470,7 +496,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
 
 <div class="description">
     <p>Adds and initializes a new module, which is effectively an isolated namespace of controllers.</p>
-<p>If the module with such name already exists, the method will do nothing.</p>
+<p>If the module with such name already exists, the method will do nothing, and return <code>false</code>.</p>
 <p>Unlike application-level controllers, which register themselves by calling <a href="ERoot.html#addController">addController</a>,
 all controllers inside a module are available automatically, just as the module is added.</p>
 </div>
@@ -589,7 +615,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line876">line 876</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line889">line 889</a>
     </li></ul></dd>
     
 
@@ -619,6 +645,32 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Indication of whether the module was added:</p>
+<ul>
+<li><code>true</code> - the module has been successfully added</li>
+<li><code>false</code> - ignoring the module, as it was added previously</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -635,7 +687,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
 
     
-    <h4 class="name" id="addService"><span class="type-signature"></span>addService<span class="signature">(name, func)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addService"><span class="type-signature"></span>addService<span class="signature">(name, func)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -645,7 +697,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
 <div class="description">
     <p>Adds and initializes a new service, which is simply an isolated namespace that contains
 generic reusable code, to be shared across components and/or the application.</p>
-<p>If the service with such name already exists, the method will do nothing.</p>
+<p>If the service with such name already exists, the method will do nothing, and return <code>false</code>.</p>
 <p>Each added service becomes globally available via the <a href="ERoot.html#services">services</a> namespace.</p>
 </div>
 
@@ -763,7 +815,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line834">line 834</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line840">line 840</a>
     </li></ul></dd>
     
 
@@ -793,6 +845,32 @@ and as <code>this</code> context, to initialize the service as required.</p></td
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Indication of whether the service was added:</p>
+<ul>
+<li><code>true</code> - the service has been successfully added</li>
+<li><code>false</code> - ignoring the service, as it was added previously</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -862,7 +940,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1169">line 1169</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1189">line 1189</a>
     </li></ul></dd>
     
 
@@ -1069,7 +1147,7 @@ to the list of controllers explicitly created by the method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line928">line 928</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line948">line 948</a>
     </li></ul></dd>
     
 
@@ -1283,7 +1361,7 @@ of minimizing the number of checks against the DOM, but it works/scales best whe
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1074">line 1074</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1094">line 1094</a>
     </li></ul></dd>
     
 
@@ -1433,7 +1511,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1104">line 1104</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1124">line 1124</a>
     </li></ul></dd>
     
 
@@ -1602,7 +1680,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1138">line 1138</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1158">line 1158</a>
     </li></ul></dd>
     
 
@@ -1721,7 +1799,7 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1043">line 1043</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1063">line 1063</a>
     </li></ul></dd>
     
 
@@ -1836,7 +1914,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1262">line 1262</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1282">line 1282</a>
     </li></ul></dd>
     
 
