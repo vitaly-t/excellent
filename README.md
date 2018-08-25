@@ -59,12 +59,13 @@ app.addController('myCtrl', function(ctrl) {
 });
 ```
 
-Other features include:
+**Other features include:**
 
 * Global and local dynamic bindings, with [ERoot.bind] and [EController.bind].
 * Controllers can extend / inherit each other's functionality, see [Inheritance].
 * [Modules] empower greater reusability and simpler distribution of controllers.
 * [Services] share functionality across all controllers.
+* [TypeScript] support right out of the box.
 
 You can create whole libraries of reusable components that will work with any UI framework, or on their own.
 
@@ -76,6 +77,7 @@ You can create whole libraries of reusable components that will work with any UI
 [Modules]:https://github.com/vitaly-t/excellent/wiki/Modules
 [Services]:https://github.com/vitaly-t/excellent/wiki/Services
 [Inheritance]:https://github.com/vitaly-t/excellent/wiki/Inheritance
+[TypeScript]:https://github.com/vitaly-t/excellent/wiki/TypeScript
 
 [EController.find]:https://vitaly-t.github.io/excellent/EController.html#find
 [EController.findOne]:https://vitaly-t.github.io/excellent/EController.html#findOne
