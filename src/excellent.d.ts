@@ -1,5 +1,5 @@
 ////////////////////////////////////////////
-// Complete Excellent.js 1.1.1 declarations
+// Complete Excellent.js 1.2.0 declarations
 ////////////////////////////////////////////
 
 declare namespace ERoot {
@@ -43,6 +43,8 @@ declare namespace ERoot {
         readonly services: SN;
 
         addController(name: string, func: (ctrl: EController) => void): boolean
+
+        addAlias(name: string, ctrlNames: string | string[], cb?: (...ctrl: EController[]) => void): void
 
         addModule(name: string, func: (scope: { [name: string]: any }) => void): boolean
 

@@ -714,6 +714,7 @@
      * @see
      * {@link ERoot#analyze analyze},
      * {@link ERoot#addController addController},
+     * {@link ERoot#addAlias addAlias},
      * {@link ERoot#addModule addModule},
      * {@link ERoot#addService addService},
      * {@link ERoot#attach attach},
@@ -780,6 +781,7 @@
          * - `false` - a controller with the same name and function was added previously
          *
          * @see
+         * {@link ERoot#addAlias addAlias},
          * {@link ERoot#addModule addModule},
          * {@link ERoot#addService addService},
          * {@link EController.event:onInit EController.onInit},
@@ -835,6 +837,61 @@
             }
             ctrlRegistered[name] = func;
             return true;
+        };
+
+        /**
+         * @method ERoot#addAlias
+         * @description
+         * Simplifies creation and re-configuration of controllers that serve as aliases.
+         *
+         * @param {JSName} name
+         * New controller/alias name. Trailing spaces are ignored.
+         *
+         * @param {CtrlName|CtrlName[]} ctrlNames
+         * Either a single controller name, or an array of names, for which the new alias is created.
+         *
+         * Trailing spaces are ignored.
+         *
+         * @param {function} [cb]
+         * Optional callback for re-configuring the controllers.
+         *
+         * It takes a dynamic list of parameters, matching the specified controllers.
+         *
+         * Calling context `this` is set to the created alias controller.
+         *
+         * @see
+         * {@link ERoot#addController addController}
+         *
+         * @example
+         *
+         * // Create a new controller aliasName as an alias for ['controller1', 'controller2'],
+         * // so instead of e-bind="controller1, controller2" we can use e-bind="aliasName":
+         *
+         * app.addAlias('aliasName', ['controller1', 'controller2']);
+         *
+         * @example
+         *
+         * // Create a new controller-alias, and re-configure it at the same time:
+         *
+         * app.addAlias('aliasName', ['controller1', 'controller2'], function(c1, c2) {
+         *     // this = alias controller itself
+         *
+         *     this.node.className = 'myClass';
+         *
+         *     c1.someMethod(123);
+         *     c2.someMethod('hello!');
+         * });
+         *
+         */
+        this.addAlias = function (name, ctrlNames, cb) {
+            root.addController(name, function () {
+                this.onInit = function () {
+                    var c = this.extend(ctrlNames);
+                    if (typeof cb === 'function') {
+                        cb.apply(this, Array.isArray(c) && c || [c]);
+                    }
+                };
+            });
         };
 
         /**
