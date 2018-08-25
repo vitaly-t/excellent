@@ -136,6 +136,22 @@ describe('positive', () => {
         });
     });
 
+    it('should create proper aliases', () => {
+        excellent.addAlias('newBase1', 'base');
+        excellent.addAlias('newBase2', ['base'], c => {
+            c.node.innerHTML += '-works1';
+        });
+        excellent.addAlias('newBase3', 'base', c => {
+            c.node.innerHTML += '-works2';
+        });
+        const last = excellent.find('last')[0];
+        last.node.innerHTML = '<div e-bind="newBase1"></div><div e-bind="newBase2"></div><div e-bind="newBase3"></div>';
+        last.bind(true);
+        expect(excellent.findOne('newBase1').node.innerHTML).toBe('base');
+        expect(excellent.findOne('newBase2').node.innerHTML).toBe('base-works1');
+        expect(excellent.findOne('newBase3').node.innerHTML).toBe('base-works2');
+    });
+
     it('should generate proper live statistics', () => {
         const stat = excellent.analyze();
         expect(stat && typeof stat).toBe('object');
