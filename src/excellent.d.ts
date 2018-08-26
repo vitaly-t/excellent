@@ -1,6 +1,6 @@
-////////////////////////////////////////////
-// Complete Excellent.js 1.2.1 declarations
-////////////////////////////////////////////
+////////////////////////////////////
+// Excellent.js v1.3.0 declarations
+////////////////////////////////////
 
 declare namespace ERoot {
 
@@ -59,6 +59,8 @@ declare namespace ERoot {
         find(ctrlName: string): EController[]
 
         findOne(ctrlName: string): EController
+
+        getCtrlFunc(name: string, noError?: boolean): ((ctrl: EController) => void) | null
 
         analyze(): EStatistics
 
