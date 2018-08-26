@@ -289,6 +289,20 @@ because the library is distributed with the source maps.</p>
 
 <div class="description">
     <p>Simplifies creation and re-configuration of controllers that serve as aliases.</p>
+<p>Any controller that extends other controllers, using method <a href="EController.html#extend">EController.extend</a>,
+is an alias controller. And this method simplifies creation of such controllers, while also giving the option
+to re-configure extended controllers.</p>
+<p>This method is particularity useful during integration into an app, creating simpler aliases and configuring
+their extended controllers at the same time. You may decide to have a few such controllers, as a means of
+simplifying the app setup, i.e. instead of searching for a controller to change its configuration, you can
+resort to using a pre-configured alias.</p>
+<p>For the same reason, sometimes you may even want to create an alias for a single controller, if you want
+to shorten its long name, and/or re-configure at the same time:</p>
+<pre class="prettyprint source lang-js"><code>app.addAlias('errorBoard', 'someModule.panels.centered', function(c) {
+   // here we presume that controller 'someModule.panels.centered'
+   // implements method setConfig(configObject):
+   c.setConfig({bgColor: 'red', color: 'white'});
+});</code></pre>
 </div>
 
 
@@ -418,7 +432,7 @@ because the library is distributed with the source maps.</p>
 
             
 
-            <td class="description last"><p>Optional callback for re-configuring the controllers.</p>
+            <td class="description last"><p>Optional callback for re-configuring controllers.</p>
 <p>It takes a dynamic list of parameters, matching the specified controllers.</p>
 <p>Calling context <code>this</code> is set to the created alias controller.</p></td>
         </tr>
@@ -844,7 +858,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line946">line 946</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line966">line 966</a>
     </li></ul></dd>
     
 
@@ -1044,7 +1058,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line897">line 897</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line917">line 917</a>
     </li></ul></dd>
     
 
@@ -1169,7 +1183,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1246">line 1246</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1266">line 1266</a>
     </li></ul></dd>
     
 
@@ -1376,7 +1390,7 @@ to the list of controllers explicitly created by the method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1005">line 1005</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1025">line 1025</a>
     </li></ul></dd>
     
 
@@ -1590,7 +1604,7 @@ of minimizing the number of checks against the DOM, but it works/scales best whe
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1151">line 1151</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1171">line 1171</a>
     </li></ul></dd>
     
 
@@ -1740,7 +1754,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1181">line 1181</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1201">line 1201</a>
     </li></ul></dd>
     
 
@@ -1909,7 +1923,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1215">line 1215</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1235">line 1235</a>
     </li></ul></dd>
     
 
@@ -2028,7 +2042,7 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1120">line 1120</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1140">line 1140</a>
     </li></ul></dd>
     
 
@@ -2143,7 +2157,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1339">line 1339</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1359">line 1359</a>
     </li></ul></dd>
     
 
