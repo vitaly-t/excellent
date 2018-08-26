@@ -1294,7 +1294,8 @@
          *
          * @param {boolean} [noError=false]
          * By default, the method throws an error whenever it fails to resolve the specified name into a valid function.
-         * Passing in `noError = true` forces it to return `null` on any failure.
+         * Passing in `noError = true` forces it to return `null` when the module or controller are not found.
+         * It however does not suppress errors related to passing in an invalid controller name.
          *
          * Example of where you might want to use it - provide an alternative controller function when the desired
          * controller could not be resolved for some reasons, like when inclusion of a certain module into the app
@@ -1303,7 +1304,8 @@
          * @returns {function|null}
          * Initialization function associated with the controller.
          *
-         * It can return `null` only when the function fails, and `noError` was passed in as a truthy value.
+         * It can return `null` only when the function fails because the module or controller were not found,
+         * and `noError` was passed in as a truthy value.
          *
          * @see
          * {@link ERoot#addAlias addAlias}
@@ -1316,7 +1318,7 @@
          *
          */
         this.getCtrlFunc = function (name, noError) {
-            return getCtrlFunc(name, null, noError);
+            return getCtrlFunc(parseControllerName(name), null, noError);
         };
 
         /**
