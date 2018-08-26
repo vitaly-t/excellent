@@ -2073,7 +2073,7 @@ scope.print = e.getCtrlFunc('printModule.default.showUI');
                 </td>
             
 
-            <td class="description last"><p>Full controller name.</p></td>
+            <td class="description last"><p>Full controller name. Trailing spaces are ignored.</p></td>
         </tr>
 
     
@@ -2114,7 +2114,7 @@ scope.print = e.getCtrlFunc('printModule.default.showUI');
 
             <td class="description last"><p>By default, the method throws an error whenever it fails to resolve the specified name into a valid function.
 Passing in <code>noError = true</code> forces it to return <code>null</code> when the module or controller are not found.
-It however does not suppress errors related to passing in an invalid controller name.</p>
+This however does not suppress errors related to passing in an invalid controller name.</p>
 <p>Example of where you might want to use it - provide an alternative controller function when the desired
 controller could not be resolved for some reasons, like when inclusion of a certain module into the app
 is optional. This way you can also check whether the containing module is included or not.</p></td>
