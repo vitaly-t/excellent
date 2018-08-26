@@ -251,11 +251,39 @@ describe('positive', () => {
             });
             return expect(p).resolves.toBe(content);
         });
-
     });
+
+    describe('getCtrlFunc', () => {
+        it('must find any created controller function immediately', () => {
+            const f = () => {
+            };
+            excellent.addController('some_unique_controller_name', f);
+            expect(excellent.getCtrlFunc('some_unique_controller_name')).toBe(f);
+        });
+        it('must not not throw when controller does not exist', () => {
+            expect(excellent.getCtrlFunc('this_does_not_exist', true)).toBeNull();
+        });
+    });
+
 });
 
 describe('negative', () => {
+
+    describe('getCtrlFunc', () => {
+        it('must throw on invalid controller names', () => {
+            expect(() => {
+                excellent.getCtrlFunc();
+            }).toThrow('Invalid controller name <undefined> specified.');
+            expect(() => {
+                excellent.getCtrlFunc('');
+            }).toThrow('Invalid controller name "" specified.');
+        });
+        it('must throw when controller does not exist', () => {
+            expect(() => {
+                excellent.getCtrlFunc('this.one.does.not.exist');
+            }).toThrow('Module "this" not found.');
+        });
+    });
 
     test('must throw on re-registration with a different function', () => {
         expect(() => {

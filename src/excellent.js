@@ -636,9 +636,9 @@
      * @param {boolean} [noError=false]
      * Tells it not to throw on errors, and rather return null.
      *
-     * @returns {function|undefined}
+     * @returns {function|null}
      * Either controller function or throws. But if noError is true,
-     * and no controller found, it returns `undefined`.
+     * and no controller found, it returns `null`.
      *
      */
     function getCtrlFunc(name, e, noError) {
@@ -658,7 +658,7 @@
             var moduleName = names[0];
             if (!(moduleName in modules)) {
                 if (noError) {
-                    return;
+                    return null;
                 }
                 throw new Error('Module ' + jStr(moduleName) + ' not found' + (e ? ': ' + startTag(e) : '.'));
             }
@@ -677,10 +677,10 @@
                 return obj;
             }
         }
-
-        if (!noError) {
-            throw new Error('Controller ' + jStr(name) + ' not found' + (e ? ': ' + startTag(e) : '.'));
+        if (noError) {
+            return null;
         }
+        throw new Error('Controller ' + jStr(name) + ' not found' + (e ? ': ' + startTag(e) : '.'));
     }
 
     /**
@@ -721,6 +721,7 @@
      * {@link ERoot#attach attach},
      * {@link ERoot#find find},
      * {@link ERoot#findOne findOne},
+     * {@link ERoot#getCtrlFunc getCtrlFunc},
      * {@link ERoot#reset reset},
      * {@link ERoot#services services},
      * {@link ERoot#version version},
@@ -865,6 +866,9 @@
          * });
          * ```
          *
+         * In cases where all you want is to create an alias for a single controller name, inside an app or a module,
+         * method {@link ERoot#getCtrlFunc getCtrlFunc} may be more appropriate for this.
+         *
          * @param {JSName} name
          * New controller/alias name. Trailing spaces are ignored.
          *
@@ -881,7 +885,8 @@
          * Calling context `this` is set to the created alias controller.
          *
          * @see
-         * {@link ERoot#addController addController}
+         * {@link ERoot#addController addController},
+         * {@link ERoot#getCtrlFunc getCtrlFunc}
          *
          * @example
          *
@@ -1262,6 +1267,58 @@
                 throw new Error('Expected a single controller from findOne(' + jStr(name) + '), but found ' + a.length + '.');
             }
             return a[0];
+        };
+
+        /**
+         * @method ERoot#getCtrlFunc
+         * @description
+         * Resolves a full controller name into the corresponding initialization function.
+         *
+         * Every controller in the framework is presented by its name + initialization function. And this method pulls
+         * the initialization function from the specified name of the controller.
+         *
+         * This in turn lets you create controllers on the app level or inside modules that alias an existing controller,
+         * i.e. you can create identical controllers under different names.
+         *
+         * ```js
+         * // Example of declaring a controller inside a module,
+         * // as an alias for a controller from another module:
+         *
+         * scope.print = e.getCtrlFunc('printModule.default.showUI');
+         *
+         * // e = excellent root object, scope = module's scope object
+         * ```
+         *
+         * @param {CtrlName} name
+         * Full controller name.
+         *
+         * @param {boolean} [noError=false]
+         * By default, the method throws an error whenever it fails to resolve the specified name into a valid function.
+         * Passing in `noError = true` forces it to return `null` when the module or controller are not found.
+         * It however does not suppress errors related to passing in an invalid controller name.
+         *
+         * Example of where you might want to use it - provide an alternative controller function when the desired
+         * controller could not be resolved for some reasons, like when inclusion of a certain module into the app
+         * is optional. This way you can also check whether the containing module is included or not.
+         *
+         * @returns {function|null}
+         * Initialization function associated with the controller.
+         *
+         * It can return `null` only when the function fails because the module or controller were not found,
+         * and `noError` was passed in as a truthy value.
+         *
+         * @see
+         * {@link ERoot#addAlias addAlias}
+         *
+         * @example
+         *
+         * // Adding a controller-alias, just to shorten another controller's name:
+         *
+         * app.addController('shortName', app.getCtrlFunc('module1.very.long.name'));
+         *
+         */
+        this.getCtrlFunc = function (name, noError) {
+            return getCtrlFunc(parseControllerName(name), null, noError);
         };
 
         /**
