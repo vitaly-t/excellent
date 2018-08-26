@@ -331,9 +331,9 @@
                         nodes.forEach(bindAll);
                     }
                 }
-                cbs.forEach(function (f) {
-                    f();
-                });
+                for (var i = 0; i < cbs.length; i++) {
+                    cbs[i]();
+                }
             });
         }
     }
@@ -435,11 +435,12 @@
      * Event name.
      */
     function eventNotify(arr, event) {
-        arr.forEach(function (a) {
+        for (var i = 0; i < arr.length; i++) {
+            var a = arr[i];
             if (typeof a[event] === 'function') {
                 a[event]();
             }
-        });
+        }
     }
 
     /**

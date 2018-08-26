@@ -12,6 +12,7 @@ describe('positive', () => {
         expect(e.services).toEqual({});
         expect(e.version).toBe('<version>');
         expect(typeof e.addController).toBe('function');
+        expect(typeof e.addAlias).toBe('function');
         expect(typeof e.addModule).toBe('function');
         expect(typeof e.addService).toBe('function');
         expect(typeof e.bind).toBe('function');
@@ -59,7 +60,7 @@ describe('positive', () => {
         require('../src/excellent');
         excellent.onReady = jest.fn();
         window.document.dispatchEvent(new Event('DOMContentLoaded', {}));
-        expect(excellent.onReady).toBeCalled();
+        expect(excellent.onReady).toHaveBeenCalledWith();
     });
 
     it('should generate correct statistics with the library state', () => {
