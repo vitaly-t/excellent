@@ -9,7 +9,7 @@
 [![Join Chat](https://badges.gitter.im/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent)
 
 If you like VanillaJS and working with DOM directly, this tiny (3Kb gzip) library helps
-by organizing your code into reusable DOM components. See [WiKi] for details.
+with organizing your code into reusable DOM components. See [WiKi] for details.
 
 <br/>
 
@@ -63,7 +63,8 @@ app.addController('myCtrl', function(ctrl) {
 
 * Global and local dynamic bindings, with [ERoot.bind] and [EController.bind].
 * Controllers can extend / inherit each other's functionality, see [Inheritance].
-* [Modules] empower greater reusability and simpler distribution of controllers.
+* One can alias and configure controllers in a single step, see [addAlias].
+* [Modules] offer greater reusability and simpler distribution of controllers.
 * [Services] share functionality across all controllers.
 * [TypeScript] support right out of the box.
 
@@ -85,3 +86,4 @@ You can create whole libraries of reusable components that will work with any UI
 [ERoot.findOne]:https://vitaly-t.github.io/excellent/ERoot.html#findOne
 [ERoot.bind]:https://vitaly-t.github.io/excellent/ERoot.html#bind
 [EController.bind]:https://vitaly-t.github.io/excellent/EController.html#bind
+[addAlias]:https://vitaly-t.github.io/excellent/ERoot.html#addAlias
