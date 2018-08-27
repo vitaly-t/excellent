@@ -290,14 +290,12 @@ because the library is distributed with the source maps.</p>
 <div class="description">
     <p>Simplifies creation and re-configuration of controllers that serve as aliases.</p>
 <p>Any controller that extends other controllers, using method <a href="EController.html#extend">EController.extend</a>,
-is an alias controller. And this method simplifies creation of such controllers, while also giving the option
-to re-configure extended controllers.</p>
+is effectively an alias. And this method simplifies creation of such controllers, suitable when you only want
+a new alias for extended controller(s), and optionally configured.</p>
 <p>This method is particularity useful during integration into an app, creating simpler aliases and configuring
 their extended controllers at the same time. You may decide to have a few such controllers, as a means of
 simplifying the app setup, i.e. instead of searching for a controller to change its configuration, you can
-resort to using a pre-configured alias.</p>
-<p>For the same reason, sometimes you may even want to create an alias for a single controller, if you want
-to shorten its long name, and/or re-configure at the same time:</p>
+resort to using a pre-configured alias, even if it is for a single controller:</p>
 <pre class="prettyprint source lang-js"><code>app.addAlias('errorBoard', 'someModule.panels.centered', function(c) {
    // here we presume that controller 'someModule.panels.centered'
    // implements method setConfig(configObject):
@@ -476,7 +474,7 @@ method <a href="ERoot.html#getCtrlFunc">getCtrlFunc</a> may be more appropriate 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line844">line 844</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line847">line 847</a>
     </li></ul></dd>
     
 
@@ -543,6 +541,8 @@ you need to use this method, in order to register them.</p>
 <li>nothing (and return <code>false</code>), if the function passed in is the same</li>
 </ul>
 <p><em><strong>TIP:</strong> Reusable controllers should always reside inside modules.</em></p>
+<p>And if your controller is only to extend and/or configure other controller(s), then method <a href="ERoot.html#addAlias">addAlias</a>
+offers a simpler syntax for adding such controllers.</p>
 </div>
 
 

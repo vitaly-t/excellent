@@ -800,6 +800,9 @@
          *
          * _**TIP:** Reusable controllers should always reside inside modules._
          *
+         * And if your controller is only to extend and/or configure other controller(s), then method {@link ERoot#addAlias addAlias}
+         * offers a simpler syntax for adding such controllers.
+         *
          * @param {JSName} name
          * Controller name. Trailing spaces are ignored.
          *
@@ -877,16 +880,13 @@
          * Simplifies creation and re-configuration of controllers that serve as aliases.
          *
          * Any controller that extends other controllers, using method {@link EController#extend EController.extend},
-         * is an alias controller. And this method simplifies creation of such controllers, while also giving the option
-         * to re-configure extended controllers.
+         * is effectively an alias. And this method simplifies creation of such controllers, suitable when you only want
+         * a new alias for extended controller(s), and optionally configured.
          *
          * This method is particularity useful during integration into an app, creating simpler aliases and configuring
          * their extended controllers at the same time. You may decide to have a few such controllers, as a means of
          * simplifying the app setup, i.e. instead of searching for a controller to change its configuration, you can
-         * resort to using a pre-configured alias.
-         *
-         * For the same reason, sometimes you may even want to create an alias for a single controller, if you want
-         * to shorten its long name, and/or re-configure at the same time:
+         * resort to using a pre-configured alias, even if it is for a single controller:
          *
          * ```js
          * app.addAlias('errorBoard', 'someModule.panels.centered', function(c) {
