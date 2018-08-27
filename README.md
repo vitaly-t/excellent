@@ -59,11 +59,12 @@ app.addController('myCtrl', function(ctrl) {
 });
 ```
 
+Or you can alias + configure controllers at the same time (method [addAlias]), without any search.
+
 **Other features include:**
 
 * Global and local dynamic bindings, with [ERoot.bind] and [EController.bind].
 * Controllers can extend / inherit each other's functionality, see [Inheritance].
-* One can alias and configure controllers in a single step, see [addAlias].
 * [Modules] offer greater reusability and simpler distribution of controllers.
 * [Services] share functionality across all controllers.
 * [TypeScript] support right out of the box.
