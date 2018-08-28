@@ -1553,7 +1553,8 @@
      * It signals the controller that its element has been removed from DOM, and it is time to release any pre-allocated resources, if necessary.
      *
      * In any modern browser, the event is triggered immediately, courtesy of {@link external:MutationObserver MutationObserver},
-     * while in older browsers (IE9 and IE10), it falls back on a manual background check that runs every second.
+     * while in older browsers (IE9 and IE10), it falls back on a manual background check that runs every second. You can make it instant
+     * under IE9/10 also, by adding one of the `MutationObserver` polyfills to the app.
      *
      * @see
      * {@link ERoot.event:onReady ERoot.onReady}
