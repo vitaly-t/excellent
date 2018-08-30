@@ -107,6 +107,18 @@
     }
 
     /**
+     * Validates parameter as a valid DOM Element object.
+     *
+     * @param {external:HTMLElement} e
+     * Element object to be validated.
+     */
+    function validateElement(e) {
+        if (!e || typeof e.innerHTML !== 'string') {
+            throw new TypeError('Parameter ' + jStr(e) + ' does not represent a valid DOM element.');
+        }
+    }
+
+    /**
      * Validates a string to be a proper JavaScript open name.
      *
      * @param {string} name
@@ -267,7 +279,7 @@
      *
      * It implements the logic of bindings reduced to the absolute minimum DOM usage.
      *
-     * @param {HTMLElement} [node]
+     * @param {external:HTMLElement} [node]
      * Element to start processing from.
      *
      * @param {boolean|function} process
@@ -726,6 +738,7 @@
      * {@link ERoot#services services},
      * {@link ERoot#version version},
      * {@link ERoot#bind bind},
+     * {@link ERoot#bindFor bindFor},
      * {@link ERoot.event:onReady onReady}
      */
     function ERoot() {
@@ -1069,6 +1082,7 @@
          *
          * @see
          * {@link ERoot#bind bind},
+         * {@link ERoot#bindFor bindFor},
          * {@link EController#bind EController.bind}
          *
          * @example
@@ -1098,9 +1112,7 @@
          * });
          */
         this.attach = function (e, names) {
-            if (!e || typeof e.innerHTML !== 'string') {
-                throw new TypeError('Parameter ' + jStr(e) + ' does not represent a valid DOM element.');
-            }
+            validateElement(e);
             if (constructing) {
                 throw new Error('Cannot invoke ERoot.attach from a controller constructor.');
             }
@@ -1181,7 +1193,8 @@
          *
          * Normally, a controller creates new controlled elements within its children, and then uses
          * {@link EController#bind EController.bind} method. It is only when you create a new controlled
-         * element that's not a child element, then you would use this global binding.
+         * element that's not a child element, then you would use this global binding. For a random-element
+         * binding see {@link ERoot#bindFor bindFor}.
          *
          * Note that when integrating your controllers into an application, if you are dealing with DOM objects rather than HTML,
          * then you can alternatively make use of method {@link ERoot#attach attach}, to inject and initialize controllers
@@ -1197,11 +1210,45 @@
          * - _any truthy value, except a function type:_ forces synchronous binding.
          *
          * @see
-         * {@link ERoot#attach ERoot.attach},
+         * {@link ERoot#bindFor bindFor},
+         * {@link ERoot#attach attach},
          * {@link EController#bind EController.bind}
          */
         this.bind = function (process) {
             processBinding(null, process);
+        };
+
+        /**
+         * @method ERoot#bindFor
+         * @description
+         * Searches and initializes new bindings inside the specified element.
+         *
+         * Typically, you would trigger local bindings via {@link EController#bind EController.bind}. But when you know the element
+         * that contains new bindings, and do not want to create a controller for it, or use the global {@link ERoot#bind bind},
+         * you can use this method instead.
+         *
+         * @param {external:HTMLElement} e
+         * DOM element with new bindings among its children.
+         *
+         * @param {boolean|function} [process=false]
+         * Determines how to process the binding:
+         * - _any falsy value (default):_ the binding will be done asynchronously;
+         * - _a function:_ binding is asynchronous, calling the function when finished;
+         * - _any truthy value, except a function type:_ forces synchronous binding.
+         *
+         * @see
+         * {@link ERoot#bind bind},
+         * {@link EController#bind EController.bind}
+         *
+         * @example
+         *
+         * var e = document.getElementById('someId');
+         * e.innerHTML = '<div e-bind="ctrl1, ctrl2"></div>';
+         * app.bindFor(e); // bind child elements to controllers
+         */
+        this.bindFor = function (e, process) {
+            validateElement(e);
+            processBinding(e, process);
         };
 
         /**
@@ -1593,6 +1640,7 @@
      *
      * @see
      * {@link ERoot#bind ERoot.bind},
+     * {@link ERoot#bindFor ERoot.bindFor},
      * {@link ERoot#attach ERoot.attach}
      *
      * @example

@@ -265,9 +265,31 @@ describe('positive', () => {
         });
     });
 
+    describe('bindFor', () => {
+        it('must bind children', () => {
+            const e = document.getElementById('dynamic');
+            e.innerHTML = '<div e-bind="bindForCtrl"></div>';
+            excellent.addController('bindForCtrl', ctrl => {
+                ctrl.node.innerHTML = 'bindFor works';
+            });
+            excellent.bindFor(e, true);
+            expect(excellent.findOne('bindForCtrl').node.innerHTML).toBe('bindFor works');
+        });
+    });
 });
 
 describe('negative', () => {
+
+    describe('bindFor', () => {
+        it('must throw on invalid elements', () => {
+            expect(() => {
+                excellent.bindFor();
+            }).toThrow('Parameter <undefined> does not represent a valid DOM element.');
+            expect(() => {
+                excellent.bindFor(123);
+            }).toThrow('Parameter <123> does not represent a valid DOM element.');
+        });
+    });
 
     describe('getCtrlFunc', () => {
         it('must throw on invalid controller names', () => {

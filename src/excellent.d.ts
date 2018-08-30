@@ -1,5 +1,5 @@
 ////////////////////////////////////
-// Excellent.js v1.3.0 declarations
+// Excellent.js v1.4.0 declarations
 ////////////////////////////////////
 
 declare namespace ERoot {
@@ -55,6 +55,8 @@ declare namespace ERoot {
         attach(e: Element, ctrlNames: string[]): EController[]
 
         bind(process?: BindingProcess): void
+
+        bindFor(e: Element, process?: BindingProcess): void
 
         find(ctrlName: string): EController[]
 

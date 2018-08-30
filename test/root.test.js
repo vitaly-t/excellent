@@ -16,6 +16,7 @@ describe('positive', () => {
         expect(typeof e.addModule).toBe('function');
         expect(typeof e.addService).toBe('function');
         expect(typeof e.bind).toBe('function');
+        expect(typeof e.bindFor).toBe('function');
         expect(typeof e.find).toBe('function');
         expect(typeof e.findOne).toBe('function');
         expect(typeof e.getCtrlFunc).toBe('function');
