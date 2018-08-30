@@ -87,7 +87,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="ERoot.html#analyze">analyze</a>,<a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addAlias">addAlias</a>,<a href="ERoot.html#addModule">addModule</a>,<a href="ERoot.html#addService">addService</a>,<a href="ERoot.html#attach">attach</a>,<a href="ERoot.html#find">find</a>,<a href="ERoot.html#findOne">findOne</a>,<a href="ERoot.html#getCtrlFunc">getCtrlFunc</a>,<a href="ERoot.html#reset">reset</a>,<a href="ERoot.html#services">services</a>,<a href="ERoot.html#version">version</a>,<a href="ERoot.html#bind">bind</a>,<a href="ERoot.html#bindFor">bindFor</a>,<a href="ERoot.html#.event:onReady">onReady</a></li>
+            <li><a href="ERoot.html#analyze">analyze</a>,<a href="ERoot.html#addController">addController</a>,<a href="ERoot.html#addAlias">addAlias</a>,<a href="ERoot.html#addModule">addModule</a>,<a href="ERoot.html#addService">addService</a>,<a href="ERoot.html#attach">attach</a>,<a href="ERoot.html#bind">bind</a>,<a href="ERoot.html#bindFor">bindFor</a>,<a href="ERoot.html#find">find</a>,<a href="ERoot.html#findOne">findOne</a>,<a href="ERoot.html#getCtrlFunc">getCtrlFunc</a>,<a href="ERoot.html#reset">reset</a>,<a href="ERoot.html#services">services</a>,<a href="ERoot.html#version">version</a>,<a href="ERoot.html#.event:onReady">onReady</a></li>
         </ul>
     </dd>
     
@@ -1184,7 +1184,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1371">line 1371</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1376">line 1376</a>
     </li></ul></dd>
     
 
@@ -1477,6 +1477,9 @@ to the list of controllers explicitly created by the method.</p>
 
 <div class="description">
     <p>Searches for all elements in the document not yet bound, and binds them to controllers.</p>
+<p>It will search for all elements in the document that contain attribute <code>data-e-bind</code> / <code>e-bind</code>,
+but without controllers yet, create and initialize controllers, as specified by the attribute,
+which is expected to contain valid names (comma-separated) of existing controllers.</p>
 <p>Normally, a controller creates new controlled elements within its children, and then uses
 <a href="EController.html#bind">EController.bind</a> method. It is only when you create a new controlled
 element that's not a child element, then you would use this global binding. For a random-element
@@ -1726,7 +1729,8 @@ you can use this method instead.</p>
                 </td>
             
 
-            <td class="description last"><p>DOM element with new bindings among its children.</p></td>
+            <td class="description last"><p>DOM element with new bindings among its children - elements with attribute <code>data-e-bind</code> / <code>e-bind</code> set to valid names
+(comma-separated) of existing controllers.</p></td>
         </tr>
 
     
@@ -1814,7 +1818,7 @@ you can use this method instead.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1221">line 1221</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1225">line 1225</a>
     </li></ul></dd>
     
 
@@ -1969,7 +1973,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1254">line 1254</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1259">line 1259</a>
     </li></ul></dd>
     
 
@@ -2138,7 +2142,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1288">line 1288</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1293">line 1293</a>
     </li></ul></dd>
     
 
@@ -2372,7 +2376,7 @@ is optional. This way you can also check whether the containing module is includ
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1319">line 1319</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1324">line 1324</a>
     </li></ul></dd>
     
 
@@ -2616,7 +2620,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1464">line 1464</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1469">line 1469</a>
     </li></ul></dd>
     
 
