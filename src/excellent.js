@@ -731,14 +731,14 @@
      * {@link ERoot#addModule addModule},
      * {@link ERoot#addService addService},
      * {@link ERoot#attach attach},
+     * {@link ERoot#bind bind},
+     * {@link ERoot#bindFor bindFor},
      * {@link ERoot#find find},
      * {@link ERoot#findOne findOne},
      * {@link ERoot#getCtrlFunc getCtrlFunc},
      * {@link ERoot#reset reset},
      * {@link ERoot#services services},
      * {@link ERoot#version version},
-     * {@link ERoot#bind bind},
-     * {@link ERoot#bindFor bindFor},
      * {@link ERoot.event:onReady onReady}
      */
     function ERoot() {
@@ -1191,6 +1191,10 @@
          * @description
          * Searches for all elements in the document not yet bound, and binds them to controllers.
          *
+         * It will search for all elements in the document that contain attribute `data-e-bind` / `e-bind`,
+         * but without controllers yet, create and initialize controllers, as specified by the attribute,
+         * which is expected to contain valid names (comma-separated) of existing controllers.
+         *
          * Normally, a controller creates new controlled elements within its children, and then uses
          * {@link EController#bind EController.bind} method. It is only when you create a new controlled
          * element that's not a child element, then you would use this global binding. For a random-element
@@ -1228,7 +1232,8 @@
          * you can use this method instead.
          *
          * @param {external:HTMLElement} e
-         * DOM element with new bindings among its children.
+         * DOM element with new bindings among its children - elements with attribute `data-e-bind` / `e-bind` set to valid names
+         * (comma-separated) of existing controllers.
          *
          * @param {boolean|function} [process=false]
          * Determines how to process the binding:
@@ -1622,6 +1627,10 @@
      * @description
      * Signals the framework that the element's inner content has been modified to contain new child controlled elements,
      * and that it is time to bind those with the corresponding controllers.
+     *
+     * It will search for all child elements that contain attribute `data-e-bind` / `e-bind`, but without controllers yet,
+     * create and initialize controllers, as specified by the attribute, which is expected to contain valid names
+     * (comma-separated) of existing controllers.
      *
      * This method requires that the calling controller has been initialized.
      *
