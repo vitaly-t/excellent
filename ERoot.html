@@ -288,7 +288,7 @@ because the library is distributed with the source maps.</p>
 
 
 <div class="description">
-    <p>Simplifies creation and re-configuration of controllers that serve as aliases.</p>
+    <p>Creates a simplified controller as a configurable alias.</p>
 <p>Any controller that extends other controllers, using method <a href="EController.html#extend">EController.extend</a>,
 is effectively an alias. And this method simplifies creation of such controllers, suitable when you only want
 a new alias for extended controller(s), and optionally configured.</p>
@@ -300,7 +300,7 @@ resort to using a pre-configured alias, even if it is for a single controller:</
    // here we presume that controller 'someModule.panels.centered'
    // implements method setConfig(configObject):
    c.setConfig({bgColor: 'red', color: 'white'});
-});</code></pre><p>In cases where all you want is to create an alias for a single controller name, inside an app or a module,
+});</code></pre><p>In cases when all you want is to create an alias for a single controller name, inside an app or a module,
 method <a href="ERoot.html#getCtrlFunc">getCtrlFunc</a> may be more appropriate for this.</p>
 </div>
 
@@ -512,7 +512,7 @@ method <a href="ERoot.html#getCtrlFunc">getCtrlFunc</a> may be more appropriate 
     
     <pre class="prettyprint"><code>// Create a new controller aliasName as an alias for ['controller1', 'controller2'],// so instead of e-bind="controller1, controller2" we can use e-bind="aliasName":app.addAlias('aliasName', ['controller1', 'controller2']);</code></pre>
 
-    <pre class="prettyprint"><code>// Create a new controller-alias, and re-configure it at the same time:app.addAlias('aliasName', ['controller1', 'controller2'], function(c1, c2) {    // this = alias controller itself    this.node.className = 'myClass';    c1.someMethod(123);    c2.someMethod('hello!');});</code></pre>
+    <pre class="prettyprint"><code>// Create a new controller-alias, and re-configure it at the same time:app.addAlias('aliasName', ['controller1', 'controller2'], function(c1, c2) {    // this = controller 'aliasName' object    // c1 = controller 'controller1' object    // c2 = controller 'controller2' object    this.node.className = 'myClass';    c1.someMethod(123);    c2.someMethod('hello!');});</code></pre>
 
 
 
@@ -859,7 +859,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line985">line 985</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line987">line 987</a>
     </li></ul></dd>
     
 
@@ -1059,7 +1059,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line936">line 936</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line938">line 938</a>
     </li></ul></dd>
     
 
@@ -1184,7 +1184,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1376">line 1376</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1378">line 1378</a>
     </li></ul></dd>
     
 
@@ -1391,7 +1391,7 @@ to the list of controllers explicitly created by the method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1044">line 1044</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1046">line 1046</a>
     </li></ul></dd>
     
 
@@ -1609,7 +1609,7 @@ of minimizing the number of checks against the DOM, but it works/scales best whe
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1189">line 1189</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1191">line 1191</a>
     </li></ul></dd>
     
 
@@ -1818,7 +1818,7 @@ you can use this method instead.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1225">line 1225</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1227">line 1227</a>
     </li></ul></dd>
     
 
@@ -1973,7 +1973,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1259">line 1259</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1261">line 1261</a>
     </li></ul></dd>
     
 
@@ -2142,7 +2142,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1293">line 1293</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1295">line 1295</a>
     </li></ul></dd>
     
 
@@ -2376,7 +2376,7 @@ is optional. This way you can also check whether the containing module is includ
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1324">line 1324</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1326">line 1326</a>
     </li></ul></dd>
     
 
@@ -2505,7 +2505,7 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1158">line 1158</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1160">line 1160</a>
     </li></ul></dd>
     
 
@@ -2620,7 +2620,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1469">line 1469</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1471">line 1471</a>
     </li></ul></dd>
     
 
@@ -2656,7 +2656,7 @@ event at this point.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>app.onReady = function() {  // All explicit and extended controllers now can be located;  // Let's find our main app controller, and ask it do something:  app.findOne('appCtrl').doSomething();};</code></pre>
+    <pre class="prettyprint"><code>app.onReady = function() {  // All explicit and extended controllers now can be located;  // Let's find our main app controller, and ask it to do something:  app.findOne('appCtrl').doSomething();};</code></pre>
 
 
 
