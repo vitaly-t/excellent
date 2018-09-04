@@ -860,7 +860,7 @@
         /**
          * @method ERoot#addAlias
          * @description
-         * Simplifies creation and re-configuration of controllers that serve as aliases.
+         * Creates a simplified controller as a configurable alias.
          *
          * Any controller that extends other controllers, using method {@link EController#extend EController.extend},
          * is effectively an alias. And this method simplifies creation of such controllers, suitable when you only want
@@ -879,7 +879,7 @@
          * });
          * ```
          *
-         * In cases where all you want is to create an alias for a single controller name, inside an app or a module,
+         * In cases when all you want is to create an alias for a single controller name, inside an app or a module,
          * method {@link ERoot#getCtrlFunc getCtrlFunc} may be more appropriate for this.
          *
          * @param {JSName} name
@@ -913,7 +913,9 @@
          * // Create a new controller-alias, and re-configure it at the same time:
          *
          * app.addAlias('aliasName', ['controller1', 'controller2'], function(c1, c2) {
-         *     // this = alias controller itself
+         *     // this = controller 'aliasName' object
+         *     // c1 = controller 'controller1' object
+         *     // c2 = controller 'controller2' object
          *
          *     this.node.className = 'myClass';
          *
@@ -1486,7 +1488,7 @@
      * app.onReady = function() {
      *   // All explicit and extended controllers now can be located;
      *
-     *   // Let's find our main app controller, and ask it do something:
+     *   // Let's find our main app controller, and ask it to do something:
      *   app.findOne('appCtrl').doSomething();
      * };
      */
