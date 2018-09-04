@@ -10,6 +10,7 @@ describe('positive', () => {
         const e = excellent;
         expect(e && e.constructor && e.constructor.name).toBe('ERoot');
         expect(e.services).toEqual({});
+        expect(e.modules).toEqual({});
         expect(e.version).toBe('<version>');
         expect(typeof e.addController).toBe('function');
         expect(typeof e.addAlias).toBe('function');

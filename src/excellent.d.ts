@@ -1,10 +1,11 @@
 ////////////////////////////////////
-// Excellent.js v1.4.0 declarations
+// Excellent.js v1.5.0 declarations
 ////////////////////////////////////
 
 declare namespace ERoot {
 
     type BindingProcess = boolean | (() => void);
+    type ModulesNamespace = { readonly [name: string]: any };
     type ServicesNamespace = { readonly [name: string]: any };
 
     // Type API:
@@ -40,6 +41,7 @@ declare namespace ERoot {
     // https://vitaly-t.github.io/excellent/ERoot.html
     interface ERoot<SN = ServicesNamespace> {
         readonly version: string;
+        readonly modules: ModulesNamespace;
         readonly services: SN;
 
         addController(name: string, func: (ctrl: EController) => void): boolean
@@ -87,8 +89,8 @@ declare namespace ERoot {
             total: number
         };
         elements: ControlledElement[]
-        modules: { [name: string]: any }
-        services: { [name: string]: any }
+        modules: ModulesNamespace
+        services: ServicesNamespace
     }
 }
 

@@ -43,13 +43,6 @@
     var ctrlCache = {};
 
     /**
-     * All registered modules.
-     *
-     * @type {Object.<JSName, {}>}
-     */
-    var modules = {};
-
-    /**
      * All controlled elements currently in the DOM.
      *
      * @type {ControlledElement[]}
@@ -667,14 +660,14 @@
         } else {
             // the controller is from a module
             var names = name.split('.');
-            var moduleName = names[0];
-            if (!(moduleName in modules)) {
+            var mod = names[0];
+            if (!(mod in root.modules)) {
                 if (noError) {
                     return null;
                 }
-                throw new Error('Module ' + jStr(moduleName) + ' not found' + (e ? ': ' + startTag(e) : '.'));
+                throw new Error('Module ' + jStr(mod) + ' not found' + (e ? ': ' + startTag(e) : '.'));
             }
-            var obj = modules[moduleName];
+            var obj = root.modules[mod];
             for (var i = 1; i < names.length; i++) {
                 var n = names[i];
                 if (n in obj) {
@@ -737,6 +730,7 @@
      * {@link ERoot#findOne findOne},
      * {@link ERoot#getCtrlFunc getCtrlFunc},
      * {@link ERoot#reset reset},
+     * {@link ERoot#modules modules},
      * {@link ERoot#services services},
      * {@link ERoot#version version},
      * {@link ERoot.event:onReady onReady}
@@ -759,12 +753,22 @@
          * @type {Object.<JSName, {}>}
          * @readonly
          * @description
-         * Namespace of all services, registered via method {@link ERoot#addService addService}.
+         * Namespace of all services, registered with method {@link ERoot#addService addService}.
          *
          * @see {@link ERoot#addService addService}
-         *
          */
         readOnlyProp(this, 'services', {});
+
+        /**
+         * @member ERoot#modules
+         * @type {Object.<JSName, {}>}
+         * @readonly
+         * @description
+         * Namespace of all modules, registered with method {@link ERoot#addModule addModule}.
+         *
+         * @see {@link ERoot#addModule addModule}
+         */
+        readOnlyProp(this, 'modules', {});
 
         /**
          * @method ERoot#addController
@@ -979,8 +983,8 @@
                 return false;
             }
             var scope = {};
-            readOnlyProp(root.services, name, scope);
             func.call(scope, scope);
+            readOnlyProp(root.services, name, scope);
             return true;
         };
 
@@ -993,6 +997,8 @@
          *
          * Unlike application-level controllers, which register themselves by calling {@link ERoot#addController addController},
          * all controllers inside a module are available automatically, just as the module is added.
+         *
+         * Each added module is listed within the {@link ERoot#modules modules} namespace.
          *
          * @param {JSName} name
          * Module name. Trailing spaces are ignored.
@@ -1034,12 +1040,12 @@
          */
         this.addModule = function (name, func) {
             name = validateEntity(name, func, 'module');
-            if (name in modules) {
+            if (name in root.modules) {
                 return false;
             }
             var scope = {};
-            modules[name] = scope;
             func.call(scope, scope);
+            readOnlyProp(root.modules, name, scope);
             return true;
         };
 
@@ -1176,7 +1182,6 @@
             ctrlGlobal = {};
             ctrlLocal = {};
             ctrlCache = {};
-            modules = {};
             elements.length = 0;
             observer.stop();
             observer = new DestroyObserver();
@@ -1331,8 +1336,8 @@
          * Every controller in the framework is presented by its name + initialization function. And this method pulls
          * the initialization function from the specified name of the controller.
          *
-         * This in turn lets you create controllers on the app level or inside modules that alias an existing controller,
-         * i.e. you can create identical controllers under different names.
+         * This in turn lets you create controllers on the app level or inside modules that directly alias an existing controller,
+         * without extending it (methods {@link EController#extend EController.extend} and {@link ERoot#addAlias ERoot.addAlias}).
          *
          * ```js
          * // Example of declaring a controller inside a module,
@@ -1347,9 +1352,9 @@
          * Full controller name. Trailing spaces are ignored.
          *
          * @param {boolean} [noError=false]
-         * By default, the method throws an error whenever it fails to resolve the specified name into a valid function.
+         * By default, the method throws an error whenever it fails to resolve the specified name into a valid controller function.
          * Passing in `noError = true` forces it to return `null` when the module or controller are not found.
-         * This however does not suppress errors related to passing in an invalid controller name.
+         * This however will not suppress errors related to passing in an invalid controller name.
          *
          * Example of where you might want to use it - provide an alternative controller function when the desired
          * controller could not be resolved for some reasons, like when inclusion of a certain module into the app
@@ -1403,7 +1408,7 @@
                     total: 0
                 },
                 elements: elements.slice(),
-                modules: {},
+                modules: root.modules,
                 services: root.services
             };
             for (var g in ctrlGlobal) {
@@ -1413,9 +1418,6 @@
             for (var l in ctrlLocal) {
                 res.controllers.total += ctrlLocal[l].length;
                 res.controllers.local[l] = ctrlLocal[l].slice();
-            }
-            for (var m in modules) {
-                res.modules[m] = modules[m];
             }
             return res;
         };
