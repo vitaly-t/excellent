@@ -1674,6 +1674,9 @@
      *             // and communicate with it:
      *             c.someMethod();
      *         });
+     *
+     *         // The following binding would produce the same result:
+     *         // app.bindFor(this.node, cb);
      *     };
      * });
      */

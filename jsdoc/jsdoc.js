@@ -1,7 +1,8 @@
 module.exports = {
     source: {
         include: [
-            'src'
+            'src',
+            'jsdoc/README.md'
         ]
     },
     opts: {

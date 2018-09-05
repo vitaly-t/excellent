@@ -1,8 +1,7 @@
-Excellent.js
-------------
+Excellent.js v1.5.0
+-------------------
 
-[WiKi] pages contain a lot of extra information about the library's usage,
-including [Getting Started].
+[WiKi] pages contain a lot of extra information about the library's usage, including [Getting Started].
 
 ### Main Types
 
