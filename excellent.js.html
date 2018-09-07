@@ -1980,8 +1980,12 @@
  * - It cannot have any spaces in between
  * - It is treated as case-sensitive
  *
- * It represents a full controller name. And if the name contains more than one {@link JSName}, then the first name
- * always refers to a module, followed by either a simple or nested controller name implemented in that module.
+ * The string represents a full controller name, depending on how many {@link JSName} entries it contains:
+ *
+ * - When it contains a single {@link JSName}, it always refers to an app-level controller, as added with
+ *   {@link ERoot#addController ERoot.addController}
+ * - When it contains more than one {@link JSName}, then the first one is a module name, as added with
+ *   {@link ERoot#addModule ERoot.addModule}, followed by either a simple or nested controller name in that module.
  */
 
 /**

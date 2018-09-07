@@ -116,8 +116,13 @@
 <li>It cannot have any spaces in between</li>
 <li>It is treated as case-sensitive</li>
 </ul>
-<p>It represents a full controller name. And if the name contains more than one <a href="global.html#JSName">JSName</a>, then the first name
-always refers to a module, followed by either a simple or nested controller name implemented in that module.</p>
+<p>The string represents a full controller name, depending on how many <a href="global.html#JSName">JSName</a> entries it contains:</p>
+<ul>
+<li>When it contains a single <a href="global.html#JSName">JSName</a>, it always refers to an app-level controller, as added with
+<a href="ERoot.html#addController">ERoot.addController</a></li>
+<li>When it contains more than one <a href="global.html#JSName">JSName</a>, then the first one is a module name, as added with
+<a href="ERoot.html#addModule">ERoot.addModule</a>, followed by either a simple or nested controller name in that module.</li>
+</ul>
 </div>
 
 
