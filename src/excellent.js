@@ -1513,12 +1513,6 @@
      * {@link EController.event:onInit onInit},
      * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy}
-     *
-     * @param {string} name
-     * Controller name.
-     *
-     * @param {ControlledElement} node
-     * DOM element, associated with the controller.
      */
     function EController(name, node) {
 
@@ -1527,7 +1521,7 @@
          * @type {CtrlName}
          * @readonly
          * @description
-         * Full name of the controller.
+         * Full name of the controller, i.e. the name from which the controller was instantiated.
          */
         readOnlyProp(this, 'name', name);
 
@@ -1536,7 +1530,10 @@
          * @type {ControlledElement}
          * @readonly
          * @description
-         * Source DOM element bound to this controller.
+         * The DOM element/node this controller is bound to.
+         *
+         * Every controller is bound to a DOM element in the document, either through binding or direct attachment.
+         * And at the core of every component is direct communication with the element it is bound to.
          */
         readOnlyProp(this, 'node', node);
     }
