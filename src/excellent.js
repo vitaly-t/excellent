@@ -379,8 +379,14 @@
     function createController(name, e, f) {
         constructing = true;
         var c = new EController(name, e);
-        f.call(c, c);
-        constructing = false;
+        try {
+            f.call(c, c);
+        } catch (err) {
+            constructing = false;
+            throw err;
+        } finally {
+            constructing = false;
+        }
         return c;
     }
 
@@ -1144,6 +1150,7 @@
                 return c;
             }
 
+            // TODO: Create nothing here, if the whole operation fails
             if (!ctrl) {
                 ctrl = {};
                 readOnlyProp(e, 'controllers', ctrl);
