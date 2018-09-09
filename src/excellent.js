@@ -1079,8 +1079,7 @@
          * that controller is returned instead, to be reused, because only a single controller type can be bound to any
          * given element.
          *
-         * In addition, if the element has no previous binding set on it, attribute `data-e-bind` is created, set
-         * to the list of controllers explicitly created by the method.
+         * The method sets/updates attribute `data-e-bind` / `e-bind` according to the new bindings.
          *
          * @param {external:HTMLElement} e
          * Either a new DOM element or a {@link ControlledElement}, to bind with the specified controller(s).
@@ -1158,13 +1157,21 @@
                 observer.watch(e);
             }
 
-            // TODO: Update the attribute with new values, if exists
-
             // Need to set the attribute, if missing, or else EController.find
             // won't see it; and worse - event onDestroy won't work in IE9/10
-            if (!e.hasAttribute('data-e-bind') && !e.hasAttribute('e-bind')) {
-                e.setAttribute('data-e-bind', attrNames.join(', '));
+            var attrValue = getAttribute(e, 'data-e-bind', 'e-bind');
+            if (attrValue) {
+                var oldAttr = attrValue.split(',').map(trim);
+                attrNames.forEach(function (a) {
+                    if (oldAttr.indexOf(a) === -1) {
+                        oldAttr.push(a);
+                    }
+                });
+                attrNames = oldAttr;
             }
+            attrValue = attrNames.join(', ');
+            var an = e.hasAttribute('e-bind') ? 'e-bind' : 'data-e-bind';
+            e.setAttribute(an, attrValue);
 
             eventNotify(created, 'onInit');
             eventNotify(created, 'onReady');

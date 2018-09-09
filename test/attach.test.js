@@ -53,8 +53,19 @@ describe('positive', () => {
         const e = document.getElementById('last');
         excellent.attach(e, ['attrTest1', 'attrTest2', 'attrTest1', 'attrTest2']);
         expect(e.getAttribute('data-e-bind')).toBe('attrTest1, attrTest2');
-        excellent.attach(e, ['attrTest3', 'attrTest3']);
-        expect(e.getAttribute('data-e-bind')).toBe('attrTest1, attrTest2');
+        excellent.attach(e, ['attrTest1', 'attrTest3', 'attrTest3']);
+        expect(e.getAttribute('data-e-bind')).toBe('attrTest1, attrTest2, attrTest3');
+    });
+
+    it('must allow attachment to unbound controllers', () => {
+        excellent.addController('freshCtrl', () => {
+        });
+        excellent.addController('unbound', () => {
+        });
+        const e = document.createElement('div');
+        e.setAttribute('e-bind', 'unbound');
+        excellent.attach(e, ['unbound', 'freshCtrl']);
+        expect(e.getAttribute('e-bind')).toBe('unbound, freshCtrl');
     });
 
     it('must trigger onDestroy event for attached elements', () => {
