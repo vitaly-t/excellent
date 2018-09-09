@@ -1130,7 +1130,7 @@
             if (constructing) {
                 throw new Error('Cannot invoke ERoot.attach from a controller constructor.');
             }
-            var ctrl = e.controllers;
+            var ctrl = e.controllers || {};
             var created = [], attrNames = [];
 
             function ext(n) {
@@ -1150,14 +1150,15 @@
                 return c;
             }
 
-            // TODO: Create nothing here, if the whole operation fails
-            if (!ctrl) {
-                ctrl = {};
+            var result = Array.isArray(names) ? names.map(ext) : ext(names);
+
+            if (!e.controllers) {
                 readOnlyProp(e, 'controllers', ctrl);
                 elements.push(e);
                 observer.watch(e);
             }
-            var result = Array.isArray(names) ? names.map(ext) : ext(names);
+
+            // TODO: Update the attribute with new values, if exists
 
             // Need to set the attribute, if missing, or else EController.find
             // won't see it; and worse - event onDestroy won't work in IE9/10
