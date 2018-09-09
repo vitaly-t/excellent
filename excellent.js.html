@@ -409,8 +409,14 @@
     function createController(name, e, f) {
         constructing = true;
         var c = new EController(name, e);
-        f.call(c, c);
-        constructing = false;
+        try {
+            f.call(c, c);
+        } catch (err) {
+            constructing = false;
+            throw err;
+        } finally {
+            constructing = false;
+        }
         return c;
     }
 
@@ -1103,8 +1109,7 @@
          * that controller is returned instead, to be reused, because only a single controller type can be bound to any
          * given element.
          *
-         * In addition, if the element has no previous binding set on it, attribute `data-e-bind` is created, set
-         * to the list of controllers explicitly created by the method.
+         * The method sets/updates attribute `data-e-bind` / `e-bind` according to the new bindings.
          *
          * @param {external:HTMLElement} e
          * Either a new DOM element or a {@link ControlledElement}, to bind with the specified controller(s).
@@ -1154,7 +1159,7 @@
             if (constructing) {
                 throw new Error('Cannot invoke ERoot.attach from a controller constructor.');
             }
-            var ctrl = e.controllers;
+            var ctrl = e.controllers || {};
             var created = [], attrNames = [];
 
             function ext(n) {
@@ -1174,19 +1179,29 @@
                 return c;
             }
 
-            if (!ctrl) {
-                ctrl = {};
+            var result = Array.isArray(names) ? names.map(ext) : ext(names);
+
+            if (!e.controllers) {
                 readOnlyProp(e, 'controllers', ctrl);
                 elements.push(e);
                 observer.watch(e);
             }
-            var result = Array.isArray(names) ? names.map(ext) : ext(names);
 
             // Need to set the attribute, if missing, or else EController.find
             // won't see it; and worse - event onDestroy won't work in IE9/10
-            if (!e.hasAttribute('data-e-bind') &amp;&amp; !e.hasAttribute('e-bind')) {
-                e.setAttribute('data-e-bind', attrNames.join(', '));
+            var attrValue = getAttribute(e, 'data-e-bind', 'e-bind');
+            if (attrValue) {
+                var oldAttr = attrValue.split(',').map(trim);
+                attrNames.forEach(function (a) {
+                    if (oldAttr.indexOf(a) === -1) {
+                        oldAttr.push(a);
+                    }
+                });
+                attrNames = oldAttr;
             }
+            attrValue = attrNames.join(', ');
+            var an = e.hasAttribute('e-bind') ? 'e-bind' : 'data-e-bind';
+            e.setAttribute(an, attrValue);
 
             eventNotify(created, 'onInit');
             eventNotify(created, 'onReady');
