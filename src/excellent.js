@@ -362,6 +362,14 @@
     }
 
     /**
+     * @class ControllerClass
+     * @private
+     * @readonly
+     * @property {boolean} $cc
+     * Flag that indicates it is a valid Controller Class.
+     */
+
+    /**
      * Helper for creating a controller in a safe way.
      *
      * @param {string|CtrlName} name
@@ -370,22 +378,18 @@
      * @param {HTMLElement|ControlledElement} e
      * Element associated with the controller.
      *
-     * @param {function|class} f
+     * @param {function|ControllerClass} f
      * Controller's construction function or class.
      *
      * @returns {EController}
      * Created controller.
      */
     function createController(name, e, f) {
-        if (f.isClass === undefined) {
-            // TODO: Might do check at some point: if(!(f.prototype instanceof EController)){throw Error();}
-            var isClass = /^class\s/.test(Function.prototype.toString.call(f));
-            Object.defineProperty(f, 'isClass', {value: isClass});
-        }
+        validateClass(f);
         constructing = true;
         var c;
         try {
-            if (f.isClass) {
+            if (f.$cc) {
                 c = new f(name, e); // eslint-disable-line new-cap
             } else {
                 c = new EController([name, e]);
@@ -398,6 +402,24 @@
             constructing = false;
         }
         return c;
+    }
+
+    /**
+     * Validates and prepares a function / class for instantiation.
+     *
+     * @param {function|ControllerClass} func
+     * Function or class to be validated.
+     */
+    function validateClass(func) {
+        // $cc = Controller Class flag (read-only, hidden)
+        if (func.$cc === undefined) {
+            var m = Function.prototype.toString.call(func).match(/^class\s+([a-zA-Z$_][a-zA-Z$_0-9]*)/);
+            var name = m && m[1];
+            if (name && !(func.prototype instanceof EController)) {
+                throw new Error('Invalid controller class "' + name + '", because it does not derive from "EController".');
+            }
+            Object.defineProperty(func, '$cc', {value: !!name});
+        }
     }
 
     /**
@@ -865,6 +887,7 @@
          */
         this.addController = function (name, func) {
             name = validateEntity(name, func, 'controller');
+            validateClass(func);
             if (name in ctrlRegistered) {
                 // controller name has been registered previously
                 if (ctrlRegistered[name] === func) {
