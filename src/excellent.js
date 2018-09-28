@@ -378,6 +378,7 @@
      */
     function createController(name, e, f) {
         if (f.isClass === undefined) {
+            // TODO: Might do check at some point: if(!(f.prototype instanceof EController)){throw Error();}
             var isClass = /^class\s/.test(Function.prototype.toString.call(f));
             Object.defineProperty(f, 'isClass', {value: isClass});
         }
@@ -387,7 +388,7 @@
             if (f.isClass) {
                 c = new f(name, e); // eslint-disable-line new-cap
             } else {
-                c = new EController(name, e);
+                c = new EController([name, e]);
                 f.call(c, c);
             }
         } catch (err) {
@@ -1538,7 +1539,7 @@
      * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy}
      */
-    function EController(name, node) {
+    function EController(args) {
 
         /**
          * @member EController#name
@@ -1547,7 +1548,7 @@
          * @description
          * Full name of the controller, i.e. the name from which the controller was instantiated.
          */
-        readOnlyProp(this, 'name', name);
+        readOnlyProp(this, 'name', args[0]);
 
         /**
          * @member EController#node
@@ -1559,7 +1560,7 @@
          * Every controller is bound to a DOM element in the document, either through binding or direct attachment.
          * And at the core of every component is direct communication with the element it is bound to.
          */
-        readOnlyProp(this, 'node', node);
+        readOnlyProp(this, 'node', args[1]);
     }
 
     /**
@@ -1924,7 +1925,7 @@
         /* istanbul ignore else */
         if (typeof window !== 'undefined' && window) {
             window.excellent = root; // default root name
-            supportClasses();
+            window.EController = EController;
             var e = findAll('[data-e-root],[e-root]');
             if (e.length) {
                 if (e.length > 1) {
@@ -1945,13 +1946,6 @@
         }
     })();
 
-    function supportClasses() {
-        try {
-            eval('class EController{constructor(a){this.name=a[0];this.node=a[1]}}window.EController=EController;');
-        } catch (e) {
-            // we don't care when it errors, means ES6 classes are simply not available
-        }
-    }
 })();
 
 /**
