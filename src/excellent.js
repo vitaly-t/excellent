@@ -378,9 +378,16 @@
      */
     function createController(name, e, f) {
         constructing = true;
-        var c = new EController(name, e);
+        var c;
         try {
-            f.call(c, c);
+            // TODO: This check will be done earlier, when adding a controller,
+            // and then wrapped into a function that depends on the type.
+            if (isClass(f)) {
+                c = new f(name, e); // eslint-disable-line new-cap
+            } else {
+                c = new EController(name, e);
+                f.call(c, c);
+            }
         } catch (err) {
             constructing = false;
             throw err;
@@ -388,6 +395,11 @@
             constructing = false;
         }
         return c;
+    }
+
+    function isClass(func) {
+        return typeof func === 'function'
+            && /^class\s/.test(Function.prototype.toString.call(func));
     }
 
     /**
@@ -1915,6 +1927,7 @@
         /* istanbul ignore else */
         if (typeof window !== 'undefined' && window) {
             window.excellent = root; // default root name
+            supportClasses();
             var e = findAll('[data-e-root],[e-root]');
             if (e.length) {
                 if (e.length > 1) {
@@ -1935,6 +1948,13 @@
         }
     })();
 
+    function supportClasses() {
+        try {
+            eval('class EController{constructor(a){this.name=a[0];this.node=a[1]}}window.EController=EController;');
+        } catch (e) {
+            // we don't care when it errors, means ES6 classes are simply not available
+        }
+    }
 })();
 
 /**
