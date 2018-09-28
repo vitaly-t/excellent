@@ -370,19 +370,21 @@
      * @param {HTMLElement|ControlledElement} e
      * Element associated with the controller.
      *
-     * @param {function} f
-     * Controller's construction function.
+     * @param {function|class} f
+     * Controller's construction function or class.
      *
      * @returns {EController}
      * Created controller.
      */
     function createController(name, e, f) {
+        if (f.isClass === undefined) {
+            var isClass = /^class\s/.test(Function.prototype.toString.call(f));
+            Object.defineProperty(f, 'isClass', {value: isClass});
+        }
         constructing = true;
         var c;
         try {
-            // TODO: This check will be done earlier, when adding a controller,
-            // and then wrapped into a function that depends on the type.
-            if (isClass(f)) {
+            if (f.isClass) {
                 c = new f(name, e); // eslint-disable-line new-cap
             } else {
                 c = new EController(name, e);
@@ -395,11 +397,6 @@
             constructing = false;
         }
         return c;
-    }
-
-    function isClass(func) {
-        return typeof func === 'function'
-            && /^class\s/.test(Function.prototype.toString.call(func));
     }
 
     /**
@@ -659,7 +656,7 @@
      * @param {boolean} [noError=false]
      * Tells it not to throw on errors, and rather return null.
      *
-     * @returns {function|null}
+     * @returns {function|class|null}
      * Either controller function or throws. But if noError is true,
      * and no controller found, it returns `null`.
      *
@@ -1358,7 +1355,7 @@
         /**
          * @method ERoot#getCtrlFunc
          * @description
-         * Resolves a full controller name into the corresponding initialization function.
+         * Resolves a full controller name into the corresponding initialization function/class.
          *
          * Every controller in the framework is presented by its name + initialization function. And this method pulls
          * the initialization function from the specified name of the controller.
@@ -1387,8 +1384,8 @@
          * controller could not be resolved for some reasons, like when inclusion of a certain module into the app
          * is optional. This way you can also check whether the containing module is included or not.
          *
-         * @returns {function|null}
-         * Initialization function associated with the controller.
+         * @returns {function|class|null}
+         * Initialization function/class associated with the controller.
          *
          * It can return `null` only when the function fails because the module or controller were not found,
          * and `noError` was passed in as a truthy value.
