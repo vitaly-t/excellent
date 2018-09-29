@@ -9,7 +9,7 @@ declare namespace ERoot {
     type ServicesNamespace = { readonly [name: string]: any };
 
     // Controller-Implementing function or class:
-    type ControllerImpl = ((ctrl: EController) => void) | (new() => EController);
+    type ControllerImpl = ((ctrl: EController) => void) | (new(name: string, node: ControlledElement) => EController);
 
     // Type API:
     // https://vitaly-t.github.io/excellent/ControlledElement.html

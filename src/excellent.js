@@ -814,6 +814,16 @@
         readOnlyProp(this, 'modules', {});
 
         /**
+         * @member ERoot#EController
+         * @type {class}
+         * @readonly
+         * @private
+         * @description
+         * Exposing class EController, just for compatibility with TypeScript's require usage.
+         */
+        readOnlyProp(this, 'EController', EController);
+
+        /**
          * @method ERoot#addController
          * @description
          * Registers a new application-level controller name + function.
