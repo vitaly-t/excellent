@@ -365,8 +365,10 @@
      * @class ControllerClass
      * @private
      * @readonly
-     * @property {boolean} $cc
-     * Flag that indicates it is a valid Controller Class.
+     * @property {string|null} $ccn
+     * Controller Class Name, if it is a valid controller class, or `null` otherwise.
+     * @property {string} name
+     * @property {ControlledElement} node
      */
 
     /**
@@ -389,10 +391,14 @@
         constructing = true;
         var c;
         try {
-            if (f.$cc) {
-                c = new f(name, e); // eslint-disable-line new-cap
+            if (f.$ccn) {
+                var CC = f; // it is a controller class
+                c = new CC(name, e);
+                if (c.name !== name || c.node !== e) {
+                    throw new Error('Controller class "' + f.$ccn + '" passed invalid parameters to "EController" constructor.');
+                }
             } else {
-                c = new EController([name, e]);
+                c = new EController(name, e);
                 f.call(c, c);
             }
         } catch (err) {
@@ -411,14 +417,13 @@
      * Function or class to be validated.
      */
     function validateClass(func) {
-        // $cc = Controller Class flag (read-only, hidden)
-        if (func.$cc === undefined) {
+        if (func.$ccn === undefined) {
             var m = Function.prototype.toString.call(func).match(/^class\s+([a-zA-Z$_][a-zA-Z$_0-9]*)/);
             var name = m && m[1];
             if (name && !(func.prototype instanceof EController)) {
                 throw new Error('Invalid controller class "' + name + '", as it does not derive from "EController".');
             }
-            Object.defineProperty(func, '$cc', {value: !!name});
+            Object.defineProperty(func, '$ccn', {value: name});
         }
     }
 
@@ -1563,7 +1568,7 @@
      * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy}
      */
-    function EController(args) {
+    function EController(name, node) {
 
         /**
          * @member EController#name
@@ -1572,7 +1577,7 @@
          * @description
          * Full name of the controller, i.e. the name from which the controller was instantiated.
          */
-        readOnlyProp(this, 'name', args[0]);
+        readOnlyProp(this, 'name', name);
 
         /**
          * @member EController#node
@@ -1584,7 +1589,7 @@
          * Every controller is bound to a DOM element in the document, either through binding or direct attachment.
          * And at the core of every component is direct communication with the element it is bound to.
          */
-        readOnlyProp(this, 'node', args[1]);
+        readOnlyProp(this, 'node', node);
     }
 
     /**

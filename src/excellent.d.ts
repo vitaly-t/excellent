@@ -20,7 +20,7 @@ declare namespace ERoot {
     // Type API:
     // https://vitaly-t.github.io/excellent/EController.html
     class EController {
-        constructor(args: IArguments);
+        constructor(name: string, node: ControlledElement);
 
         readonly name: string;
         readonly node: ControlledElement;

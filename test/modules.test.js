@@ -7,8 +7,8 @@ beforeEach(() => {
             <div id="last"></div>`;
 
     class ValidCtrl extends window.EController {
-        constructor() {
-            super(arguments);
+        constructor(name, node) {
+            super(name, node);
             this.node.innerHTML = 'good works';
         }
     }

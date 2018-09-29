@@ -17,8 +17,8 @@ beforeEach(() => {
             <div e-bind=" , ,,,,,  , "></div>`;
 
     class CombinedCtrl extends window.EController {
-        constructor() {
-            super(arguments);
+        constructor(name, node) {
+            super(name, node);
         }
 
         onInit() {
@@ -26,6 +26,14 @@ beforeEach(() => {
         }
     }
 
+    class BadController extends window.EController {
+        // fails to pass proper construction parameters
+        constructor() {
+            super();
+        }
+    }
+
+    excellent.addController('badController', BadController);
     excellent.addController('first', firstController);
     excellent.addController('second', ctrl => {
         ctrl.node.innerHTML += 'second.';
@@ -163,7 +171,7 @@ describe('positive', () => {
         expect(stat && typeof stat).toBe('object');
         expect(Object.keys(stat.controllers.global).length).toBe(8);
         expect(Object.keys(stat.controllers.local).length).toBe(0);
-        expect(stat.controllers.registered).toEqual(['first', 'second', 'combined', 'base', 'last', 'bottom_1', 'bottom_2', 'removable']);
+        expect(stat.controllers.registered).toEqual(['badController', 'first', 'second', 'combined', 'base', 'last', 'bottom_1', 'bottom_2', 'removable']);
         expect(stat.elements.length).toBe(8);
     });
 
@@ -474,6 +482,13 @@ describe('negative', () => {
         expect(() => {
             excellent.addController('classCtrl', ABC);
         }).toThrow('Invalid controller class "ABC", as it does not derive from "EController".');
+    });
+
+    it('must throw in invalid EController construction', () => {
+        expect(() => {
+            const e = document.createElement('div');
+            excellent.attach(e, 'badController');
+        }).toThrow('Controller class "BadController" passed invalid parameters to "EController" constructor.');
     });
 
 });
