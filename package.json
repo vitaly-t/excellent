@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "DOM Component Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
@@ -54,7 +54,7 @@
     "gulp-replace": "1.0.0",
     "gulp-sourcemaps": "2.6.4",
     "gulp-uglify": "3.0.1",
-    "jest": "23.5.0",
+    "jest": "23.6.0",
     "jsdoc": "3.5.5"
   }
 }

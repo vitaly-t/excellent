@@ -1544,7 +1544,8 @@
      */
 
     /**
-     * @interface EController
+     * @class EController
+     * @hideconstructor
      * @description
      * Controller interface, attached to each {@link ControlledElement} in the DOM.
      *
