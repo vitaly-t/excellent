@@ -416,7 +416,7 @@
             var m = Function.prototype.toString.call(func).match(/^class\s+([a-zA-Z$_][a-zA-Z$_0-9]*)/);
             var name = m && m[1];
             if (name && !(func.prototype instanceof EController)) {
-                throw new Error('Invalid controller class "' + name + '", because it does not derive from "EController".');
+                throw new Error('Invalid controller class "' + name + '", as it does not derive from "EController".');
             }
             Object.defineProperty(func, '$cc', {value: !!name});
         }

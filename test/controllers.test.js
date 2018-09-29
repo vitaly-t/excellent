@@ -16,16 +16,22 @@ beforeEach(() => {
             <div e-bind="removable">dynamic</div>
             <div e-bind=" , ,,,,,  , "></div>`;
 
+    class CombinedCtrl extends window.EController {
+        constructor() {
+            super(arguments);
+        }
+
+        onInit() {
+            this.extend(['first', 'second']);
+        }
+    }
+
     excellent.addController('first', firstController);
     excellent.addController('second', ctrl => {
         ctrl.node.innerHTML += 'second.';
         excellent.bind(); // triggering nested binding;
     });
-    excellent.addController('combined', ctrl => {
-        ctrl.onInit = function () {
-            this.extend(['first', 'second']);
-        };
-    });
+    excellent.addController('combined', CombinedCtrl);
     excellent.addController('\t\tbase\r\n', ctrl => {
         ctrl.node.innerHTML = 'base';
     });
@@ -61,23 +67,23 @@ afterEach(() => {
 
 describe('positive', () => {
 
-    test('must return true when registering a unique controller', () => {
+    it('must return true when registering a unique controller', () => {
         expect(excellent.addController('$uniqueCtrlName$', firstController)).toBe(true);
     });
 
-    test('must return false on re-registration with the same function', () => {
+    it('must return false on re-registration with the same function', () => {
         expect(excellent.addController('first', firstController)).toBe(false);
     });
 
-    test('controller must work via this', () => {
+    it('controller must work via this', () => {
         expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first.');
     });
 
-    test('controller must work via parameter', () => {
+    it('controller must work via parameter', () => {
         expect(document.querySelector('[e-bind*="second"]').innerHTML).toBe('second.');
     });
 
-    test('inheritance', () => {
+    it('inheritance', () => {
         expect(document.querySelector('[e-bind*="combined"]').innerHTML).toBe('first.second.');
     });
 
@@ -459,6 +465,15 @@ describe('negative', () => {
             }).toThrow('Controller "depends4" depends on "nonExisting.bla", which was not found.');
         });
 
+    });
+
+    it('must throw in invalid ES6 class', () => {
+        class ABC {
+        }
+
+        expect(() => {
+            excellent.addController('classCtrl', ABC);
+        }).toThrow('Invalid controller class "ABC", as it does not derive from "EController".');
     });
 
 });
