@@ -65,7 +65,7 @@ Or you can alias + configure controllers at the same time (method [addAlias]), w
 
 * Global and local dynamic bindings, with [ERoot.bind] and [EController.bind].
 * Controllers can extend / inherit each other's functionality, see [Inheritance].
-* Native ES6 classes can be used as controllers, see [Classes].
+* Native ES6 classes can be optionally used as controllers, see [Classes].
 * [Modules] offer greater reusability and simpler distribution of controllers.
 * [Services] share functionality across all controllers.
 * [TypeScript] support right out of the box.
