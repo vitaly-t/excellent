@@ -65,6 +65,7 @@ Or you can alias + configure controllers at the same time (method [addAlias]), w
 
 * Global and local dynamic bindings, with [ERoot.bind] and [EController.bind].
 * Controllers can extend / inherit each other's functionality, see [Inheritance].
+* Native ES6 classes can be used as controllers, see [Classes].
 * [Modules] offer greater reusability and simpler distribution of controllers.
 * [Services] share functionality across all controllers.
 * [TypeScript] support right out of the box.
@@ -76,6 +77,7 @@ You can create whole libraries of reusable components that will work with any UI
 [API]:https://vitaly-t.github.io/excellent/
 [Examples]:https://github.com/vitaly-t/excellent/wiki/Examples
 [WiKi]:https://github.com/vitaly-t/excellent/wiki
+[Classes]:https://github.com/vitaly-t/excellent/wiki/Classes
 [Modules]:https://github.com/vitaly-t/excellent/wiki/Modules
 [Services]:https://github.com/vitaly-t/excellent/wiki/Services
 [Inheritance]:https://github.com/vitaly-t/excellent/wiki/Inheritance
