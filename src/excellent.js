@@ -934,7 +934,7 @@
          *     onDestroy() {
          *         // any clean-up, if needed
          *     }
-         * });
+         * }
          *
          * app.addController('ctrlName', MyController);
          */
