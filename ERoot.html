@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="EController.html">EController</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Interfaces</h3><ul><li><a href="ControlledElement.html">ControlledElement</a></li><li><a href="ERoot.html">ERoot</a></li><li><a href="EStatistics.html">EStatistics</a></li></ul><h3>Events</h3><ul><li><a href="EController.html#.event:onDestroy">onDestroy</a></li><li><a href="EController.html#.event:onInit">onInit</a></li><li><a href="EController.html#.event:onReady">onReady</a></li><li><a href="ERoot.html#.event:onReady">onReady</a></li></ul>
     <br>
     <div class="home-link">
         <a href="https://github.com/vitaly-t/excellent">&lt;&lt; GitHub</a>
@@ -77,7 +77,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line714">line 714</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line751">line 751</a>
     </li></ul></dd>
     
 
@@ -171,7 +171,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line768">line 768</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line805">line 805</a>
     </li></ul></dd>
     
 
@@ -250,7 +250,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line757">line 757</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line794">line 794</a>
     </li></ul></dd>
     
 
@@ -331,7 +331,7 @@ because the library is distributed with the source maps.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line746">line 746</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line783">line 783</a>
     </li></ul></dd>
     
 
@@ -553,7 +553,7 @@ method <a href="ERoot.html#getCtrlFunc">getCtrlFunc</a> may be more appropriate 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line870">line 870</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line956">line 956</a>
     </li></ul></dd>
     
 
@@ -609,19 +609,20 @@ method <a href="ERoot.html#getCtrlFunc">getCtrlFunc</a> may be more appropriate 
 
 
 <div class="description">
-    <p>Registers a new application-level controller name + function.</p>
-<p>Typical implementation for any reusable controller is to be done inside a module, which registers
-itself (and all its controllers automatically) with <a href="ERoot.html#addModule">addModule</a>. It is only when you
+    <p>Registers a new application-level controller.</p>
+<p>A controller is either a function or ES6 class that implements it, paired with a unique name by which it is represented.</p>
+<p>Typical implementation for any reusable controller is to be done inside a module, which registers itself
+(and all its controllers automatically) with <a href="ERoot.html#addModule">addModule</a>. It is only when you
 need some application-specific controllers that you would create them on the application level, and then
 you need to use this method, in order to register them.</p>
 <p>If controller with such name already exists, then the method will do the following:</p>
 <ul>
-<li>throw an error, if the function is different from the original</li>
-<li>nothing (and return <code>false</code>), if the function passed in is the same</li>
+<li>throw an error, if the controller is different from the original</li>
+<li>nothing (and return <code>false</code>), if the controller passed in is the same</li>
 </ul>
 <p><em><strong>TIP:</strong> Reusable controllers should always reside inside modules.</em></p>
-<p>And if your controller is only to extend and/or configure other controller(s), then method <a href="ERoot.html#addAlias">addAlias</a>
-offers a simpler syntax for adding such controllers.</p>
+<p>And if the purpose of your controller is only to extend and/or configure other controller(s), then method
+<a href="ERoot.html#addAlias">addAlias</a> offers a simpler syntax for adding such controllers.</p>
 </div>
 
 
@@ -687,6 +688,9 @@ offers a simpler syntax for adding such controllers.</p>
             
                 
 <span class="param-type">function</span>
+|
+
+<span class="param-type">class</span>
 
 
             
@@ -696,8 +700,12 @@ offers a simpler syntax for adding such controllers.</p>
 
             
 
-            <td class="description last"><p>Controller function, to be called with controller's scope/instance as a single parameter,
-and as <code>this</code> context, to initialize the controller as required.</p></td>
+            <td class="description last"><p>Either a function or ES6 class that implements the controller:</p>
+<ul>
+<li>a function is called with controller's scope/instance as a single parameter, and as <code>this</code> context,
+to initialize the controller as required.</li>
+<li>for an ES6 class, a new instance is created.</li>
+</ul></td>
         </tr>
 
     
@@ -738,7 +746,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line779">line 779</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line826">line 826</a>
     </li></ul></dd>
     
 
@@ -775,7 +783,7 @@ and as <code>this</code> context, to initialize the controller as required.</p><
     <p>Indication of whether the controller was added:</p>
 <ul>
 <li><code>true</code> - a new controller has been added</li>
-<li><code>false</code> - a controller with the same name and function was added previously</li>
+<li><code>false</code> - a controller with the same name and implementation was added previously</li>
 </ul>
 </div>
 
@@ -798,9 +806,11 @@ and as <code>this</code> context, to initialize the controller as required.</p><
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>app.addController('ctrlName', function(ctrl) {    // this = ctrl    // Initializing your controller here:    //    // - setting up public properties and methods    // - setting up event handlers, as needed    // - changing DOM, if needed    // Creating all event handlers, as needed:    this.onInit = function() {        // - can do ctrl.extend(...) here, to extend functionality        // - can find controllers created through explicit binding    };    this.onReady = function() {        // can find all controllers here, including the ones        // created implicitly (through extension)    };    this.onDestroy = function() {        // any clean-up, if needed    };    // Creating public properties + methods for    // communication with other controllers:    this.someProp = 123;    this.someMethod = function() {        // do something    };});</code></pre>
+    <pre class="prettyprint"><code>// ES5 syntax://app.addController('ctrlName', function(ctrl) {    // this = ctrl    // Initializing your controller here:    //    // - setting up public properties and methods    // - setting up event handlers, as needed    // - changing DOM, if needed    // Creating all event handlers, as needed:    this.onInit = function() {        // - can do ctrl.extend(...) here, to extend functionality        // - can find controllers created through explicit binding    };    this.onReady = function() {        // can find all controllers here, including the ones        // created implicitly (through extension)    };    this.onDestroy = function() {        // any clean-up, if needed    };    // Creating public properties + methods for    // communication with other controllers:    this.someProp = 123;    this.someMethod = function() {        // do something    };});</code></pre>
+
+    <pre class="prettyprint"><code>// ES6 class syntax://class MyController extends EController {    // If you want to use a constructor in your controller class,    // then it must follow this exact construction signature below,    // or else there will be a construction-related error thrown:    constructor(name, node) {        super(name, node); // this must be the first call        // here you can access and modify DOM via        // either parameter node or this.node.    }    onInit() {        // - can do ctrl.extend(...) here, to extend functionality        // - can find controllers created through explicit binding    }    onReady() {        // can find all controllers here, including the ones        // created implicitly (through extension)    }    onDestroy() {        // any clean-up, if needed    }});app.addController('ctrlName', MyController);</code></pre>
 
 
 
@@ -939,7 +949,7 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line997">line 997</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1083">line 1083</a>
     </li></ul></dd>
     
 
@@ -999,9 +1009,11 @@ and as <code>this</code> context, to initialize the module as required.</p></td>
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>app.addModule('moduleName', function(scope) {    // this = scope    // Creating functions-controllers on the scope:    this.ctrl1 = function() {        // controller implementation here;    };    // Can use sub-spaces of any depth:    this.effects = {        fadeIn: function() {            // implement fadeIn controller here;        },        fadeOut: function() {            // implement fadeOut controller here;        };    };});</code></pre>
+
+    <pre class="prettyprint"><code>// Modules can also use ES6 classes as controllers:class MyController extends EController {    onInit() {        this.node.innerHTML = 'Hello!';    }}app.addModule('moduleName', function(scope) {    // this = scope    this.ctrl1 = MyController;});</code></pre>
 
 
 
@@ -1139,7 +1151,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line948">line 948</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1034">line 1034</a>
     </li></ul></dd>
     
 
@@ -1264,7 +1276,7 @@ and as <code>this</code> context, to initialize the service as required.</p></td
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1398">line 1398</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1497">line 1497</a>
     </li></ul></dd>
     
 
@@ -1470,7 +1482,7 @@ given element.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1058">line 1058</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1160">line 1160</a>
     </li></ul></dd>
     
 
@@ -1688,7 +1700,7 @@ of minimizing the number of checks against the DOM, but it works/scales best whe
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1211">line 1211</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1313">line 1313</a>
     </li></ul></dd>
     
 
@@ -1897,7 +1909,7 @@ you can use this method instead.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1247">line 1247</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1349">line 1349</a>
     </li></ul></dd>
     
 
@@ -2052,7 +2064,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1281">line 1281</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1383">line 1383</a>
     </li></ul></dd>
     
 
@@ -2221,7 +2233,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1315">line 1315</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1417">line 1417</a>
     </li></ul></dd>
     
 
@@ -2284,7 +2296,7 @@ and implicitly created controllers (extended via method <a href="EController.htm
     
 
     
-    <h4 class="name" id="getCtrlFunc"><span class="type-signature"></span>getCtrlFunc<span class="signature">(name, noError<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function|null}</span></h4>
+    <h4 class="name" id="getCtrlFunc"><span class="type-signature"></span>getCtrlFunc<span class="signature">(name, noError<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function|class|null}</span></h4>
     
 
     
@@ -2292,10 +2304,8 @@ and implicitly created controllers (extended via method <a href="EController.htm
 
 
 <div class="description">
-    <p>Resolves a full controller name into the corresponding initialization function.</p>
-<p>Every controller in the framework is presented by its name + initialization function. And this method pulls
-the initialization function from the specified name of the controller.</p>
-<p>This in turn lets you create controllers on the app level or inside modules that directly alias an existing controller,
+    <p>Resolves a full controller name into the corresponding controller (function/class).</p>
+<p>This lets you create controllers on the app level or inside modules that directly alias an existing controller,
 without extending it (methods <a href="EController.html#extend">EController.extend</a> and <a href="ERoot.html#addAlias">ERoot.addAlias</a>).</p>
 <pre class="prettyprint source lang-js"><code>// Example of declaring a controller inside a module,
 // as an alias for a controller from another module:
@@ -2409,12 +2419,12 @@ scope.print = e.getCtrlFunc('printModule.default.showUI');
                 </td>
             
 
-            <td class="description last"><p>By default, the method throws an error whenever it fails to resolve the specified name into a valid controller function.
+            <td class="description last"><p>By default, the method throws an error whenever it fails to resolve the specified name into a valid controller.
 Passing in <code>noError = true</code> forces it to return <code>null</code> when the module or controller are not found.
 This however will not suppress errors related to passing in an invalid controller name.</p>
-<p>Example of where you might want to use it - provide an alternative controller function when the desired
-controller could not be resolved for some reasons, like when inclusion of a certain module into the app
-is optional. This way you can also check whether the containing module is included or not.</p></td>
+<p>Example of where you might want to use it - provide an alternative controller when the desired one could not be
+resolved for some reasons, like when inclusion of a certain module into the app is optional.
+This way you can also check whether the containing module is included or not.</p></td>
         </tr>
 
     
@@ -2455,7 +2465,7 @@ is optional. This way you can also check whether the containing module is includ
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1346">line 1346</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1448">line 1448</a>
     </li></ul></dd>
     
 
@@ -2489,7 +2499,7 @@ is optional. This way you can also check whether the containing module is includ
 
         
 <div class="param-desc">
-    <p>Initialization function associated with the controller.</p>
+    <p>Initialization controller (function/class).</p>
 <p>It can return <code>null</code> only when the function fails because the module or controller were not found,
 and <code>noError</code> was passed in as a truthy value.</p>
 </div>
@@ -2503,6 +2513,9 @@ and <code>noError</code> was passed in as a truthy value.</p>
     <dd>
         
 <span class="param-type">function</span>
+|
+
+<span class="param-type">class</span>
 |
 
 <span class="param-type">null</span>
@@ -2584,7 +2597,7 @@ only once, on the initial run.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1181">line 1181</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1283">line 1283</a>
     </li></ul></dd>
     
 
@@ -2699,7 +2712,7 @@ event at this point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1488">line 1488</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line1587">line 1587</a>
     </li></ul></dd>
     
 
