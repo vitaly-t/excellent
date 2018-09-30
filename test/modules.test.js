@@ -6,6 +6,16 @@ beforeEach(() => {
             <div e-bind="mod.deep.space.third"></div>
             <div id="last"></div>`;
 
+    class ValidCtrl extends window.EController {
+        constructor(name, node) {
+            super(name, node);
+            this.node.innerHTML = 'good works';
+        }
+    }
+
+    class InvalidCtrl {
+    }
+
     excellent.addModule(' mod\t', function () {
         this.first = function () {
             this.node.innerHTML = 'first';
@@ -20,6 +30,8 @@ beforeEach(() => {
                 }
             }
         };
+        this.good = ValidCtrl;
+        this.bad = InvalidCtrl;
     });
     excellent.bind(true);
 });
@@ -31,7 +43,7 @@ afterEach(() => {
 
 describe('positive', () => {
 
-    test('should ignore re-registration attempts', () => {
+    it('should ignore re-registration attempts', () => {
         const res = excellent.addModule('mod', () => {
             // all the other tests will continue working, which in itself
             // is the extra proof that repeated registration was ignored.
@@ -39,18 +51,31 @@ describe('positive', () => {
         expect(res).toBe(false);
     });
 
-    test('should resolve top-level controller', () => {
+    it('should resolve top-level controller', () => {
         expect(document.querySelector('[e-bind*="first"]').innerHTML).toBe('first');
     });
 
-    test('should resolve nested controllers', () => {
+    it('should resolve nested controllers', () => {
         expect(document.querySelector('[e-bind*="mod.deep.second"]').innerHTML).toBe('second');
         expect(document.querySelector('[e-bind*="mod.deep.space.third"]').innerHTML).toBe('third');
+    });
+
+    it('should allow valid ES6 classes', () => {
+        const e = document.createElement('div');
+        excellent.attach(e, 'mod.good');
+        expect(e.innerHTML).toBe('good works');
     });
 
 });
 
 describe('negative', () => {
+
+    it('must throw on invalid ES6 classes', () => {
+        const e = document.createElement('div');
+        expect(() => {
+            excellent.attach(e, 'mod.bad');
+        }).toThrow('Invalid controller class "InvalidCtrl", as it does not derive from "EController"');
+    });
 
     it('must throw on invalid module names', () => {
         expect(() => {

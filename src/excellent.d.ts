@@ -1,5 +1,5 @@
 ////////////////////////////////////
-// Excellent.js v1.5.1 declarations
+// Excellent.js v1.6.0 declarations
 ////////////////////////////////////
 
 declare namespace ERoot {
@@ -7,6 +7,9 @@ declare namespace ERoot {
     type BindingProcess = boolean | (() => void);
     type ModulesNamespace = { readonly [name: string]: any };
     type ServicesNamespace = { readonly [name: string]: any };
+
+    // Controller-Implementing function or class:
+    type ControllerImpl = ((ctrl: EController) => void) | (new(name: string, node: ControlledElement) => EController);
 
     // Type API:
     // https://vitaly-t.github.io/excellent/ControlledElement.html
@@ -16,7 +19,9 @@ declare namespace ERoot {
 
     // Type API:
     // https://vitaly-t.github.io/excellent/EController.html
-    interface EController {
+    class EController {
+        constructor(name: string, node: ControlledElement);
+
         readonly name: string;
         readonly node: ControlledElement;
 
@@ -32,9 +37,9 @@ declare namespace ERoot {
 
         findOne(ctrlName: string): EController
 
-        onInit: () => void
-        onReady: () => void
-        onDestroy: () => void
+        onInit: () => void;
+        onReady: () => void;
+        onDestroy: () => void;
     }
 
     // Type API:
@@ -44,7 +49,7 @@ declare namespace ERoot {
         readonly modules: ModulesNamespace;
         readonly services: SN;
 
-        addController(name: string, func: (ctrl: EController) => void): boolean
+        addController(name: string, func: ControllerImpl): boolean
 
         addAlias(name: string, ctrlNames: string | string[], cb?: (...ctrl: EController[]) => void): void
 
@@ -64,7 +69,7 @@ declare namespace ERoot {
 
         findOne(ctrlName: string): EController
 
-        getCtrlFunc(name: string, noError?: boolean): ((ctrl: EController) => void) | null
+        getCtrlFunc(name: string, noError?: boolean): ControllerImpl | null
 
         analyze(): EStatistics
 
