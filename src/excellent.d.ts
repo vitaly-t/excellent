@@ -37,9 +37,11 @@ declare namespace ERoot {
 
         findOne(ctrlName: string): EController
 
-        onInit: () => void;
-        onReady: () => void;
-        onDestroy: () => void;
+        onInit(): void
+
+        onReady(): void
+
+        onDestroy(): void
     }
 
     // Type API:
@@ -75,7 +77,7 @@ declare namespace ERoot {
 
         reset(): void
 
-        onReady: () => void
+        onReady(): void
     }
 
     // Type API:
