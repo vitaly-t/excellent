@@ -672,7 +672,7 @@
      */
 
     /**
-     * Searches for a controller function, based on the controller's full name.
+     * Searches for a controller, based on its full name.
      * For that it uses the cache of names, plus modules.
      *
      * @param {string|CtrlName} name
@@ -685,7 +685,7 @@
      * Tells it not to throw on errors, and rather return null.
      *
      * @returns {function|class|null}
-     * Either controller function or throws. But if noError is true,
+     * Either a valid controller or throws an error. But if `noError` is true,
      * and no controller found, it returns `null`.
      *
      */
@@ -826,34 +826,38 @@
         /**
          * @method ERoot#addController
          * @description
-         * Registers a new application-level controller name + function.
+         * Registers a new application-level controller.
          *
-         * Typical implementation for any reusable controller is to be done inside a module, which registers
-         * itself (and all its controllers automatically) with {@link ERoot#addModule addModule}. It is only when you
+         * A controller is either a function or ES6 class that implements it, paired with a unique name by which it is represented.
+         *
+         * Typical implementation for any reusable controller is to be done inside a module, which registers itself
+         * (and all its controllers automatically) with {@link ERoot#addModule addModule}. It is only when you
          * need some application-specific controllers that you would create them on the application level, and then
          * you need to use this method, in order to register them.
          *
          * If controller with such name already exists, then the method will do the following:
          *
-         *  - throw an error, if the function is different from the original
-         *  - nothing (and return `false`), if the function passed in is the same
+         *  - throw an error, if the controller is different from the original
+         *  - nothing (and return `false`), if the controller passed in is the same
          *
          * _**TIP:** Reusable controllers should always reside inside modules._
          *
-         * And if your controller is only to extend and/or configure other controller(s), then method {@link ERoot#addAlias addAlias}
-         * offers a simpler syntax for adding such controllers.
+         * And if the purpose of your controller is only to extend and/or configure other controller(s), then method
+         * {@link ERoot#addAlias addAlias} offers a simpler syntax for adding such controllers.
          *
          * @param {JSName} name
          * Controller name. Trailing spaces are ignored.
          *
-         * @param {function} func
-         * Controller function, to be called with controller's scope/instance as a single parameter,
-         * and as `this` context, to initialize the controller as required.
+         * @param {function|class} func
+         * Either a function or ES6 class that implements the controller:
+         * - a function is called with controller's scope/instance as a single parameter, and as `this` context,
+         * to initialize the controller as required.
+         * - for an ES6 class, a new instance is created.
          *
          * @returns {boolean}
          * Indication of whether the controller was added:
          * - `true` - a new controller has been added
-         * - `false` - a controller with the same name and function was added previously
+         * - `false` - a controller with the same name and implementation was added previously
          *
          * @see
          * {@link ERoot#addAlias addAlias},
@@ -865,6 +869,8 @@
          *
          * @example
          *
+         * // ES5 syntax:
+         * //
          * app.addController('ctrlName', function(ctrl) {
          *     // this = ctrl
          *
@@ -899,6 +905,38 @@
          *         // do something
          *     };
          * });
+         *
+         * @example
+         *
+         * // ES6 class syntax:
+         * //
+         * class MyController extends EController {
+         *     // If you want to use a constructor in your controller class,
+         *     // then it must follow this exact construction signature below,
+         *     // or else there will be a construction-related error thrown:
+         *     constructor(name, node) {
+         *         super(name, node); // this must be the first call
+         *
+         *         // here you can access and modify DOM via
+         *         // either parameter node or this.node.
+         *     }
+         *
+         *     onInit() {
+         *         // - can do ctrl.extend(...) here, to extend functionality
+         *         // - can find controllers created through explicit binding
+         *     }
+         *
+         *     onReady() {
+         *         // can find all controllers here, including the ones
+         *         // created implicitly (through extension)
+         *     }
+         *
+         *     onDestroy() {
+         *         // any clean-up, if needed
+         *     }
+         * });
+         *
+         * app.addController('ctrlName', MyController);
          */
         this.addController = function (name, func) {
             name = validateEntity(name, func, 'controller');
@@ -1090,6 +1128,22 @@
          *             // implement fadeOut controller here;
          *         };
          *     };
+         * });
+         *
+         * @example
+         *
+         * // Modules can also use ES6 classes as controllers:
+         *
+         * class MyController extends EController {
+         *     onInit() {
+         *         this.node.innerHTML = 'Hello!';
+         *     }
+         * }
+         *
+         * app.addModule('moduleName', function(scope) {
+         *     // this = scope
+         *
+         *     this.ctrl1 = MyController;
          * });
          */
         this.addModule = function (name, func) {
@@ -1394,12 +1448,9 @@
         /**
          * @method ERoot#getCtrlFunc
          * @description
-         * Resolves a full controller name into the corresponding initialization function/class.
+         * Resolves a full controller name into the corresponding controller (function/class).
          *
-         * Every controller in the framework is presented by its name + initialization function. And this method pulls
-         * the initialization function from the specified name of the controller.
-         *
-         * This in turn lets you create controllers on the app level or inside modules that directly alias an existing controller,
+         * This lets you create controllers on the app level or inside modules that directly alias an existing controller,
          * without extending it (methods {@link EController#extend EController.extend} and {@link ERoot#addAlias ERoot.addAlias}).
          *
          * ```js
@@ -1415,16 +1466,16 @@
          * Full controller name. Trailing spaces are ignored.
          *
          * @param {boolean} [noError=false]
-         * By default, the method throws an error whenever it fails to resolve the specified name into a valid controller function.
+         * By default, the method throws an error whenever it fails to resolve the specified name into a valid controller.
          * Passing in `noError = true` forces it to return `null` when the module or controller are not found.
          * This however will not suppress errors related to passing in an invalid controller name.
          *
-         * Example of where you might want to use it - provide an alternative controller function when the desired
-         * controller could not be resolved for some reasons, like when inclusion of a certain module into the app
-         * is optional. This way you can also check whether the containing module is included or not.
+         * Example of where you might want to use it - provide an alternative controller when the desired one could not be
+         * resolved for some reasons, like when inclusion of a certain module into the app is optional.
+         * This way you can also check whether the containing module is included or not.
          *
          * @returns {function|class|null}
-         * Initialization function/class associated with the controller.
+         * Initialization controller (function/class).
          *
          * It can return `null` only when the function fails because the module or controller were not found,
          * and `noError` was passed in as a truthy value.

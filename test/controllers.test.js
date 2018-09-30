@@ -268,7 +268,7 @@ describe('positive', () => {
     });
 
     describe('getCtrlFunc', () => {
-        it('must find any created controller function immediately', () => {
+        it('must find any created controller immediately', () => {
             const f = () => {
             };
             excellent.addController('some_unique_controller_name', f);
