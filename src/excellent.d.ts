@@ -1,5 +1,5 @@
 ////////////////////////////////////
-// Excellent.js v1.6.1 declarations
+// Excellent.js v1.7.0 declarations
 ////////////////////////////////////
 
 declare namespace ERoot {
@@ -20,7 +20,7 @@ declare namespace ERoot {
     // Type API:
     // https://vitaly-t.github.io/excellent/EController.html
     class EController {
-        constructor(name: string, node: ControlledElement);
+        constructor(cc: { name: string, node: ControlledElement });
 
         readonly name: string;
         readonly node: ControlledElement;

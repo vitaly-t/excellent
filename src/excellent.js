@@ -390,15 +390,16 @@
         validateClass(f);
         constructing = true;
         var c;
+        var cc = {name: name, node: e}; // controller context
         try {
             if (f.$ccn) {
-                var CC = f; // it is a controller class
-                c = new CC(name, e);
+                var Cls = f; // it is a controller class
+                c = new Cls(cc);
                 if (c.name !== name || c.node !== e) {
                     throw new Error('Controller class "' + f.$ccn + '" passed invalid parameters to "EController" constructor.');
                 }
             } else {
-                c = new EController(name, e);
+                c = new EController(cc);
                 f.call(c, c);
             }
         } catch (err) {
@@ -912,13 +913,12 @@
          * //
          * class MyController extends EController {
          *     // If you want to use a constructor in your controller class,
-         *     // then it must follow this exact construction signature below,
+         *     // you must pass Controller Context parameter into the parent,
          *     // or else there will be a construction-related error thrown:
-         *     constructor(name, node) {
-         *         super(name, node); // this must be the first call
+         *     constructor(cc) {
+         *         super(cc); // pass Controller Context into the parent class
          *
-         *         // here you can access and modify DOM via
-         *         // either parameter node or this.node.
+         *         // here you can access and modify DOM
          *     }
          *
          *     onInit() {
@@ -1617,6 +1617,15 @@
      *
      * It is created automatically, during element-to-controller binding, or when {@link ERoot#attach attaching} to an element.
      *
+     * @param {} cc
+     * Controller Context.
+     *
+     * @param {CtrlName} cc.name
+     * Controller name.
+     *
+     * @param {ControlledElement} cc.node
+     * Controller's node element.
+     *
      * @see
      * {@link EController#name name},
      * {@link EController#node node},
@@ -1629,7 +1638,9 @@
      * {@link EController.event:onReady onReady},
      * {@link EController.event:onDestroy onDestroy}
      */
-    function EController(name, node) {
+    function EController(cc) {
+
+        cc = cc || {};
 
         /**
          * @member EController#name
@@ -1638,7 +1649,7 @@
          * @description
          * Full name of the controller, i.e. the name from which the controller was instantiated.
          */
-        readOnlyProp(this, 'name', name);
+        readOnlyProp(this, 'name', cc.name);
 
         /**
          * @member EController#node
@@ -1650,7 +1661,7 @@
          * Every controller is bound to a DOM element in the document, either through binding or direct attachment.
          * And at the core of every component is direct communication with the element it is bound to.
          */
-        readOnlyProp(this, 'node', node);
+        readOnlyProp(this, 'node', cc.node);
     }
 
     /**
