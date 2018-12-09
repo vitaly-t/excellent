@@ -22,7 +22,8 @@ You get the essential _element-to-controllers_ bindings:
 That gives your code isolation and reusability (see [the plunker](http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview)):
 
 ```js
-app.addController('message', function() {
+app.addController('message', function(/*ctrl*/) {
+    // this = ctrl
     // this.node = your DOM element, to work with directly;
     this.node.innerHTML = 'Awesome twinkling message :)';
 });

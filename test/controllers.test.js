@@ -17,8 +17,8 @@ beforeEach(() => {
             <div e-bind=" , ,,,,,  , "></div>`;
 
     class CombinedCtrl extends window.EController {
-        constructor(name, node) {
-            super(name, node);
+        constructor(cc) {
+            super(cc);
         }
 
         onInit() {
