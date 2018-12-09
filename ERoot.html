@@ -77,7 +77,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line751">line 751</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line752">line 752</a>
     </li></ul></dd>
     
 
@@ -171,7 +171,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line805">line 805</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line806">line 806</a>
     </li></ul></dd>
     
 
@@ -250,7 +250,7 @@ attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line794">line 794</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line795">line 795</a>
     </li></ul></dd>
     
 
@@ -331,7 +331,7 @@ because the library is distributed with the source maps.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line783">line 783</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line784">line 784</a>
     </li></ul></dd>
     
 
@@ -746,7 +746,7 @@ to initialize the controller as required.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line826">line 826</a>
+        <a href="excellent.js.html">excellent.js</a>, <a href="excellent.js.html#line827">line 827</a>
     </li></ul></dd>
     
 
@@ -810,7 +810,7 @@ to initialize the controller as required.</li>
     
     <pre class="prettyprint"><code>// ES5 syntax://app.addController('ctrlName', function(ctrl) {    // this = ctrl    // Initializing your controller here:    //    // - setting up public properties and methods    // - setting up event handlers, as needed    // - changing DOM, if needed    // Creating all event handlers, as needed:    this.onInit = function() {        // - can do ctrl.extend(...) here, to extend functionality        // - can find controllers created through explicit binding    };    this.onReady = function() {        // can find all controllers here, including the ones        // created implicitly (through extension)    };    this.onDestroy = function() {        // any clean-up, if needed    };    // Creating public properties + methods for    // communication with other controllers:    this.someProp = 123;    this.someMethod = function() {        // do something    };});</code></pre>
 
-    <pre class="prettyprint"><code>// ES6 class syntax://class MyController extends EController {    // If you want to use a constructor in your controller class,    // then it must follow this exact construction signature below,    // or else there will be a construction-related error thrown:    constructor(name, node) {        super(name, node); // this must be the first call        // here you can access and modify DOM via        // either parameter node or this.node.    }    onInit() {        // - can do ctrl.extend(...) here, to extend functionality        // - can find controllers created through explicit binding    }    onReady() {        // can find all controllers here, including the ones        // created implicitly (through extension)    }    onDestroy() {        // any clean-up, if needed    }}app.addController('ctrlName', MyController);</code></pre>
+    <pre class="prettyprint"><code>// ES6 class syntax://class MyController extends EController {    // If you want to use a constructor in your controller class,    // you must pass Controller Context parameter into the parent,    // or else there will be a construction-related error thrown:    constructor(cc) {        super(cc); // pass Controller Context into the parent class        // here you can access and modify DOM    }    onInit() {        // - can do ctrl.extend(...) here, to extend functionality        // - can find controllers created through explicit binding    }    onReady() {        // can find all controllers here, including the ones        // created implicitly (through extension)    }    onDestroy() {        // any clean-up, if needed    }}app.addController('ctrlName', MyController);</code></pre>
 
 
 
