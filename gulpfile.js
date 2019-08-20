@@ -1,5 +1,3 @@
-'use strict';
-
 const gulp = require('gulp');
 
 const npm = {
@@ -13,14 +11,14 @@ const npm = {
 };
 
 const SOURCE = './src/excellent.js';
-const SOURCE_LINT = ['./src/excellent.js', './test/*.test.js', './gulpfile.js'];
+const SOURCE_LINT = ['./src/excellent.js', './test/*.test.js'];
 const DEST = 'excellent.min.js';
 
 const version = require('./package.json').version;
 
 const copyright = `/**
  * Excellent.js v${version}
- * Copyright 2018 Vitaly Tomilov
+ * Copyright 2019 Vitaly Tomilov
  * Released under the MIT License
  * https://github.com/vitaly-t/excellent
  */
