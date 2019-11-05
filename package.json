@@ -44,8 +44,8 @@
     "npm": ">=3.10"
   },
   "devDependencies": {
-    "coveralls": "3.0.6",
-    "eslint-plugin-jest": "22.15.1",
+    "coveralls": "3.0.7",
+    "eslint-plugin-jest": "23.0.2",
     "gulp": "4.0.2",
     "gulp-eslint": "6.0.0",
     "gulp-gzip": "1.4.2",
