@@ -9,7 +9,7 @@
 [![Join Chat](https://badges.gitter.im/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent)
 
 If you like VanillaJS and working with DOM directly, this tiny (3Kb gzip) library helps
-with organizing your code into reusable DOM components. See [WiKi] for details.
+with organizing your code into reusable components. See [WiKi] for details.
 
 <br/>
 
@@ -22,7 +22,7 @@ You get the essential _element-to-controllers_ bindings:
 That gives your code isolation and reusability (see [the plunker](http://plnkr.co/edit/60xPj9MiCIbZlfe0Xp2I?p=preview)):
 
 ```js
-app.addController('message', function(/*ctrl*/) {
+app.addController('message', function(ctrl) {
     // this = ctrl
     // this.node = your DOM element, to work with directly;
     this.node.innerHTML = 'Awesome twinkling message :)';
