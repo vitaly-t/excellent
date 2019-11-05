@@ -136,7 +136,9 @@
 And each property in the object is read-only.</p>
 <p>This property is available only after the controller has been initialized.</p>
 <p>For example, if you have a binding like this:</p>
-<pre class="prettyprint source lang-html"><code>&lt;div e-bind=&quot;homeCtrl, view.main&quot;>&lt;/div></code></pre><p>Then you can access those controllers like this:</p>
+<pre class="prettyprint source lang-html"><code>&lt;div e-bind=&quot;homeCtrl, view.main&quot;>&lt;/div>
+</code></pre>
+<p>Then you can access those controllers like this:</p>
 <pre class="prettyprint source lang-js"><code>app.addController('homeCtrl', function(ctrl) {
 
     // During the controller's construction,
@@ -148,7 +150,8 @@ And each property in the object is read-only.</p>
 
         var ctrl2 = this.node.controllers['view.main'];
     };
-});</code></pre>
+});
+</code></pre>
 </div>
 
 

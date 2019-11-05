@@ -42,7 +42,8 @@
             <div class="description"><p>Root interface of the library, available via global variable <code>excellent</code>.</p>
 <p>You can make this interface also available via an alias name that can be set via
 attribute <code>e-root</code> or <code>data-e-root</code> on the <code>HTML</code> element:</p>
-<pre class="prettyprint source lang-html"><code>&lt;HTML e-root=&quot;app&quot;></code></pre></div>
+<pre class="prettyprint source lang-html"><code>&lt;HTML e-root=&quot;app&quot;>
+</code></pre></div>
         
 
         
@@ -379,7 +380,9 @@ resort to using a pre-configured alias, even if it is for a single controller:</
    // here we presume that controller 'someModule.panels.centered'
    // implements method setConfig(configObject):
    c.setConfig({bgColor: 'red', color: 'white'});
-});</code></pre><p>In cases when all you want is to create an alias for a single controller name, inside an app or a module,
+});
+</code></pre>
+<p>In cases when all you want is to create an alias for a single controller name, inside an app or a module,
 method <a href="ERoot.html#getCtrlFunc">getCtrlFunc</a> may be more appropriate for this.</p>
 </div>
 
@@ -2312,7 +2315,8 @@ without extending it (methods <a href="EController.html#extend">EController.exte
 
 scope.print = e.getCtrlFunc('printModule.default.showUI');
 
-// e = excellent root object, scope = module's scope object</code></pre>
+// e = excellent root object, scope = module's scope object
+</code></pre>
 </div>
 
 
