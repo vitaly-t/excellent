@@ -47,7 +47,7 @@
     "coveralls": "3.0.6",
     "eslint-plugin-jest": "22.15.1",
     "gulp": "4.0.2",
-    "gulp-eslint": "5.0.0",
+    "gulp-eslint": "6.0.0",
     "gulp-gzip": "1.4.2",
     "gulp-header": "2.0.9",
     "gulp-rename": "1.4.0",
