@@ -2,13 +2,13 @@
 
 <img align="left" width="170" height="170" src="./.github/images/burns.gif" alt="Excellent!">
 
-## DOM Component Framework
+## Basic DOM Component Framework
 
 [![Build Status](https://travis-ci.org/vitaly-t/excellent.svg?branch=master)](https://travis-ci.org/vitaly-t/excellent)
 [![Coverage Status](https://coveralls.io/repos/github/vitaly-t/excellent/badge.svg?branch=master)](https://coveralls.io/github/vitaly-t/excellent?branch=master)
 [![Join Chat](https://badges.gitter.im/vitaly-t/excellent.svg)](https://gitter.im/vitaly-t/excellent)
 
-If you like VanillaJS and working with DOM directly, this tiny (3Kb gzip) library helps
+If you like VanillaJS, and working with DOM directly, this tiny (3Kb gzip) library helps
 with organizing your code into reusable components. See [WiKi] for details.
 
 <br/>
@@ -28,11 +28,11 @@ app.addController('message', function(ctrl) {
     this.node.innerHTML = 'Awesome twinkling message :)';
 });
 
-app.addController('awesome', function() {
+app.addController('awesome', function(ctrl) {
     this.node.className = 'green-box';
 });
 
-app.addController('twinkling', function() {
+app.addController('twinkling', function(ctrl) {
   var s = this.node.style, a = -0.01;
   setInterval(function() {
     a = (s.opacity < 0 || s.opacity > 1) ? -a : a;

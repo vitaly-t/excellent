@@ -1,7 +1,7 @@
 {
   "name": "excellent.js",
-  "version": "1.8.0",
-  "description": "DOM Component Framework",
+  "version": "1.7.2",
+  "description": "Basic DOM Component Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
   "scripts": {
