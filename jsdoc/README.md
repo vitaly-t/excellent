@@ -1,4 +1,4 @@
-Excellent.js v1.7.2
+Excellent.js v1.7.3
 -------------------
 
 [WiKi] pages contain a lot of extra information about the library's usage, including [Getting Started].
