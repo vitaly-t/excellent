@@ -5,11 +5,10 @@
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
   "scripts": {
-    "gulp": "./node_modules/.bin/gulp",
     "lint": "gulp lint",
     "test": "gulp lint && jest",
     "travis": "gulp lint && jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc/jsdoc.js -t ./jsdoc/custom"
+    "doc": "jsdoc -c ./jsdoc/jsdoc.js -t ./jsdoc/custom"
   },
   "files": [
     "src/excellent.js",
@@ -40,8 +39,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=6.4",
-    "npm": ">=3.10"
+    "node": ">=8"
   },
   "devDependencies": {
     "coveralls": "3.1.0",
