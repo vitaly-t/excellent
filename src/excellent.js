@@ -547,7 +547,7 @@
             // MutationObserver does not exist in JEST:
             // istanbul ignore if
             if (mo) {
-                mo.observe(e, {childList: true});
+                mo.observe(e, {childList: true, subtree: true});
             }
         };
 
@@ -565,6 +565,7 @@
                         }
                         removeControllers(e);
                     }
+                    manualCheck();
                 }
             });
         }
