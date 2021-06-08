@@ -1,6 +1,6 @@
 {
   "name": "excellent.js",
-  "version": "1.7.3",
+  "version": "1.8.0-beta.0",
   "description": "Basic DOM Component Framework",
   "main": "src/excellent.js",
   "typings": "src/excellent.d.ts",
