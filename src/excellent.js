@@ -504,10 +504,8 @@
     function DestroyObserver() {
         var mo, timer;
 
-        // MutationObserver does not exist in JEST:
-        // istanbul ignore else
+        // istanbul ignore if
         if (typeof MutationObserver === 'undefined') {
-            // istanbul ignore else
             if (typeof window !== 'undefined' && window) {
                 // We do not create any timer when inside Node.js
                 timer = setInterval(manualCheck, 1000); // This is a work-around for IE9 and IE10
@@ -527,8 +525,6 @@
                 clearInterval(timer);
                 timer = null;
             }
-            // MutationObserver does not exist in JEST:
-            // istanbul ignore next
             if (mo) {
                 mo.disconnect();
                 mo = null;
@@ -544,15 +540,11 @@
          * Element to be watched.
          */
         this.watch = function (e) {
-            // MutationObserver does not exist in JEST:
-            // istanbul ignore if
             if (mo) {
                 mo.observe(e, {childList: true, subtree: true});
             }
         };
 
-        // MutationObserver does not exist in JEST:
-        // istanbul ignore next
         function mutantCB(mutations) {
             mutations.forEach(function (m) {
                 for (var i = 0; i < m.removedNodes.length; i++) {
@@ -565,7 +557,7 @@
                         }
                         removeControllers(e);
                     }
-                    manualCheck();
+                    manualCheck(); // TODO: check why it is needed here.
                 }
             });
         }
