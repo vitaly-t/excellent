@@ -3,5 +3,6 @@ module.exports = {
     collectCoverageFrom: [
         'src/excellent.js'
     ],
-    testURL: 'http://localhost/'
+    testURL: 'http://localhost/',
+    testEnvironment: 'jsdom'
 };
